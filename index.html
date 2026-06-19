@@ -51,7 +51,165 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Hero — clean, light */
+/* Date badge - clickable */
+.date-badge-wrap {
+  display: inline-block;
+  position: relative;
+}
+.date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(86,72,160,0.08);
+  border: 1px solid rgba(86,72,160,0.15);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  color: var(--accent-news);
+  font-family: 'JetBrains Mono', monospace;
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.date-badge:hover { background: rgba(86,72,160,0.15); }
+.date-badge-arrow { font-size: 0.6rem; opacity: 0.6; }
+
+/* Date picker overlay */
+.date-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.date-overlay.open { display: flex; }
+.date-panel {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  width: 92%;
+  max-width: 380px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 24px 20px 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+  animation: slideUp 0.2s ease;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.date-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.date-panel-header h3 { font-size: 1rem; font-weight: 600; }
+.date-panel-close {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #f1efeb;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+}
+.date-panel-close:hover { background: #e8e6e0; }
+
+/* Calendar grid */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.cal-nav-btn {
+  background: none; border: 1px solid var(--border-subtle);
+  border-radius: 6px; padding: 4px 10px;
+  cursor: pointer; font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: inherit;
+}
+.cal-nav-btn:hover { background: #f1efeb; }
+.cal-month { font-size: 0.85rem; font-weight: 600; }
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+.cal-weekday {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  padding: 4px 0;
+  font-family: 'JetBrains Mono', monospace;
+}
+.cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  position: relative;
+  gap: 2px;
+}
+.cal-day.empty { cursor: default; }
+.cal-day:not(.empty):hover { background: #f0eeff; }
+.cal-day.today { background: rgba(86,72,160,0.1); font-weight: 600; }
+.cal-day .cal-dots {
+  display: flex;
+  gap: 3px;
+}
+.cal-day .cal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.cal-day .cal-dot.news { background: var(--accent-news); }
+.cal-day .cal-dot.finance { background: var(--accent-finance); }
+.cal-day .cal-dot.invest { background: var(--accent-invest); }
+
+/* Date detail */
+.date-detail {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+  display: none;
+}
+.date-detail.show { display: block; }
+.date-detail-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; }
+.date-detail-links { display: flex; flex-direction: column; gap: 6px; }
+.date-detail-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.82rem;
+  transition: all 0.1s;
+}
+.date-detail-link:hover { background: #f1efeb; }
+.date-detail-link .dd-icon {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+.date-detail-link .dd-title { font-weight: 500; }
+.date-detail-link .dd-url { font-size: 0.68rem; color: var(--text-muted); margin-left: auto; }
 .hero {
   background: linear-gradient(135deg, #f0eeff 0%, #e8f0fe 50%, #f3f0eb 100%);
   padding: 56px 24px 40px;
@@ -337,7 +495,30 @@ body {
       </svg>
     </div>
     <p class="subtitle">Personal AI Control Center</p>
-    <span class="date-badge" id="dateBadge"></span>
+    <div class="date-badge-wrap">
+      <div class="date-badge" id="dateBadgeBtn">
+        <span id="dateBadge"></span>
+        <span class="date-badge-arrow">&#9660;</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Date picker overlay -->
+<div class="date-overlay" id="dateOverlay">
+  <div class="date-panel">
+    <div class="date-panel-header">
+      <h3>History Archive</h3>
+      <button class="date-panel-close" id="dateClose">&#10005;</button>
+    </div>
+    <div class="cal-nav">
+      <button class="cal-nav-btn" id="calPrev">&#9664; Prev</button>
+      <span class="cal-month" id="calMonthLabel"></span>
+      <button class="cal-nav-btn" id="calNext">Next &#9654;</button>
+    </div>
+    <div class="cal-weekdays" id="calWeekdays"></div>
+    <div class="cal-days" id="calDays"></div>
+    <div class="date-detail" id="dateDetail"></div>
   </div>
 </div>
 
@@ -397,48 +578,6 @@ body {
     <div class="card-arrow">&#8594;</div>
   </a>
 
-  <!-- History -->
-  <div class="section-title">&#128214; History</div>
-
-  <a href="https://news.alistairlendor.com/archive/" class="card card-news" target="_blank">
-    <div class="card-indicator"></div>
-    <div class="card-content">
-      <div class="card-header">
-        <div class="card-icon">&#128240;</div>
-        <span class="card-title">Briefing Archive</span>
-        <span class="card-badge">7 DAYS</span>
-      </div>
-      <p class="card-desc">Browse past news briefings by date &#xb7; Jun 13 - Jun 19</p>
-    </div>
-    <div class="card-arrow">&#8594;</div>
-  </a>
-
-  <a href="https://invest.alistairlendor.com/archive/" class="card card-invest" target="_blank">
-    <div class="card-indicator"></div>
-    <div class="card-content">
-      <div class="card-header">
-        <div class="card-icon">&#128200;</div>
-        <span class="card-title">Portfolio Archive</span>
-        <span class="card-badge">4 DAYS</span>
-      </div>
-      <p class="card-desc">Past daily portfolio analysis reports &#xb7; Jun 16 - Jun 19</p>
-    </div>
-    <div class="card-arrow">&#8594;</div>
-  </a>
-
-  <a href="https://finance.alistairlendor.com/archive/" class="card card-finance" target="_blank">
-    <div class="card-indicator"></div>
-    <div class="card-content">
-      <div class="card-header">
-        <div class="card-icon">&#128176;</div>
-        <span class="card-title">Finance Archive</span>
-        <span class="card-badge">COMING</span>
-      </div>
-      <p class="card-desc">Historical financial snapshots &#xb7; auto-archive starts tomorrow</p>
-    </div>
-    <div class="card-arrow">&#8594;</div>
-  </a>
-
   <!-- Remote Access -->
   <div class="section-title">&#9889; Remote Access</div>
 
@@ -493,9 +632,105 @@ body {
 </div>
 
 <script>
-document.getElementById('dateBadge').textContent = new Date().toLocaleDateString('zh-CN', {
-  year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-}).replace('星期', ' 周');
+// Archive data: date -> available products
+const ARCHIVE = {
+  '2026-06-13': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-13.html' },
+  '2026-06-14': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-14.html' },
+  '2026-06-15': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-15.html' },
+  '2026-06-16': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-16.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0616.html' },
+  '2026-06-17': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-17.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0617.html' },
+  '2026-06-18': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-18.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0618.html' },
+  '2026-06-19': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-19.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0619.html' }
+};
+const PRODUCT_META = {
+  news: { label: 'Daily Briefing', domain: 'news.alistairlendor.com', color: '#5648a0', bg: '#f0eeff', icon: '📰' },
+  invest: { label: 'Portfolio Tracker', domain: 'invest.alistairlendor.com', color: '#1565c0', bg: '#e3f2fd', icon: '📈' },
+  finance: { label: 'Finance Dashboard', domain: 'finance.alistairlendor.com', color: '#2e7d32', bg: '#e8f5e9', icon: '💰' }
+};
+
+const today = new Date();
+const dateBadge = document.getElementById('dateBadge');
+dateBadge.textContent = today.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }).replace('星期',' 周');
+
+// Calendar state
+let calDate = new Date(today.getFullYear(), today.getMonth(), 1);
+const overlay = document.getElementById('dateOverlay');
+const detail = document.getElementById('dateDetail');
+const calDays = document.getElementById('calDays');
+const calMonth = document.getElementById('calMonthLabel');
+const calWeek = document.getElementById('calWeekdays');
+
+// Init weekdays
+['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+  const el = document.createElement('div');
+  el.className = 'cal-weekday'; el.textContent = d; calWeek.appendChild(el);
+});
+
+function pad(n) { return n < 10 ? '0'+n : ''+n; }
+function fmtKey(d) { return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function sameDay(a,b) { return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+
+function renderCal() {
+  const year = calDate.getFullYear(), month = calDate.getMonth();
+  calMonth.textContent = new Date(year, month).toLocaleDateString('en-US', { year:'numeric', month:'long' });
+  calDays.innerHTML = '';
+  const firstDow = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDow; i++) {
+    const e = document.createElement('div'); e.className = 'cal-day empty'; calDays.appendChild(e);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt = new Date(year, month, d);
+    const key = fmtKey(dt);
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    if (sameDay(dt, today)) el.classList.add('today');
+    if (ARCHIVE[key]) {
+      const dots = document.createElement('div'); dots.className = 'cal-dots';
+      if (ARCHIVE[key].news) { const dot = document.createElement('span'); dot.className = 'cal-dot news'; dots.appendChild(dot); }
+      if (ARCHIVE[key].finance) { const dot = document.createElement('span'); dot.className = 'cal-dot finance'; dots.appendChild(dot); }
+      if (ARCHIVE[key].invest) { const dot = document.createElement('span'); dot.className = 'cal-dot invest'; dots.appendChild(dot); }
+      el.appendChild(dots);
+      el.addEventListener('click', () => showDateDetail(key));
+    } else {
+      el.style.opacity = '0.4';
+      el.addEventListener('click', () => { detail.classList.remove('show'); });
+    }
+    const num = document.createElement('span'); num.textContent = d; el.prepend(num);
+    calDays.appendChild(el);
+  }
+}
+
+function showDateDetail(key) {
+  const data = ARCHIVE[key];
+  if (!data) { detail.classList.remove('show'); return; }
+  detail.classList.add('show');
+  const d = new Date(key);
+  const label = d.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }).replace('星期',' 周');
+  let html = '<div class="date-detail-label">' + label + '</div><div class="date-detail-links">';
+  ['news','invest','finance'].forEach(p => {
+    if (data[p]) {
+      const m = PRODUCT_META[p];
+      html += '<a class="date-detail-link" href="' + data[p] + '" target="_blank">'
+        + '<div class="dd-icon" style="background:' + m.bg + '">' + m.icon + '</div>'
+        + '<span class="dd-title">' + m.label + '</span>'
+        + '<span class="dd-url">&#8594;</span></a>';
+    }
+  });
+  html += '</div>';
+  detail.innerHTML = html;
+}
+
+document.getElementById('dateBadgeBtn').addEventListener('click', () => {
+  overlay.classList.add('open');
+  renderCal();
+  showDateDetail(fmtKey(today));
+});
+document.getElementById('dateClose').addEventListener('click', () => overlay.classList.remove('open'));
+overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+document.getElementById('calPrev').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()-1); renderCal(); });
+document.getElementById('calNext').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()+1); renderCal(); });
 </script>
 </body>
 </html>
