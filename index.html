@@ -664,17 +664,9 @@ body {
 </div>
 
 <script>
-// Archive data: date -> available products
-const ARCHIVE = {
-  '2026-06-13': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-13.html' },
-  '2026-06-14': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-14.html' },
-  '2026-06-15': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-15.html' },
-  '2026-06-16': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-16.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0616.html' },
-  '2026-06-17': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-17.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0617.html' },
-  '2026-06-18': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-18.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0618.html' },
-  '2026-06-19': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-19.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0619.html' },
-  '2026-06-20': { usage: 'https://alistairlendor.com/usage/usage_dashboard.html' }
-};
+// Archive data: loaded dynamically from archive-data.json
+let ARCHIVE = {};
+
 const PRODUCT_META = {
   news: { label: 'Daily Briefing', domain: 'news.alistairlendor.com', color: '#5648a0', bg: '#f0eeff', icon: '📰' },
   invest: { label: 'Portfolio Tracker', domain: 'invest.alistairlendor.com', color: '#1565c0', bg: '#e3f2fd', icon: '📈' },
@@ -685,6 +677,12 @@ const PRODUCT_META = {
 const today = new Date();
 const dateBadge = document.getElementById('dateBadge');
 dateBadge.textContent = today.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }).replace('星期',' 周');
+
+// Load archive data from JSON file
+fetch('archive-data.json')
+  .then(r => r.json())
+  .then(data => { ARCHIVE = data; })
+  .catch(() => {}); // silently fail, ARCHIVE stays empty
 
 // Calendar state
 let calDate = new Date(today.getFullYear(), today.getMonth(), 1);
