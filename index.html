@@ -1,1 +1,745 @@
-C:\Users\ADMIN\WorkBuddy\2026-06-07-22-18-49\hub_index.html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alistair Hub — Personal AI Control Center</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%235648a0'/%3E%3Cpath d='M65 20 L40 80' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M65 20 L90 80' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cline x1='45' y1='55' x2='85' y2='55' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='65' cy='18' r='5' fill='white'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#5648a0">
+
+<style>
+:root {
+  --bg-page: #f5f5f7;
+  --bg-card: #ffffff;
+  --bg-card-hover: #fafafa;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-muted: #aeaeb2;
+  --accent-news: #5648a0;
+  --accent-finance: #2e7d32;
+  --accent-invest: #1565c0;
+  --accent-ai: #d84315;
+  --accent-task: #7b1fa2;
+  --border-subtle: #d2d2d7;
+  --border-hover: #c4c4c9;
+  --shadow-card: 0 0 1px rgba(0,0,0,0.08);
+  --shadow-hover: 0 2px 12px rgba(0,0,0,0.08);
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  --card-news-bg: #f0eeff;
+  --card-news-icon: #5648a0;
+  --card-finance-bg: #e8f5e9;
+  --card-finance-icon: #2e7d32;
+  --card-invest-bg: #e3f2fd;
+  --card-invest-icon: #1565c0;
+  --card-ai-bg: #fbe9e7;
+  --card-ai-icon: #d84315;
+  --card-task-bg: #f3e5f5;
+  --card-task-icon: #7b1fa2;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Date badge - clickable */
+.date-badge-wrap {
+  display: inline-block;
+  position: relative;
+}
+.date-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(86,72,160,0.08);
+  border: 1px solid rgba(86,72,160,0.15);
+  border-radius: 100px;
+  padding: 6px 16px;
+  font-size: 0.78rem;
+  color: var(--accent-news);
+  
+  cursor: pointer;
+  transition: all 0.15s;
+  user-select: none;
+}
+.date-badge:hover { background: rgba(86,72,160,0.15); }
+.date-badge-arrow { font-size: 0.6rem; opacity: 0.6; }
+
+/* Date picker overlay */
+.date-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.3);
+  z-index: 100;
+  align-items: center;
+  justify-content: center;
+}
+.date-overlay.open { display: flex; }
+.date-panel {
+  background: #fff;
+  border-radius: var(--radius-lg);
+  width: 92%;
+  max-width: 380px;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding: 24px 20px 20px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+  animation: slideUp 0.2s ease;
+}
+@keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.date-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.date-panel-header h3 { font-size: 1rem; font-weight: 600; }
+.date-panel-close {
+  width: 28px; height: 28px;
+  border-radius: 50%;
+  border: none;
+  background: #f1efeb;
+  cursor: pointer;
+  font-size: 1.1rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-secondary);
+}
+.date-panel-close:hover { background: #e8e6e0; }
+
+/* Calendar grid */
+.cal-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.cal-nav-btn {
+  background: none; border: 1px solid #d2d2d7;
+  border-radius: 6px; padding: 4px 10px;
+  cursor: pointer; font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: inherit;
+}
+.cal-nav-btn:hover { background: #f1efeb; }
+.cal-month { font-size: 0.85rem; font-weight: 600; }
+.cal-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+  margin-bottom: 4px;
+}
+.cal-weekday {
+  text-align: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  padding: 4px 0;
+  
+}
+.cal-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+.cal-day {
+  aspect-ratio: 1;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: all 0.1s;
+  position: relative;
+  gap: 2px;
+}
+.cal-day.empty { cursor: default; }
+.cal-day:not(.empty):hover { background: #f0eeff; }
+.cal-day.today { background: rgba(86,72,160,0.1); font-weight: 600; }
+.cal-day .cal-dots {
+  display: flex;
+  gap: 3px;
+}
+.cal-day .cal-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.cal-day .cal-dot.news { background: var(--accent-news); }
+.cal-day .cal-dot.finance { background: var(--accent-finance); }
+.cal-day .cal-dot.invest { background: var(--accent-invest); }
+
+/* Date detail */
+.date-detail {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #e8e8ed;
+  display: none;
+}
+.date-detail.show { display: block; }
+.date-detail-label { font-size: 0.72rem; color: var(--text-muted); margin-bottom: 8px; }
+.date-detail-links { display: flex; flex-direction: column; gap: 6px; }
+.date-detail-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  font-size: 0.82rem;
+  transition: all 0.1s;
+}
+.date-detail-link:hover { background: #f1efeb; }
+.date-detail-link .dd-icon {
+  width: 24px; height: 24px;
+  border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+}
+.date-detail-link .dd-title { font-weight: 500; }
+.date-detail-link .dd-url { font-size: 0.68rem; color: var(--text-muted); margin-left: auto; }
+.hero {
+  background: linear-gradient(180deg, #f0eeff 0%, #f0eeff 30%, #f5f5f7 100%);
+  padding: 64px 24px 36px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.hero h1 span { color: var(--accent-news); }
+.hero .subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 2.2vw, 1rem);
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+.hero .date-badge {
+  display: inline-block;
+  background: rgba(86,72,160,0.08);
+  border: 1px solid rgba(86,72,160,0.15);
+  border-radius: 100px;
+  padding: 4px 16px;
+  font-size: 0.78rem;
+  color: var(--accent-news);
+  
+}
+
+/* Container */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 56px;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 28px 0 10px;
+  padding-left: 4px;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid #d2d2d7;
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+  box-shadow: var(--shadow-card);
+}
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+.card:active { transform: translateY(0); }
+.card-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 0 2px 2px 0;
+}
+.card-content { padding-left: 6px; }
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3px;
+}
+.card-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+}
+.card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.card-badge {
+  font-size: 0.62rem;
+  background: rgba(0,0,0,0.04);
+  padding: 2px 8px;
+  border-radius: 100px;
+  color: var(--text-secondary);
+  margin-left: auto;
+  
+  border: 1px solid #d2d2d7;
+}
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 1px;
+}
+.card-stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #e8e8ed;
+}
+.card-stat {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+.card-stat strong {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.card-arrow {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.card:hover .card-arrow { opacity: 1; }
+
+/* Card color themes — light mode */
+.card-news .card-indicator { background: var(--accent-news); }
+.card-news .card-icon { background: var(--card-news-bg); }
+.card-finance .card-indicator { background: var(--accent-finance); }
+.card-finance .card-icon { background: var(--card-finance-bg); }
+.card-invest .card-indicator { background: var(--accent-invest); }
+.card-invest .card-icon { background: var(--card-invest-bg); }
+.card-ai .card-indicator { background: var(--accent-ai); }
+.card-ai .card-icon { background: var(--card-ai-bg); }
+.card-task .card-indicator { background: var(--accent-task); }
+.card-task .card-icon { background: var(--card-task-bg); }
+
+/* Quick Task */
+.quick-task {
+  background: var(--bg-card);
+  border: 1px dashed #c0bcc4;
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  text-align: center;
+  margin-bottom: 10px;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-card);
+}
+.quick-task:hover {
+  background: var(--card-task-bg);
+  border-color: var(--accent-task);
+  border-style: solid;
+}
+.quick-task-icon {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+.quick-task-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.quick-task-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* Automation Status */
+.automation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.automation-item {
+  background: var(--bg-card);
+  border: 1px solid #d2d2d7;
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.automation-time {
+  
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+.automation-name {
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  margin: 3px 0;
+}
+.automation-status {
+  font-size: 0.68rem;
+  font-weight: 400;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--text-secondary);
+}
+.automation-status .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #43a047;
+  display: inline-block;
+}
+.automation-status .dot.off { background: var(--text-muted); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid #e8e8ed;
+  margin-top: 28px;
+}
+.footer p {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
+.footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+.footer a:hover { color: var(--accent-news); }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .hero { padding: 40px 16px 28px; }
+  .container { padding: 16px 12px 40px; }
+  .automation-grid { grid-template-columns: 1fr; }
+  .card-arrow { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-logo">
+      <svg viewBox="0 0 240 200" width="180" style="display:block;margin:0 auto 12px">
+        <defs>
+          <linearGradient id="g2" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#5648a0"/>
+            <stop offset="100%" stop-color="#302b63"/>
+          </linearGradient>
+        </defs>
+        <circle cx="120" cy="100" r="65" fill="#f0eeff" stroke="#cecbf6" stroke-width="0.5"/>
+        <path d="M120 40 A70 70 0 1 1 50 170" fill="none" stroke="#afa9ec" stroke-width="1" stroke-dasharray="4 3" opacity="0.5"/>
+        <circle cx="70" cy="55" r="2.5" fill="#afa9ec" opacity="0.8"/>
+        <circle cx="180" cy="80" r="2" fill="#afa9ec" opacity="0.5"/>
+        <g transform="translate(120,90)">
+          <path d="M-12 40 L-1 -40 L0 -44 L1 -40 L12 40" fill="none" stroke="url(#g2)" stroke-width="2.5" stroke-linecap="round"/>
+          <path d="M-12 40 L-1 -40 L0 -44 L1 -40 L12 40" fill="none" stroke="url(#g2)" stroke-width="2.5" stroke-linecap="round" transform="scale(-1,1)"/>
+          <line x1="-18" y1="-5" x2="18" y2="-5" stroke="url(#g2)" stroke-width="2.5" stroke-linecap="round"/>
+          <circle cx="0" cy="-44" r="3" fill="#5648a0"/>
+          <path d="M-1 -44 L-3 -56" fill="none" stroke="#5648a0" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="-3" cy="-58" r="1.5" fill="#7f77dd"/>
+        </g>
+        <text x="120" y="155" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="500" fill="#1a1a2e" letter-spacing="4">ALISTAIR HUB</text>
+      </svg>
+    </div>
+    <p class="subtitle">Personal AI Control Center</p>
+    <div class="date-badge-wrap">
+      <div class="date-badge" id="dateBadgeBtn">
+        <span id="dateBadge"></span>
+        <span class="date-badge-arrow">&#9660;</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Date picker overlay -->
+<div class="date-overlay" id="dateOverlay">
+  <div class="date-panel">
+    <div class="date-panel-header">
+      <h3>History Archive</h3>
+      <button class="date-panel-close" id="dateClose">&#10005;</button>
+    </div>
+    <div class="cal-nav">
+      <button class="cal-nav-btn" id="calPrev">&#9664; Prev</button>
+      <span class="cal-month" id="calMonthLabel"></span>
+      <button class="cal-nav-btn" id="calNext">Next &#9654;</button>
+    </div>
+    <div class="cal-weekdays" id="calWeekdays"></div>
+    <div class="cal-days" id="calDays"></div>
+    <div class="date-detail" id="dateDetail"></div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Products -->
+  <div class="section-title">&#128230; Products</div>
+
+  <a href="https://news.alistairlendor.com" class="card card-news" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">&#128240;</div>
+        <span class="card-title">Daily Briefing</span>
+        <span class="card-badge">09:00</span>
+      </div>
+      <p class="card-desc">Politics &#xb7; Conflicts &#xb7; Economy &#xb7; AI Tech &#xb7; AI Coding</p>
+      <div class="card-stats">
+        <span class="card-stat">Status <strong>Live</strong></span>
+        <span class="card-stat">Push <strong>GitHub Pages + Gmail</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <a href="https://finance.alistairlendor.com" class="card card-finance" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">&#128176;</div>
+        <span class="card-title">Finance Dashboard</span>
+        <span class="card-badge">00:00</span>
+      </div>
+      <p class="card-desc">Income tracking &#xb7; expense breakdown &#xb7; savings rate &#xb7; budget</p>
+      <div class="card-stats">
+        <span class="card-stat">Status <strong>Live</strong></span>
+        <span class="card-stat">Source <strong>transactions.json</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <a href="https://invest.alistairlendor.com" class="card card-invest" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">&#128200;</div>
+        <span class="card-title">Portfolio Tracker</span>
+        <span class="card-badge">16:00</span>
+      </div>
+      <p class="card-desc">3-ETF simulated portfolio &#xb7; K-line &#xb7; daily analysis</p>
+      <div class="card-stats" style="grid-template-columns:repeat(3,1fr)">
+        <span class="card-stat">Value <strong style="color:#1565c0">&#165;10,332</strong></span>
+        <span class="card-stat">P&L <strong style="color:#e53935">+&#165;332</strong></span>
+        <span class="card-stat">Return <strong style="color:#e53935">+3.32%</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <!-- Remote Access -->
+  <div class="section-title">&#9889; Remote Access</div>
+
+  <a href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" class="card card-task" target="_blank">
+    <div class="card-indicator" style="background:#7b1fa2"></div>
+    <div class="card-content" style="padding-left:6px">
+      <div class="card-header">
+        <div class="card-icon" style="background:#f3e5f5">&#128221;</div>
+        <span class="card-title">Create a Task</span>
+        <span class="card-badge">ANYTIME</span>
+      </div>
+      <p class="card-desc">Open GitHub Issue &#8594; auto-reply &#8594; WorkBuddy processes &#8594; results via email</p>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
+  <!-- Automation Schedule -->
+  <div class="section-title">&#128352; Automation Schedule</div>
+  <div class="automation-grid">
+    <div class="automation-item">
+      <div class="automation-time">00:00</div>
+      <div class="automation-name">Finance Report</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">09:00</div>
+      <div class="automation-name">Daily Briefing</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">13:00</div>
+      <div class="automation-name">PingPong Sync</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">16:00</div>
+      <div class="automation-name">Portfolio Track</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">23:55</div>
+      <div class="automation-name">Daily Reminder</div>
+      <div class="automation-status"><span class="dot"></span> Template</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a> &#xb7; <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a></p>
+    <p style="margin-top:3px;">alistairlendor.com</p>
+  </div>
+
+</div>
+
+<script>
+// Archive data: date -> available products
+const ARCHIVE = {
+  '2026-06-13': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-13.html' },
+  '2026-06-14': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-14.html' },
+  '2026-06-15': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-15.html' },
+  '2026-06-16': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-16.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0616.html' },
+  '2026-06-17': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-17.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0617.html' },
+  '2026-06-18': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-18.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0618.html' },
+  '2026-06-19': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-19.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0619.html' }
+};
+const PRODUCT_META = {
+  news: { label: 'Daily Briefing', domain: 'news.alistairlendor.com', color: '#5648a0', bg: '#f0eeff', icon: '📰' },
+  invest: { label: 'Portfolio Tracker', domain: 'invest.alistairlendor.com', color: '#1565c0', bg: '#e3f2fd', icon: '📈' },
+  finance: { label: 'Finance Dashboard', domain: 'finance.alistairlendor.com', color: '#2e7d32', bg: '#e8f5e9', icon: '💰' }
+};
+
+const today = new Date();
+const dateBadge = document.getElementById('dateBadge');
+dateBadge.textContent = today.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }).replace('星期',' 周');
+
+// Calendar state
+let calDate = new Date(today.getFullYear(), today.getMonth(), 1);
+const overlay = document.getElementById('dateOverlay');
+const detail = document.getElementById('dateDetail');
+const calDays = document.getElementById('calDays');
+const calMonth = document.getElementById('calMonthLabel');
+const calWeek = document.getElementById('calWeekdays');
+
+// Init weekdays
+['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d => {
+  const el = document.createElement('div');
+  el.className = 'cal-weekday'; el.textContent = d; calWeek.appendChild(el);
+});
+
+function pad(n) { return n < 10 ? '0'+n : ''+n; }
+function fmtKey(d) { return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+function sameDay(a,b) { return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate(); }
+
+function renderCal() {
+  const year = calDate.getFullYear(), month = calDate.getMonth();
+  calMonth.textContent = new Date(year, month).toLocaleDateString('en-US', { year:'numeric', month:'long' });
+  calDays.innerHTML = '';
+  const firstDow = new Date(year, month, 1).getDay();
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+  for (let i = 0; i < firstDow; i++) {
+    const e = document.createElement('div'); e.className = 'cal-day empty'; calDays.appendChild(e);
+  }
+  for (let d = 1; d <= daysInMonth; d++) {
+    const dt = new Date(year, month, d);
+    const key = fmtKey(dt);
+    const el = document.createElement('div');
+    el.className = 'cal-day';
+    if (sameDay(dt, today)) el.classList.add('today');
+    if (ARCHIVE[key]) {
+      const dots = document.createElement('div'); dots.className = 'cal-dots';
+      if (ARCHIVE[key].news) { const dot = document.createElement('span'); dot.className = 'cal-dot news'; dots.appendChild(dot); }
+      if (ARCHIVE[key].finance) { const dot = document.createElement('span'); dot.className = 'cal-dot finance'; dots.appendChild(dot); }
+      if (ARCHIVE[key].invest) { const dot = document.createElement('span'); dot.className = 'cal-dot invest'; dots.appendChild(dot); }
+      el.appendChild(dots);
+      el.addEventListener('click', () => showDateDetail(key));
+    } else {
+      el.style.opacity = '0.4';
+      el.addEventListener('click', () => { detail.classList.remove('show'); });
+    }
+    const num = document.createElement('span'); num.textContent = d; el.prepend(num);
+    calDays.appendChild(el);
+  }
+}
+
+function showDateDetail(key) {
+  const data = ARCHIVE[key];
+  if (!data) { detail.classList.remove('show'); return; }
+  detail.classList.add('show');
+  const d = new Date(key);
+  const label = d.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }).replace('星期',' 周');
+  let html = '<div class="date-detail-label">' + label + '</div><div class="date-detail-links">';
+  ['news','invest','finance'].forEach(p => {
+    if (data[p]) {
+      const m = PRODUCT_META[p];
+      html += '<a class="date-detail-link" href="' + data[p] + '" target="_blank">'
+        + '<div class="dd-icon" style="background:' + m.bg + '">' + m.icon + '</div>'
+        + '<span class="dd-title">' + m.label + '</span>'
+        + '<span class="dd-url">&#8594;</span></a>';
+    }
+  });
+  html += '</div>';
+  detail.innerHTML = html;
+}
+
+document.getElementById('dateBadgeBtn').addEventListener('click', () => {
+  overlay.classList.add('open');
+  renderCal();
+  showDateDetail(fmtKey(today));
+});
+document.getElementById('dateClose').addEventListener('click', () => overlay.classList.remove('open'));
+overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('open'); });
+document.getElementById('calPrev').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()-1); renderCal(); });
+document.getElementById('calNext').addEventListener('click', () => { calDate.setMonth(calDate.getMonth()+1); renderCal(); });
+</script>
+</body>
+</html>
