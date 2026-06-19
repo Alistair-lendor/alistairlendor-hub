@@ -6,29 +6,27 @@
 <title>Alistair Hub — Personal AI Control Center</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%235648a0'/%3E%3Cpath d='M65 20 L40 80' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M65 20 L90 80' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cline x1='45' y1='55' x2='85' y2='55' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='65' cy='18' r='5' fill='white'/%3E%3C/svg%3E">
 <meta name="theme-color" content="#5648a0">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
 <style>
 :root {
-  --bg-page: #f7f6f3;
+  --bg-page: #f5f5f7;
   --bg-card: #ffffff;
-  --bg-card-hover: #faf9f6;
-  --text-primary: #1a1a2e;
-  --text-secondary: #5a5a72;
-  --text-muted: #9a9ab0;
+  --bg-card-hover: #fafafa;
+  --text-primary: #1d1d1f;
+  --text-secondary: #6e6e73;
+  --text-muted: #aeaeb2;
   --accent-news: #5648a0;
   --accent-finance: #2e7d32;
   --accent-invest: #1565c0;
   --accent-ai: #d84315;
   --accent-task: #7b1fa2;
-  --border-subtle: #e8e6e0;
-  --border-hover: #d0ccc4;
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.08);
+  --border-subtle: #d2d2d7;
+  --border-hover: #c4c4c9;
+  --shadow-card: 0 0 1px rgba(0,0,0,0.08);
+  --shadow-hover: 0 2px 12px rgba(0,0,0,0.08);
   --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
 
   --card-news-bg: #f0eeff;
   --card-news-icon: #5648a0;
@@ -43,12 +41,13 @@
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
   background: var(--bg-page);
   color: var(--text-primary);
   min-height: 100vh;
-  line-height: 1.6;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Date badge - clickable */
@@ -66,7 +65,7 @@ body {
   padding: 6px 16px;
   font-size: 0.78rem;
   color: var(--accent-news);
-  font-family: 'JetBrains Mono', monospace;
+  
   cursor: pointer;
   transition: all 0.15s;
   user-select: none;
@@ -124,7 +123,7 @@ body {
   margin-bottom: 12px;
 }
 .cal-nav-btn {
-  background: none; border: 1px solid var(--border-subtle);
+  background: none; border: 1px solid #d2d2d7;
   border-radius: 6px; padding: 4px 10px;
   cursor: pointer; font-size: 0.8rem;
   color: var(--text-secondary);
@@ -143,7 +142,7 @@ body {
   font-size: 0.65rem;
   color: var(--text-muted);
   padding: 4px 0;
-  font-family: 'JetBrains Mono', monospace;
+  
 }
 .cal-days {
   display: grid;
@@ -183,7 +182,7 @@ body {
 .date-detail {
   margin-top: 16px;
   padding-top: 14px;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid #e8e8ed;
   display: none;
 }
 .date-detail.show { display: block; }
@@ -211,8 +210,8 @@ body {
 .date-detail-link .dd-title { font-weight: 500; }
 .date-detail-link .dd-url { font-size: 0.68rem; color: var(--text-muted); margin-left: auto; }
 .hero {
-  background: linear-gradient(135deg, #f0eeff 0%, #e8f0fe 50%, #f3f0eb 100%);
-  padding: 56px 24px 40px;
+  background: linear-gradient(180deg, #f0eeff 0%, #f0eeff 30%, #f5f5f7 100%);
+  padding: 64px 24px 36px;
   text-align: center;
   position: relative;
   overflow: hidden;
@@ -240,7 +239,7 @@ body {
   padding: 4px 16px;
   font-size: 0.78rem;
   color: var(--accent-news);
-  font-family: 'JetBrains Mono', monospace;
+  
 }
 
 /* Container */
@@ -252,9 +251,8 @@ body {
 
 /* Section Title */
 .section-title {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
+  font-size: 0.7rem;
+  font-weight: 500;
   letter-spacing: 0.08em;
   color: var(--text-muted);
   margin: 28px 0 10px;
@@ -264,7 +262,7 @@ body {
 /* Cards */
 .card {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid #d2d2d7;
   border-radius: var(--radius-md);
   padding: 18px 20px;
   margin-bottom: 10px;
@@ -306,12 +304,13 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1rem;
+  font-size: 0.85rem;
   flex-shrink: 0;
 }
 .card-title {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
+  letter-spacing: -0.01em;
 }
 .card-badge {
   font-size: 0.62rem;
@@ -320,8 +319,8 @@ body {
   border-radius: 100px;
   color: var(--text-secondary);
   margin-left: auto;
-  font-family: 'JetBrains Mono', monospace;
-  border: 1px solid var(--border-subtle);
+  
+  border: 1px solid #d2d2d7;
 }
 .card-desc {
   font-size: 0.82rem;
@@ -334,11 +333,13 @@ body {
   gap: 16px;
   margin-top: 8px;
   padding-top: 8px;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid #e8e8ed;
 }
 .card-stat {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+  font-weight: 500;
   color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 .card-stat strong {
   color: var(--text-secondary);
@@ -410,31 +411,36 @@ body {
 }
 .automation-item {
   background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid #d2d2d7;
   border-radius: var(--radius-sm);
   padding: 10px 12px;
   text-align: center;
   box-shadow: var(--shadow-card);
 }
 .automation-time {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
+  
+  font-size: 0.7rem;
+  font-weight: 500;
   color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 .automation-name {
   font-size: 0.78rem;
   font-weight: 500;
+  letter-spacing: -0.01em;
   margin: 3px 0;
 }
 .automation-status {
   font-size: 0.68rem;
+  font-weight: 400;
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  color: var(--text-secondary);
 }
 .automation-status .dot {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: #43a047;
   display: inline-block;
@@ -445,12 +451,14 @@ body {
 .footer {
   text-align: center;
   padding: 20px 0;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 1px solid #e8e8ed;
   margin-top: 28px;
 }
 .footer p {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
+  font-weight: 500;
   color: var(--text-muted);
+  letter-spacing: 0.02em;
 }
 .footer a {
   color: var(--text-secondary);
