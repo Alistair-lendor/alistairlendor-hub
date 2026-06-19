@@ -1,23 +1,15 @@
-name: Task Acknowledgment
+name: Issue Acknowledgment
 on:
   issues:
     types: [opened]
 
+permissions:
+  issues: write
+
 jobs:
   acknowledge:
-    if: github.event_name == 'issues' && github.event.action == 'opened'
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
-      - name: Acknowledge task
-        run: |
-          gh issue comment ${{ github.event.issue.number }} \
-            --repo ${{ github.repository }} \
-            --body "Task received: **${{ github.event.issue.title }}**
-
-WorkBuddy will process it and send results to your Gmail.
-
-_auto-reply via Alistair Hub_"
+      - run: gh issue comment ${{ github.event.issue.number }} --repo ${{ github.repository }} --body "Task received. WorkBuddy will process it and email you the results."
         env:
           GH_TOKEN: ${{ github.token }}
