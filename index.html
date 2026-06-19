@@ -347,6 +347,7 @@ body {
   color: var(--text-secondary);
   font-weight: 600;
 }
+.card-stat .pf-loading { color: var(--text-muted); font-weight: 400; }
 .card-arrow {
   position: absolute;
   right: 18px;
@@ -580,9 +581,10 @@ body {
         <span class="card-badge">16:00</span>
       </div>
       <p class="card-desc">3-ETF simulated portfolio &#xb7; K-line &#xb7; daily analysis</p>
-      <div class="card-stats">
-        <span class="card-stat">Status <strong>Live</strong></span>
-        <span class="card-stat">Push <strong>GitHub Pages + Gmail</strong></span>
+      <div class="card-stats" id="portfolioStats">
+        <span class="card-stat">Value <strong id="pfValue" class="pf-loading"></strong></span>
+        <span class="card-stat">P&amp;L <strong id="pfPnl" class="pf-loading"></strong></span>
+        <span class="card-stat">Return <strong id="pfReturn" class="pf-loading"></strong></span>
       </div>
     </div>
     <div class="card-arrow">&#8594;</div>
@@ -682,6 +684,25 @@ dateBadge.textContent = today.toLocaleDateString('zh-CN', { year:'numeric', mont
 fetch('archive-data.json')
   .then(r => r.json())
   .then(data => { ARCHIVE = data; })
+  .catch(() => {});
+
+// Load portfolio latest data for dynamic card
+fetch('portfolio-latest.json')
+  .then(r => r.json())
+  .then(data => {
+    if (data.value && data.value > 0) {
+      document.getElementById('pfValue').textContent = '\u00a5' + data.value.toLocaleString();
+      document.getElementById('pfValue').className = '';
+      const pnl = data.pnl;
+      document.getElementById('pfPnl').textContent = (pnl >= 0 ? '+' : '') + '\u00a5' + pnl.toLocaleString();
+      document.getElementById('pfPnl').className = '';
+      document.getElementById('pfPnl').style.color = pnl >= 0 ? '#e53935' : '#2e7d32';
+      const ret = data.return_pct;
+      document.getElementById('pfReturn').textContent = (ret >= 0 ? '+' : '') + ret.toFixed(2) + '%';
+      document.getElementById('pfReturn').className = '';
+      document.getElementById('pfReturn').style.color = ret >= 0 ? '#e53935' : '#2e7d32';
+    }
+  })
   .catch(() => {}); // silently fail, ARCHIVE stays empty
 
 // Calendar state
