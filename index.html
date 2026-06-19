@@ -38,6 +38,10 @@
   --card-ai-icon: #d84315;
   --card-task-bg: #f3e5f5;
   --card-task-icon: #7b1fa2;
+
+  --accent-usage: #e65100;
+  --card-usage-bg: #fff3e0;
+  --card-usage-icon: #e65100;
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
@@ -177,6 +181,7 @@ body {
 .cal-day .cal-dot.news { background: var(--accent-news); }
 .cal-day .cal-dot.finance { background: var(--accent-finance); }
 .cal-day .cal-dot.invest { background: var(--accent-invest); }
+.cal-day .cal-dot.usage { background: var(--accent-usage); }
 
 /* Date detail */
 .date-detail {
@@ -368,6 +373,8 @@ body {
 .card-ai .card-icon { background: var(--card-ai-bg); }
 .card-task .card-indicator { background: var(--accent-task); }
 .card-task .card-icon { background: var(--card-task-bg); }
+.card-usage .card-indicator { background: var(--accent-usage); }
+.card-usage .card-icon { background: var(--card-usage-bg); }
 
 /* Quick Task */
 .quick-task {
@@ -587,6 +594,23 @@ body {
     <div class="card-arrow">&#8594;</div>
   </a>
 
+  <a href="https://alistairlendor.com/usage/usage_dashboard.html" class="card card-usage" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">&#9881;</div>
+        <span class="card-title">Token Monitor</span>
+        <span class="card-badge">Every 12h</span>
+      </div>
+      <p class="card-desc">WorkBuddy usage &#xb7; token consumption &#xb7; remaining quota</p>
+      <div class="card-stats">
+        <span class="card-stat">Status <strong>Live</strong></span>
+        <span class="card-stat">Source <strong>GitHub Pages</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">&#8594;</div>
+  </a>
+
   <!-- Remote Access -->
   <div class="section-title">&#9889; Remote Access</div>
 
@@ -631,6 +655,11 @@ body {
       <div class="automation-name">Daily Reminder</div>
       <div class="automation-status"><span class="dot"></span> Template</div>
     </div>
+    <div class="automation-item">
+      <div class="automation-time">Every 12h</div>
+      <div class="automation-name">Usage Monitor</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
   </div>
 
   <div class="footer">
@@ -649,12 +678,14 @@ const ARCHIVE = {
   '2026-06-16': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-16.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0616.html' },
   '2026-06-17': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-17.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0617.html' },
   '2026-06-18': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-18.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0618.html' },
-  '2026-06-19': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-19.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0619.html' }
+  '2026-06-19': { news: 'https://news.alistairlendor.com/archive/news-briefing-2026-06-19.html', invest: 'https://invest.alistairlendor.com/archive/daily_email_0619.html' },
+  '2026-06-20': { usage: 'https://alistairlendor.com/usage/usage_dashboard.html' }
 };
 const PRODUCT_META = {
   news: { label: 'Daily Briefing', domain: 'news.alistairlendor.com', color: '#5648a0', bg: '#f0eeff', icon: '📰' },
   invest: { label: 'Portfolio Tracker', domain: 'invest.alistairlendor.com', color: '#1565c0', bg: '#e3f2fd', icon: '📈' },
-  finance: { label: 'Finance Dashboard', domain: 'finance.alistairlendor.com', color: '#2e7d32', bg: '#e8f5e9', icon: '💰' }
+  finance: { label: 'Finance Dashboard', domain: 'finance.alistairlendor.com', color: '#2e7d32', bg: '#e8f5e9', icon: '💰' },
+  usage: { label: 'Token Monitor', domain: 'alistairlendor.com/usage', color: '#e65100', bg: '#fff3e0', icon: '⚙️' }
 };
 
 const today = new Date();
@@ -700,6 +731,7 @@ function renderCal() {
       if (ARCHIVE[key].news) { const dot = document.createElement('span'); dot.className = 'cal-dot news'; dots.appendChild(dot); }
       if (ARCHIVE[key].finance) { const dot = document.createElement('span'); dot.className = 'cal-dot finance'; dots.appendChild(dot); }
       if (ARCHIVE[key].invest) { const dot = document.createElement('span'); dot.className = 'cal-dot invest'; dots.appendChild(dot); }
+      if (ARCHIVE[key].usage) { const dot = document.createElement('span'); dot.className = 'cal-dot usage'; dots.appendChild(dot); }
       el.appendChild(dots);
       el.addEventListener('click', () => showDateDetail(key));
     } else {
@@ -718,7 +750,7 @@ function showDateDetail(key) {
   const d = new Date(key);
   const label = d.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'long' }).replace('星期',' 周');
   let html = '<div class="date-detail-label">' + label + '</div><div class="date-detail-links">';
-  ['news','invest','finance'].forEach(p => {
+  ['news','invest','finance','usage'].forEach(p => {
     if (data[p]) {
       const m = PRODUCT_META[p];
       html += '<a class="date-detail-link" href="' + data[p] + '" target="_blank">'
