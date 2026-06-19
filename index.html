@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali's Personal Hub</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-page: #f7f6f3;
+  --bg-card: #ffffff;
+  --bg-card-hover: #faf9f6;
+  --text-primary: #1a1a2e;
+  --text-secondary: #5a5a72;
+  --text-muted: #9a9ab0;
+  --accent-news: #5648a0;
+  --accent-finance: #2e7d32;
+  --accent-invest: #1565c0;
+  --accent-ai: #d84315;
+  --accent-task: #7b1fa2;
+  --border-subtle: #e8e6e0;
+  --border-hover: #d0ccc4;
+  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-hover: 0 4px 16px rgba(0,0,0,0.08);
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --card-news-bg: #f0eeff;
+  --card-news-icon: #5648a0;
+  --card-finance-bg: #e8f5e9;
+  --card-finance-icon: #2e7d32;
+  --card-invest-bg: #e3f2fd;
+  --card-invest-icon: #1565c0;
+  --card-ai-bg: #fbe9e7;
+  --card-ai-icon: #d84315;
+  --card-task-bg: #f3e5f5;
+  --card-task-icon: #7b1fa2;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg-page);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Hero — clean, light */
+.hero {
+  background: linear-gradient(135deg, #f0eeff 0%, #e8f0fe 50%, #f3f0eb 100%);
+  padding: 56px 24px 40px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.hero h1 {
+  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.hero h1 span { color: var(--accent-news); }
+.hero .subtitle {
+  color: var(--text-secondary);
+  font-size: clamp(0.85rem, 2.2vw, 1rem);
+  font-weight: 400;
+  margin-bottom: 10px;
+}
+.hero .date-badge {
+  display: inline-block;
+  background: rgba(86,72,160,0.08);
+  border: 1px solid rgba(86,72,160,0.15);
+  border-radius: 100px;
+  padding: 4px 16px;
+  font-size: 0.78rem;
+  color: var(--accent-news);
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Container */
+.container {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 24px 16px 56px;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin: 28px 0 10px;
+  padding-left: 4px;
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+  box-shadow: var(--shadow-card);
+}
+.card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--border-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-hover);
+}
+.card:active { transform: translateY(0); }
+.card-indicator {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  border-radius: 0 2px 2px 0;
+}
+.card-content { padding-left: 6px; }
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 3px;
+}
+.card-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.card-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.card-badge {
+  font-size: 0.62rem;
+  background: rgba(0,0,0,0.04);
+  padding: 2px 8px;
+  border-radius: 100px;
+  color: var(--text-secondary);
+  margin-left: auto;
+  font-family: 'JetBrains Mono', monospace;
+  border: 1px solid var(--border-subtle);
+}
+.card-desc {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 1px;
+}
+.card-stats {
+  display: flex;
+  gap: 16px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-subtle);
+}
+.card-stat {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.card-stat strong {
+  color: var(--text-secondary);
+  font-weight: 600;
+}
+.card-arrow {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.card:hover .card-arrow { opacity: 1; }
+
+/* Card color themes — light mode */
+.card-news .card-indicator { background: var(--accent-news); }
+.card-news .card-icon { background: var(--card-news-bg); }
+.card-finance .card-indicator { background: var(--accent-finance); }
+.card-finance .card-icon { background: var(--card-finance-bg); }
+.card-invest .card-indicator { background: var(--accent-invest); }
+.card-invest .card-icon { background: var(--card-invest-bg); }
+.card-ai .card-indicator { background: var(--accent-ai); }
+.card-ai .card-icon { background: var(--card-ai-bg); }
+.card-task .card-indicator { background: var(--accent-task); }
+.card-task .card-icon { background: var(--card-task-bg); }
+
+/* Quick Task */
+.quick-task {
+  background: var(--bg-card);
+  border: 1px dashed #c0bcc4;
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  text-align: center;
+  margin-bottom: 10px;
+  text-decoration: none;
+  display: block;
+  color: inherit;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-card);
+}
+.quick-task:hover {
+  background: var(--card-task-bg);
+  border-color: var(--accent-task);
+  border-style: solid;
+}
+.quick-task-icon {
+  font-size: 1.4rem;
+  margin-bottom: 6px;
+}
+.quick-task-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+.quick-task-desc {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+/* Automation Status */
+.automation-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.automation-item {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  text-align: center;
+  box-shadow: var(--shadow-card);
+}
+.automation-time {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.automation-name {
+  font-size: 0.78rem;
+  font-weight: 500;
+  margin: 3px 0;
+}
+.automation-status {
+  font-size: 0.68rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.automation-status .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #43a047;
+  display: inline-block;
+}
+.automation-status .dot.off { background: var(--text-muted); }
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 28px;
+}
+.footer p {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.footer a {
+  color: var(--text-secondary);
+  text-decoration: none;
+}
+.footer a:hover { color: var(--accent-news); }
+
+/* Responsive */
+@media (max-width: 480px) {
+  .hero { padding: 40px 16px 28px; }
+  .container { padding: 16px 12px 40px; }
+  .automation-grid { grid-template-columns: 1fr; }
+  .card-arrow { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1>✦ <span>Alistair</span> Hub</h1>
+    <p class="subtitle">Personal AI Control Center</p>
+    <span class="date-badge" id="dateBadge"></span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- Main Products -->
+  <div class="section-title">📦 Daily Products</div>
+
+  <a href="https://news.alistairlendor.com" class="card card-news" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">📰</div>
+        <span class="card-title">Daily Briefing</span>
+        <span class="card-badge">09:00</span>
+      </div>
+      <p class="card-desc">Politics · Conflicts · Economy · AI Tech · AI Coding — five modules, one briefing</p>
+      <div class="card-stats">
+        <span class="card-stat">Status <strong>Live</strong></span>
+        <span class="card-stat">Updated <strong>Daily</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <a href="https://finance.alistairlendor.com" class="card card-finance" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">💰</div>
+        <span class="card-title">Finance Dashboard</span>
+        <span class="card-badge">00:00</span>
+      </div>
+      <p class="card-desc">Income tracking, expense breakdown, savings rate &amp; budget overview</p>
+      <div class="card-stats">
+        <span class="card-stat">Status <strong>Coming Soon</strong></span>
+        <span class="card-stat">Source <strong>transactions.json</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <a href="https://invest.alistairlendor.com" class="card card-invest" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">📈</div>
+        <span class="card-title">Portfolio Tracker</span>
+        <span class="card-badge">16:00</span>
+      </div>
+      <p class="card-desc">3-ETF simulated portfolio — K-line, daily analysis &amp; professional insights</p>
+      <div class="card-stats">
+        <span class="card-stat">Status <strong>Coming Soon</strong></span>
+        <span class="card-stat">Holdings <strong>3 ETFs</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <a href="https://news.alistairlendor.com" class="card card-ai" target="_blank">
+    <div class="card-indicator"></div>
+    <div class="card-content">
+      <div class="card-header">
+        <div class="card-icon">🤖</div>
+        <span class="card-title">AI Coding Weekly</span>
+        <span class="card-badge">⭐</span>
+      </div>
+      <p class="card-desc">AI coding tools · embodied intelligence · model releases · developer trends</p>
+      <div class="card-stats">
+        <span class="card-stat">Focus <strong>DeepSeek, Cursor, Copilot</strong></span>
+        <span class="card-stat">Updated <strong>Daily</strong></span>
+      </div>
+    </div>
+    <div class="card-arrow">→</div>
+  </a>
+
+  <!-- Quick Actions -->
+  <div class="section-title">⚡ Quick Actions</div>
+
+  <a href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new" class="quick-task" target="_blank">
+    <div class="quick-task-icon">📝</div>
+    <div class="quick-task-title">Create a Task</div>
+    <div class="quick-task-desc">New GitHub Issue → triggers WorkBuddy automation → results to your email</div>
+  </a>
+
+  <!-- Automation Schedule -->
+  <div class="section-title">🕐 Automation Schedule</div>
+  <div class="automation-grid">
+    <div class="automation-item">
+      <div class="automation-time">00:00</div>
+      <div class="automation-name">Finance Report</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">09:00</div>
+      <div class="automation-name">Daily Briefing</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">13:00</div>
+      <div class="automation-name">PingPong Sync</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">16:00</div>
+      <div class="automation-name">Portfolio Track</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+    <div class="automation-item">
+      <div class="automation-time">23:55</div>
+      <div class="automation-name">Daily Reminder</div>
+      <div class="automation-status"><span class="dot"></span> Active</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a> · Powered by <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a></p>
+    <p style="margin-top:3px;">alistairlendor.com</p>
+  </div>
+
+</div>
+
+<script>
+document.getElementById('dateBadge').textContent = new Date().toLocaleDateString('zh-CN', {
+  year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
+}).replace('星期', ' 周');
+</script>
+</body>
+</html>
