@@ -1,0 +1,29 @@
+name: Task Request
+description: Send a task to WorkBuddy for automatic processing
+title: "[Task] "
+labels: ["pending"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## 🚀 远程任务
+
+        描述你想让 WorkBuddy 执行的任务。提交后会自动触发处理，结果发到你的 Gmail。
+
+  - type: textarea
+    id: task
+    attributes:
+      label: Task Description
+      description: Describe what you want WorkBuddy to do (be specific)
+      placeholder: e.g., 查一下今天腾讯股票的走势和新闻
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      options:
+        - Normal
+        - Urgent
+      default: 0
