@@ -1,32 +1,23 @@
-name: Issue Received
+name: Task Acknowledgment
 on:
   issues:
     types: [opened]
 
 jobs:
   acknowledge:
+    if: github.event_name == 'issues' && github.event.action == 'opened'
     runs-on: ubuntu-latest
     permissions:
       issues: write
     steps:
-      - name: Add pending label
-        run: |
-          gh issue edit ${{ github.event.issue.number }} \
-            --add-label "pending" \
-            --repo ${{ github.repository }}
-        env:
-          GH_TOKEN: ${{ github.token }}
-
-      - name: Add acknowledgment comment
+      - name: Acknowledge task
         run: |
           gh issue comment ${{ github.event.issue.number }} \
             --repo ${{ github.repository }} \
-            --body "✅ 收到任务：**${{ github.event.issue.title }}**
+            --body "Task received: **${{ github.event.issue.title }}**
 
-WorkBuddy 将在下次运行时自动处理。结果会发送到你的 Gmail。
+WorkBuddy will process it and send results to your Gmail.
 
----
-
-_自动回复 · Alistair Hub_"
+_auto-reply via Alistair Hub_"
         env:
           GH_TOKEN: ${{ github.token }}
