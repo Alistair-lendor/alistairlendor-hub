@@ -3,443 +3,407 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ali's Personal Hub</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>Alistair Hub — Control Center</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%235648a0'/%3E%3Cpath d='M65 20 L40 80' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cpath d='M65 20 L90 80' stroke='white' stroke-width='6' stroke-linecap='round'/%3E%3Cline x1='45' y1='55' x2='85' y2='55' stroke='white' stroke-width='4' stroke-linecap='round'/%3E%3Ccircle cx='65' cy='18' r='5' fill='white'/%3E%3C/svg%3E">
+<meta name="theme-color" content="#5648a0">
 <style>
-:root {
-  --bg-page: #f7f6f3;
-  --bg-card: #ffffff;
-  --bg-card-hover: #faf9f6;
-  --text-primary: #1a1a2e;
-  --text-secondary: #5a5a72;
-  --text-muted: #9a9ab0;
-  --accent-news: #5648a0;
-  --accent-finance: #2e7d32;
-  --accent-invest: #1565c0;
-  --accent-ai: #d84315;
-  --accent-task: #7b1fa2;
-  --border-subtle: #e8e6e0;
-  --border-hover: #d0ccc4;
-  --shadow-card: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
-  --shadow-hover: 0 4px 16px rgba(0,0,0,0.08);
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 20px;
-
-  --card-news-bg: #f0eeff;
-  --card-news-icon: #5648a0;
-  --card-finance-bg: #e8f5e9;
-  --card-finance-icon: #2e7d32;
-  --card-invest-bg: #e3f2fd;
-  --card-invest-icon: #1565c0;
-  --card-ai-bg: #fbe9e7;
-  --card-ai-icon: #d84315;
-  --card-task-bg: #f3e5f5;
-  --card-task-icon: #7b1fa2;
-}
 * { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --pg: #f5f5f7; --cd: #fff; --t1: #1d1d1f; --t2: #6e6e73; --t3: #aeaeb2;
+  --bd: #d2d2d7; --r8: 12px; --r12: 16px; --r20: 24px;
+  --c-n: #5648a0; --c-f: #2e7d32; --c-i: #1565c0; --c-u: #e65100; --c-t: #7b1fa2;
+}
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-  background: var(--bg-page);
-  color: var(--text-primary);
-  min-height: 100vh;
-  line-height: 1.6;
-  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue', sans-serif;
+  background: var(--pg); color: var(--t1); min-height: 100vh;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
 
-/* Hero — clean, light */
+/* Hero */
 .hero {
-  background: linear-gradient(135deg, #f0eeff 0%, #e8f0fe 50%, #f3f0eb 100%);
-  padding: 56px 24px 40px;
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 32px 20px 20px; text-align: center;
+  background: linear-gradient(180deg, #eceaf5 0%, #f5f5f7 100%);
+  border-bottom: 1px solid var(--bd);
 }
-.hero h1 {
-  font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
-  margin-bottom: 6px;
+.hero svg { display: block; margin: 0 auto 6px; width: 72px; height: 72px; }
+.hero h1 { font-size: 1.15rem; font-weight: 650; letter-spacing: -0.02em; }
+.hero .sub { font-size: 0.78rem; color: var(--t2); margin: 2px 0 10px; }
+
+/* Date badge */
+.db-wrap { display: inline-block; position: relative; }
+.db {
+  display: inline-flex; align-items: center; gap: 5px;
+  background: rgba(86,72,160,0.08); border: 1px solid rgba(86,72,160,0.15);
+  border-radius: 100px; padding: 5px 14px; font-size: 0.72rem;
+  color: var(--c-n); cursor: pointer; user-select: none; transition: .12s;
 }
-.hero h1 span { color: var(--accent-news); }
-.hero .subtitle {
-  color: var(--text-secondary);
-  font-size: clamp(0.85rem, 2.2vw, 1rem);
-  font-weight: 400;
-  margin-bottom: 10px;
-}
-.hero .date-badge {
-  display: inline-block;
-  background: rgba(86,72,160,0.08);
-  border: 1px solid rgba(86,72,160,0.15);
-  border-radius: 100px;
-  padding: 4px 16px;
-  font-size: 0.78rem;
-  color: var(--accent-news);
-  font-family: 'JetBrains Mono', monospace;
-}
+.db:hover { background: rgba(86,72,160,0.15); }
+.db-arr { font-size: 0.55rem; opacity: .6; }
 
 /* Container */
-.container {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 24px 16px 56px;
+.c { max-width: 440px; margin: 0 auto; padding: 20px 14px 40px; }
+
+/* Section label */
+.sl {
+  font-size: 0.62rem; font-weight: 600; letter-spacing: .06em;
+  color: var(--t3); margin: 20px 0 8px; padding-left: 2px;
 }
 
-/* Section Title */
-.section-title {
-  font-size: 0.72rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--text-muted);
-  margin: 28px 0 10px;
-  padding-left: 4px;
+/* Icon grid — 2x2 */
+.ig {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 6px;
 }
+.it {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 8px; padding: 24px 12px 18px; border-radius: var(--r8);
+  text-decoration: none; color: inherit; cursor: pointer;
+  transition: all .18s; position: relative; overflow: hidden;
+  background: var(--cd); border:1px solid var(--bd);
+}
+.it:hover { transform: translateY(-2px); }
+.it:active { transform: translateY(0); }
+.it-ico {
+  width: 52px; height: 52px; border-radius: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: .18s;
+}
+.it:hover .it-ico { transform: scale(1.08); }
+.it-ico svg { width: 28px; height: 28px; }
+.it-lbl { font-size: 0.78rem; font-weight: 550; letter-spacing: -.01em; }
+.it .it-badge {
+  font-size: 0.55rem; color: var(--t3); font-weight: 500;
+  background: rgba(0,0,0,.04); padding: 1px 7px; border-radius: 100px;
+  border: 1px solid var(--bd);
+}
+.it-n .it-ico { background: #f0eeff; }
+.it-f .it-ico { background: #e8f5e9; }
+.it-i .it-ico { background: #e3f2fd; }
+.it-u .it-ico { background: #fff3e0; }
 
-/* Cards */
+/* Card variant for single items */
 .card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 18px 20px;
-  margin-bottom: 10px;
-  transition: all 0.2s ease;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  text-decoration: none;
-  display: block;
-  color: inherit;
-  box-shadow: var(--shadow-card);
+  display: flex; align-items: center; gap: 12px; padding: 14px 16px;
+  background: var(--cd); border: 1px solid var(--bd); border-radius: var(--r8);
+  text-decoration: none; color: inherit; cursor: pointer;
+  transition: all .15s; margin-bottom: 8px;
 }
-.card:hover {
-  background: var(--bg-card-hover);
-  border-color: var(--border-hover);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-hover);
-}
-.card:active { transform: translateY(0); }
-.card-indicator {
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
-  width: 4px;
-  border-radius: 0 2px 2px 0;
-}
-.card-content { padding-left: 6px; }
-.card-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 3px;
-}
-.card-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: var(--radius-sm);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+.card:hover { background: #fafafa; border-color: #c4c4c9; }
+.card-ico {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
   flex-shrink: 0;
 }
-.card-title {
-  font-size: 0.95rem;
-  font-weight: 600;
-}
-.card-badge {
-  font-size: 0.62rem;
-  background: rgba(0,0,0,0.04);
-  padding: 2px 8px;
-  border-radius: 100px;
-  color: var(--text-secondary);
-  margin-left: auto;
-  font-family: 'JetBrains Mono', monospace;
-  border: 1px solid var(--border-subtle);
-}
-.card-desc {
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-  line-height: 1.5;
-  margin-top: 1px;
-}
-.card-stats {
-  display: flex;
-  gap: 16px;
-  margin-top: 8px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border-subtle);
-}
-.card-stat {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-.card-stat strong {
-  color: var(--text-secondary);
-  font-weight: 600;
-}
-.card-arrow {
-  position: absolute;
-  right: 18px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text-muted);
-  font-size: 1.1rem;
-  opacity: 0;
-  transition: opacity 0.2s;
-}
-.card:hover .card-arrow { opacity: 1; }
+.card-ico svg { width: 22px; height: 22px; }
+.card-ct { flex: 1; min-width: 0; }
+.card-t { font-size: 0.82rem; font-weight: 600; }
+.card-d { font-size: 0.72rem; color: var(--t2); margin-top: 1px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.card-b { font-size: 0.55rem; color: var(--t3); border: 1px solid var(--bd); padding: 1px 7px; border-radius: 100px; white-space: nowrap; }
+.card-w .card-ico { background: #f3e5f5; }
 
-/* Card color themes — light mode */
-.card-news .card-indicator { background: var(--accent-news); }
-.card-news .card-icon { background: var(--card-news-bg); }
-.card-finance .card-indicator { background: var(--accent-finance); }
-.card-finance .card-icon { background: var(--card-finance-bg); }
-.card-invest .card-indicator { background: var(--accent-invest); }
-.card-invest .card-icon { background: var(--card-invest-bg); }
-.card-ai .card-indicator { background: var(--accent-ai); }
-.card-ai .card-icon { background: var(--card-ai-bg); }
-.card-task .card-indicator { background: var(--accent-task); }
-.card-task .card-icon { background: var(--card-task-bg); }
+/* Portfolio dynamic stats on card */
+.ps { display: flex; gap: 8px; margin-top: 4px; }
+.ps-s { font-size: 0.62rem; font-weight: 500; color: var(--t3); }
+.ps-v { font-weight: 600; }
+.ps-r { color: var(--t3); font-weight: 400; }
 
-/* Quick Task */
-.quick-task {
-  background: var(--bg-card);
-  border: 1px dashed #c0bcc4;
-  border-radius: var(--radius-md);
-  padding: 18px 20px;
-  text-align: center;
-  margin-bottom: 10px;
-  text-decoration: none;
-  display: block;
-  color: inherit;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-card);
+/* Automation chips */
+.ac { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 6px; }
+.ac-i {
+  display: flex; align-items: center; gap: 5px;
+  background: var(--cd); border: 1px solid var(--bd); border-radius: 100px;
+  padding: 5px 12px 5px 10px; font-size: 0.7rem; font-weight: 500;
 }
-.quick-task:hover {
-  background: var(--card-task-bg);
-  border-color: var(--accent-task);
-  border-style: solid;
-}
-.quick-task-icon {
-  font-size: 1.4rem;
-  margin-bottom: 6px;
-}
-.quick-task-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 3px;
-}
-.quick-task-desc {
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-}
+.ac-d { width: 6px; height: 6px; border-radius: 50%; background: #43a047; display: inline-block; }
+.ac .tpl .ac-d { background: var(--t3); }
+.ac-12 { font-size: 0.55rem; color: var(--t3); letter-spacing: .02em; font-weight: 500; }
 
-/* Automation Status */
-.automation-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 10px;
+/* History archive overlay */
+.overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,.3);
+  z-index: 100; align-items: center; justify-content: center;
 }
-.automation-item {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-sm);
-  padding: 10px 12px;
-  text-align: center;
-  box-shadow: var(--shadow-card);
+.overlay.open { display: flex; }
+.panel {
+  background: #fff; border-radius: var(--r12); width: 92%; max-width: 360px;
+  max-height: 80vh; overflow-y: auto; padding: 22px 18px 18px;
+  box-shadow: 0 8px 40px rgba(0,0,0,.15); animation: up .2s ease;
 }
-.automation-time {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-.automation-name {
-  font-size: 0.78rem;
-  font-weight: 500;
-  margin: 3px 0;
-}
-.automation-status {
-  font-size: 0.68rem;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.automation-status .dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #43a047;
-  display: inline-block;
-}
-.automation-status .dot.off { background: var(--text-muted); }
+@keyframes up { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+.ph { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+.ph h3 { font-size: 0.9rem; font-weight: 600; }
+.px { width: 26px; height: 26px; border-radius: 50%; border: none; background: #f1efeb; cursor: pointer; font-size: 1rem; display: flex; align-items: center; justify-content: center; color: var(--t2); }
+.px:hover { background: #e8e6e0; }
+.cn { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+.cnb { background: none; border: 1px solid var(--bd); border-radius: 6px; padding: 3px 9px; cursor: pointer; font-size: 0.72rem; color: var(--t2); font-family: inherit; }
+.cnb:hover { background: #f1efeb; }
+.cm { font-size: 0.78rem; font-weight: 600; }
+.cw { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; margin-bottom: 3px; }
+.cwd { text-align: center; font-size: 0.6rem; color: var(--t3); padding: 3px 0; }
+.cd { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.cdd { aspect-ratio: 1; border-radius: 8px; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 0.72rem; cursor: pointer; position: relative; gap: 2px; }
+.cdd.empty { cursor: default; }
+.cdd:not(.empty):hover { background: #f0eeff; }
+.cdd.today { background: rgba(86,72,160,.1); font-weight: 600; }
+.cdots { display: flex; gap: 2px; }
+cdot { width: 4px; height: 4px; border-radius: 50%; }
+cdot.n { background: var(--c-n); } cdot.f { background: var(--c-f); } cdot.i { background: var(--c-i); } cdot.u { background: var(--c-u); }
+.dd { margin-top: 14px; padding-top: 12px; border-top: 1px solid #e8e8ed; display: none; }
+.dd.show { display: block; }
+.ddl { font-size: 0.65rem; color: var(--t3); margin-bottom: 6px; }
+.dda { display: flex; align-items: center; gap: 7px; padding: 8px 10px; border-radius: 8px; text-decoration: none; color: inherit; font-size: 0.75rem; transition: .1s; }
+.dda:hover { background: #f1efeb; }
+.ddi { width: 22px; height: 22px; border-radius: 5px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; flex-shrink: 0; }
+.ddi svg { width: 14px; height: 14px; }
 
 /* Footer */
-.footer {
-  text-align: center;
-  padding: 20px 0;
-  border-top: 1px solid var(--border-subtle);
-  margin-top: 28px;
-}
-.footer p {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-}
-.footer a {
-  color: var(--text-secondary);
-  text-decoration: none;
-}
-.footer a:hover { color: var(--accent-news); }
+.ft { text-align: center; padding: 18px 0; border-top: 1px solid #e8e8ed; margin-top: 22px; }
+.ft p { font-size: 0.62rem; font-weight: 500; color: var(--t3); letter-spacing: .02em; }
+.ft a { color: var(--t2); text-decoration: none; }
+.ft a:hover { color: var(--c-n); }
 
-/* Responsive */
-@media (max-width: 480px) {
-  .hero { padding: 40px 16px 28px; }
-  .container { padding: 16px 12px 40px; }
-  .automation-grid { grid-template-columns: 1fr; }
-  .card-arrow { display: none; }
+@media (max-width: 400px) {
+  .hero { padding: 24px 14px 16px; }
+  .c { padding: 14px 10px 32px; }
+  .it { padding: 18px 10px 14px; }
+  .it-ico { width: 44px; height: 44px; border-radius: 12px; }
+  .it-ico svg { width: 24px; height: 24px; }
 }
 </style>
 </head>
 <body>
 
 <div class="hero">
-  <div class="hero-content">
-    <h1>✦ <span>Alistair</span> Hub</h1>
-    <p class="subtitle">Personal AI Control Center</p>
-    <span class="date-badge" id="dateBadge"></span>
+  <svg viewBox="0 0 100 100" width="72" height="72">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#5648a0"/><stop offset="100%" stop-color="#302b63"/></linearGradient></defs>
+    <circle cx="50" cy="50" r="42" fill="#f0eeff" stroke="#cecbf6" stroke-width=".5"/>
+    <path d="M50 16 A44 44 0 1 1 6 94" fill="none" stroke="#afa9ec" stroke-width=".8" stroke-dasharray="3 2.5" opacity=".5"/>
+    <circle cx="30" cy="32" r="1.8" fill="#afa9ec" opacity=".7"/>
+    <circle cx="74" cy="45" r="1.5" fill="#afa9ec" opacity=".4"/>
+    <g transform="translate(50,42)">
+      <path d="M-8 26 L-.7 -26 L0 -29 L.7 -26 L8 26" fill="none" stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M-8 26 L-.7 -26 L0 -29 L.7 -26 L8 26" fill="none" stroke="url(#g)" stroke-width="1.8" stroke-linecap="round" transform="scale(-1,1)"/>
+      <line x1="-12" y1="-3" x2="12" y2="-3" stroke="url(#g)" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="0" cy="-29" r="2.2" fill="#5648a0"/>
+      <path d="M0-29 L-2-37" fill="none" stroke="#5648a0" stroke-width="1.5" stroke-linecap="round"/>
+      <circle cx="-2" cy="-38" r="1.2" fill="#7f77dd"/>
+    </g>
+  </svg>
+  <h1>Alistair</h1>
+  <p class="sub">Control Center</p>
+  <div class="db-wrap">
+    <div class="db" id="dbBtn">
+      <span id="dbTxt"></span><span class="db-arr">&#9660;</span>
+    </div>
   </div>
 </div>
 
-<div class="container">
+<!-- Overlay -->
+<div class="overlay" id="overlay">
+  <div class="panel">
+    <div class="ph">
+      <h3>History</h3>
+      <button class="px" id="px">&#10005;</button>
+    </div>
+    <div class="cn">
+      <button class="cnb" id="calP">&#9664;</button>
+      <span class="cm" id="calM"></span>
+      <button class="cnb" id="calN">&#9654;</button>
+    </div>
+    <div class="cw" id="calW"></div>
+    <div class="cd" id="calD"></div>
+    <div class="dd" id="dd"></div>
+  </div>
+</div>
 
-  <!-- Main Products -->
-  <div class="section-title">📦 Daily Products</div>
+<div class="c">
 
-  <a href="https://news.alistairlendor.com" class="card card-news" target="_blank">
-    <div class="card-indicator"></div>
-    <div class="card-content">
-      <div class="card-header">
-        <div class="card-icon">📰</div>
-        <span class="card-title">Daily Briefing</span>
-        <span class="card-badge">09:00</span>
+  <!-- Products icon grid -->
+  <div class="sl">PRODUCTS</div>
+  <div class="ig">
+    <a href="https://news.alistairlendor.com" class="it it-n" target="_blank">
+      <div class="it-ico">
+        <!-- Briefing: newspaper / document icon -->
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect x="4" y="3" width="20" height="22" rx="2.5" stroke="#5648a0" stroke-width="1.8"/>
+          <line x1="8" y1="9" x2="20" y2="9" stroke="#5648a0" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="8" y1="13" x2="20" y2="13" stroke="#5648a0" stroke-width="1.6" stroke-linecap="round"/>
+          <line x1="8" y1="17" x2="15" y2="17" stroke="#5648a0" stroke-width="1.6" stroke-linecap="round"/>
+          <rect x="4" y="3" width="6" height="5" rx="1" fill="#5648a0" opacity=".12"/>
+          <line x1="4" y1="8" x2="10" y2="8" stroke="#5648a0" stroke-width="1.2" stroke-linecap="round"/>
+        </svg>
       </div>
-      <p class="card-desc">Politics · Conflicts · Economy · AI Tech · AI Coding — five modules, one briefing</p>
-      <div class="card-stats">
-        <span class="card-stat">Status <strong>Live</strong></span>
-        <span class="card-stat">Updated <strong>Daily</strong></span>
+      <span class="it-lbl">Briefing</span>
+      <span class="it-badge">09:00</span>
+    </a>
+    <a href="https://finance.alistairlendor.com" class="it it-f" target="_blank">
+      <div class="it-ico">
+        <!-- Finance: wallet / credit card icon -->
+        <svg viewBox="0 0 28 28" fill="none">
+          <rect x="3" y="7" width="22" height="14" rx="3" stroke="#2e7d32" stroke-width="1.8"/>
+          <path d="M3 12 h22" stroke="#2e7d32" stroke-width="1.8"/>
+          <circle cx="21" cy="16" r="2" fill="#2e7d32"/>
+          <rect x="3" y="7" width="22" height="5" rx="3" fill="#2e7d32" opacity=".1"/>
+        </svg>
       </div>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a href="https://finance.alistairlendor.com" class="card card-finance" target="_blank">
-    <div class="card-indicator"></div>
-    <div class="card-content">
-      <div class="card-header">
-        <div class="card-icon">💰</div>
-        <span class="card-title">Finance Dashboard</span>
-        <span class="card-badge">00:00</span>
+      <span class="it-lbl">Finance</span>
+      <span class="it-badge">00:00</span>
+    </a>
+    <a href="https://invest.alistairlendor.com" class="it it-i" target="_blank">
+      <div class="it-ico">
+        <!-- Portfolio: chart/trend icon -->
+        <svg viewBox="0 0 28 28" fill="none">
+          <polyline points="4,20 10,12 16,16 24,6" stroke="#1565c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="16,16 24,6" stroke="#1565c0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="10" cy="12" r="1.8" fill="#1565c0"/>
+          <circle cx="16" cy="16" r="1.8" fill="#1565c0"/>
+          <circle cx="24" cy="6" r="1.8" fill="#1565c0"/>
+          <circle cx="4" cy="20" r="1.8" fill="#1565c0"/>
+          <line x1="4" y1="24" x2="24" y2="24" stroke="#1565c0" stroke-width="1.2" stroke-linecap="round" opacity=".3"/>
+        </svg>
       </div>
-      <p class="card-desc">Income tracking, expense breakdown, savings rate &amp; budget overview</p>
-      <div class="card-stats">
-        <span class="card-stat">Status <strong>Coming Soon</strong></span>
-        <span class="card-stat">Source <strong>transactions.json</strong></span>
+      <span class="it-lbl">Portfolio</span>
+      <span class="it-badge" id="pfBadge">16:00</span>
+    </a>
+    <a href="https://alistairlendor.com/usage/usage_dashboard.html" class="it it-u" target="_blank">
+      <div class="it-ico">
+        <!-- Tokens: gauge / speedometer icon -->
+        <svg viewBox="0 0 28 28" fill="none">
+          <path d="M6 18 A8 8 0 1 1 22 18" stroke="#e65100" stroke-width="1.8" stroke-linecap="round"/>
+          <line x1="14" y1="14" x2="14" y2="9" stroke="#e65100" stroke-width="1.8" stroke-linecap="round"/>
+          <circle cx="14" cy="14" r="1.5" fill="#e65100"/>
+          <line x1="6" y1="18" x2="4" y2="18" stroke="#e65100" stroke-width="1.2" stroke-linecap="round" opacity=".4"/>
+          <line x1="22" y1="18" x2="24" y2="18" stroke="#e65100" stroke-width="1.2" stroke-linecap="round" opacity=".4"/>
+          <circle cx="9" cy="21" r="1" fill="#e65100" opacity=".25"/>
+          <circle cx="19" cy="21" r="1" fill="#e65100" opacity=".25"/>
+        </svg>
       </div>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a href="https://invest.alistairlendor.com" class="card card-invest" target="_blank">
-    <div class="card-indicator"></div>
-    <div class="card-content">
-      <div class="card-header">
-        <div class="card-icon">📈</div>
-        <span class="card-title">Portfolio Tracker</span>
-        <span class="card-badge">16:00</span>
-      </div>
-      <p class="card-desc">3-ETF simulated portfolio — K-line, daily analysis &amp; professional insights</p>
-      <div class="card-stats">
-        <span class="card-stat">Status <strong>Coming Soon</strong></span>
-        <span class="card-stat">Holdings <strong>3 ETFs</strong></span>
-      </div>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <a href="https://news.alistairlendor.com" class="card card-ai" target="_blank">
-    <div class="card-indicator"></div>
-    <div class="card-content">
-      <div class="card-header">
-        <div class="card-icon">🤖</div>
-        <span class="card-title">AI Coding Weekly</span>
-        <span class="card-badge">⭐</span>
-      </div>
-      <p class="card-desc">AI coding tools · embodied intelligence · model releases · developer trends</p>
-      <div class="card-stats">
-        <span class="card-stat">Focus <strong>DeepSeek, Cursor, Copilot</strong></span>
-        <span class="card-stat">Updated <strong>Daily</strong></span>
-      </div>
-    </div>
-    <div class="card-arrow">→</div>
-  </a>
-
-  <!-- Quick Actions -->
-  <div class="section-title">⚡ Quick Actions</div>
-
-  <a href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new" class="quick-task" target="_blank">
-    <div class="quick-task-icon">📝</div>
-    <div class="quick-task-title">Create a Task</div>
-    <div class="quick-task-desc">New GitHub Issue → triggers WorkBuddy automation → results to your email</div>
-  </a>
-
-  <!-- Automation Schedule -->
-  <div class="section-title">🕐 Automation Schedule</div>
-  <div class="automation-grid">
-    <div class="automation-item">
-      <div class="automation-time">00:00</div>
-      <div class="automation-name">Finance Report</div>
-      <div class="automation-status"><span class="dot"></span> Active</div>
-    </div>
-    <div class="automation-item">
-      <div class="automation-time">09:00</div>
-      <div class="automation-name">Daily Briefing</div>
-      <div class="automation-status"><span class="dot"></span> Active</div>
-    </div>
-    <div class="automation-item">
-      <div class="automation-time">13:00</div>
-      <div class="automation-name">PingPong Sync</div>
-      <div class="automation-status"><span class="dot"></span> Active</div>
-    </div>
-    <div class="automation-item">
-      <div class="automation-time">16:00</div>
-      <div class="automation-name">Portfolio Track</div>
-      <div class="automation-status"><span class="dot"></span> Active</div>
-    </div>
-    <div class="automation-item">
-      <div class="automation-time">23:55</div>
-      <div class="automation-name">Daily Reminder</div>
-      <div class="automation-status"><span class="dot"></span> Active</div>
-    </div>
+      <span class="it-lbl">Tokens</span>
+      <span class="it-badge">12h</span>
+    </a>
   </div>
 
-  <div class="footer">
-    <p>Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a> · Powered by <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a></p>
-    <p style="margin-top:3px;">alistairlendor.com</p>
+  <!-- Portfolio dynamic mini stats -->
+  <div id="pfRow" style="display:none;margin:-4px 0 4px;text-align:center;font-size:0.7rem;color:var(--t3)">
+    <span>Value <strong id="pfV" style="color:var(--t1)"></strong></span>
+    <span style="margin:0 6px">&#183;</span>
+    <span>P&amp;L <strong id="pfP"></strong></span>
+    <span style="margin:0 6px">&#183;</span>
+    <span>Return <strong id="pfR"></strong></span>
+  </div>
+
+  <!-- Remote Access -->
+  <div class="sl">REMOTE</div>
+  <a href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" class="card card-w" target="_blank">
+    <div class="card-ico">
+      <!-- Create Task: pen / edit icon -->
+      <svg viewBox="0 0 22 22" fill="none">
+        <path d="M14 3 l5 5-11 11H3v-5L14 3z" stroke="#7b1fa2" stroke-width="1.6" stroke-linejoin="round"/>
+        <line x1="14" y1="3" x2="19" y2="8" stroke="#7b1fa2" stroke-width="1.6" stroke-linecap="round"/>
+        <circle cx="7" cy="17" r="1" fill="#7b1fa2" opacity=".3"/>
+      </svg>
+    </div>
+    <div class="card-ct">
+      <div class="card-t">Create Task</div>
+      <div class="card-d">GitHub Issue &#8594; auto-process</div>
+    </div>
+    <span class="card-b">ANYTIME</span>
+  </a>
+
+  <!-- Automation chips -->
+  <div class="sl">SCHEDULE</div>
+  <div class="ac">
+    <span class="ac-i"><span class="ac-d"></span> 00:00 Finance</span>
+    <span class="ac-i"><span class="ac-d"></span> 09:00 Briefing</span>
+    <span class="ac-i"><span class="ac-d"></span> 13:00 PingPong</span>
+    <span class="ac-i"><span class="ac-d"></span> 16:00 Portfolio</span>
+    <span class="ac-i tpl"><span class="ac-d"></span> 23:55 Remind</span>
+    <span class="ac-i"><span class="ac-d"></span> <span class="ac-12">12h</span> Usage</span>
+  </div>
+
+  <div class="ft">
+    <p>Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a> &#183; <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a></p>
   </div>
 
 </div>
 
 <script>
-document.getElementById('dateBadge').textContent = new Date().toLocaleDateString('zh-CN', {
-  year: 'numeric', month: 'long', day: 'numeric', weekday: 'long'
-}).replace('星期', ' 周');
+let ARCHIVE = {};
+const PM = {
+  news: { label: 'Briefing', color: '#5648a0', bg: '#f0eeff', svg: 'briefing' },
+  invest: { label: 'Portfolio', color: '#1565c0', bg: '#e3f2fd', svg: 'portfolio' },
+  finance: { label: 'Finance', color: '#2e7d32', bg: '#e8f5e9', svg: 'finance' },
+  usage: { label: 'Tokens', color: '#e65100', bg: '#fff3e0', svg: 'tokens' }
+};
+const td = new Date();
+document.getElementById('dbTxt').textContent = td.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric' });
+
+fetch('archive-data.json').then(r=>r.json()).then(d=>{ARCHIVE=d}).catch(()=>{});
+fetch('portfolio-latest.json').then(r=>r.json()).then(d=>{
+  if(d.value&&d.value>0){
+    document.getElementById('pfRow').style.display='';
+    const f=(n)=>n.toLocaleString();
+    document.getElementById('pfV').textContent='¥'+f(d.value);
+    const p=d.pnl; const el=document.getElementById('pfP');
+    el.textContent=(p>=0?'+':'')+'¥'+f(p); el.style.color=p>=0?'#e53935':'#2e7d32';
+    const r=d.return_pct; const el2=document.getElementById('pfR');
+    el2.textContent=(r>=0?'+':'')+r.toFixed(2)+'%'; el2.style.color=r>=0?'#e53935':'#2e7d32';
+  }
+}).catch(()=>{});
+
+// Calendar
+let cd=new Date(td.getFullYear(),td.getMonth(),1);
+const ov=document.getElementById('overlay'),dd=document.getElementById('dd');
+const cD=document.getElementById('calD'),cM=document.getElementById('calM'),cW=document.getElementById('calW');
+['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].forEach(d=>{const e=document.createElement('div');e.className='cwd';e.textContent=d;cW.appendChild(e)});
+function p(n){return n<10?'0'+n:''+n}
+function fk(d){return d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate())}
+function sd(a,b){return a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate()}
+function rc(){
+  const y=cd.getFullYear(),m=cd.getMonth();
+  cM.textContent=new Date(y,m).toLocaleDateString('en-US',{year:'numeric',month:'long'});
+  cD.innerHTML='';
+  const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+  for(let i=0;i<fd;i++){const e=document.createElement('div');e.className='cdd empty';cD.appendChild(e)}
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(y,m,d),key=fk(dt),el=document.createElement('div');
+    el.className='cdd';if(sd(dt,td))el.classList.add('today');
+    if(ARCHIVE[key]){
+      const dsC=document.createElement('div');dsC.className='cdots';
+      if(ARCHIVE[key].news){const s=document.createElement('span');s.className='cdot n';dsC.appendChild(s)}
+      if(ARCHIVE[key].finance){const s=document.createElement('span');s.className='cdot f';dsC.appendChild(s)}
+      if(ARCHIVE[key].invest){const s=document.createElement('span');s.className='cdot i';dsC.appendChild(s)}
+      if(ARCHIVE[key].usage){const s=document.createElement('span');s.className='cdot u';dsC.appendChild(s)}
+      el.appendChild(dsC);
+      el.addEventListener('click',()=>sd_(key));
+    }else{el.style.opacity='.4';el.addEventListener('click',()=>dd.classList.remove('show'))}
+    const n=document.createElement('span');n.textContent=d;el.prepend(n);cD.appendChild(el);
+  }
+}
+function sd_(key){
+  const data=ARCHIVE[key];
+  if(!data){dd.classList.remove('show');return}
+  dd.classList.add('show');
+  const d=new Date(key),lb=d.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'long'}).replace('星期','周');
+  let h='<div class="ddl">'+lb+'</div>';
+  const svgIcons = {
+    news: '<svg viewBox="0 0 14 14" fill="none"><rect x="2" y="1.5" width="10" height="11" rx="1.5" stroke="#5648a0" stroke-width="1.2"/><line x1="4" y1="5" x2="10" y2="5" stroke="#5648a0" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="7" x2="10" y2="7" stroke="#5648a0" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="9" x2="7" y2="9" stroke="#5648a0" stroke-width="1" stroke-linecap="round"/></svg>',
+    finance: '<svg viewBox="0 0 14 14" fill="none"><rect x="1.5" y="3.5" width="11" height="7" rx="1.5" stroke="#2e7d32" stroke-width="1.2"/><path d="M1.5 6h11" stroke="#2e7d32" stroke-width="1.2"/><circle cx="11" cy="8" r="1" fill="#2e7d32"/></svg>',
+    invest: '<svg viewBox="0 0 14 14" fill="none"><polyline points="2,10 5,6 8,8 12,3" stroke="#1565c0" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="3" r="1" fill="#1565c0"/></svg>',
+    usage: '<svg viewBox="0 0 14 14" fill="none"><path d="M3 9 A4.5 4.5 0 1 1 11 9" stroke="#e65100" stroke-width="1.2" stroke-linecap="round"/><line x1="7" y1="7" x2="7" y2="4.5" stroke="#e65100" stroke-width="1.2" stroke-linecap="round"/><circle cx="7" cy="7" r=".8" fill="#e65100"/></svg>'
+  };
+  ['news','invest','finance','usage'].forEach(p=>{
+    if(data[p]){
+      const m=PM[p];
+      h+='<a class="dda" href="'+data[p]+'" target="_blank"><div class="ddi" style="background:'+m.bg+'">'+svgIcons[p]+'</div><span>'+m.label+'</span></a>'
+    }
+  });
+  dd.innerHTML=h;
+}
+document.getElementById('dbBtn').addEventListener('click',()=>{ov.classList.add('open');rc();sd_(fk(td))});
+document.getElementById('px').addEventListener('click',()=>ov.classList.remove('open'));
+ov.addEventListener('click',e=>{if(e.target===ov)ov.classList.remove('open')});
+document.getElementById('calP').addEventListener('click',()=>{cd.setMonth(cd.getMonth()-1);rc()});
+document.getElementById('calN').addEventListener('click',()=>{cd.setMonth(cd.getMonth()+1);rc()});
 </script>
 </body>
 </html>
