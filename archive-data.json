@@ -28,5 +28,8 @@
     "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-20.html",
     "usage": "https://alistairlendor.com/usage/usage_dashboard.html",
     "finance": "https://finance.alistairlendor.com/archive/finance-2026-06-20.html"
+  },
+  "2026-06-21": {
+    "usage": "https://alistairlendor.com/usage/usage_dashboard.html"
   }
 }
