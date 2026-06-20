@@ -19,8 +19,14 @@
   --t2:#4d4d4d;
   --t3:#666;
   --brdr:rgba(0,0,0,0.08) 0 0 0 1px;
-  --shd:0 1px 3px rgba(0,0,0,0.06);
-  --shd-hv:0 2px 12px rgba(0,0,0,0.10);
+  --shd:
+    0 1px 2px rgba(0,0,0,0.04),
+    0 4px 8px rgba(0,0,0,0.04),
+    0 8px 24px rgba(0,0,0,0.04);
+  --shd-hv:
+    0 1px 2px rgba(0,0,0,0.06),
+    0 4px 12px rgba(0,0,0,0.08),
+    0 12px 32px rgba(0,0,0,0.08);
   --r-sm:6px;
   --r-md:8px;
   --r-pill:9999px;
@@ -29,8 +35,12 @@
   --c-i:#1565c0;
   --c-u:#e65100;
   --c-t:#7b1fa2;
+  --focus:#0070f3;
   --f:-apple-system,'Inter','SF Pro Display','Helvetica Neue',sans-serif;
 }
+
+/* ── Global focus ring (Vercel standard) ── */
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 body{
   font-family:var(--f);
@@ -88,7 +98,7 @@ body::before{
 /* ── Section label ── */
 .sl{
   font-size:0.62rem;font-weight:600;letter-spacing:0.06em;
-  color:var(--t3);margin:40px 0 10px 2px;text-transform:uppercase;
+  color:var(--t3);margin:48px 0 12px 2px;text-transform:uppercase;
 }
 
 /* ── Product icon grid ── */
@@ -99,9 +109,9 @@ body::before{
   background:var(--bg);border-radius:var(--r-md);
   box-shadow:var(--brdr),var(--shd);
   text-decoration:none;color:inherit;cursor:pointer;
-  transition:box-shadow 0.15s,transform 0.15s;
+  transition:box-shadow 0.15s;
 }
-.it:hover{box-shadow:var(--shd-hv);transform:translateY(-1px)}
+.it:hover{box-shadow:var(--shd-hv)}
 .it-ico{
   width:48px;height:48px;border-radius:var(--r-sm);
   display:flex;align-items:center;justify-content:center;
@@ -109,9 +119,9 @@ body::before{
 }
 .it:hover .it-ico{transform:scale(1.06)}
 .it-ico svg{width:24px;height:24px}
-.it-lbl{font-size:0.8rem;font-weight:600;letter-spacing:-0.01em}
+.it-lbl{font-size:0.85rem;font-weight:600;letter-spacing:-0.01em;color:var(--t2)}
 .it-sch{
-  font-size:0.6rem;color:var(--t3);font-weight:500;
+  font-size:0.65rem;color:var(--t3);font-weight:500;
   font-feature-settings:"tnum";
 }
 
@@ -122,6 +132,8 @@ body::before{
 .it-u .it-ico{background:#fff8f0}
 
 /* ── Portfolio inline row ── */
+#pfRow{opacity:0;transition:opacity 0.35s ease,transform 0.35s ease;transform:translateY(-4px)}
+#pfRow.show{opacity:1;transform:translateY(0)}
 .pf{display:flex;gap:12px;justify-content:center;margin:8px 0 0;font-size:0.7rem;color:var(--t3);font-variant-numeric:tabular-nums}
 .pf .v{color:#000;font-weight:600}
 
@@ -135,12 +147,12 @@ body::before{
 }
 .card:hover{box-shadow:var(--shd-hv);background:var(--bg-sm)}
 .card-ico{
-  width:40px;height:40px;border-radius:8px;
+  width:40px;height:40px;border-radius:var(--r-sm);
   display:flex;align-items:center;justify-content:center;flex-shrink:0;
 }
 .card-ico svg{width:20px;height:20px}
 .card-ct{flex:1;min-width:0}
-.card-t{font-size:0.82rem;font-weight:600}
+.card-t{font-size:0.85rem;font-weight:600}
 .card-d{font-size:0.72rem;color:var(--t2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .card-b{
   font-size:0.6rem;font-weight:500;color:var(--t3);
@@ -183,7 +195,8 @@ body::before{
 .cw{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:3px}
 .cwd{text-align:center;font-size:0.6rem;color:#bbb;padding:3px 0}
 .cd{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
-.cdd{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.72rem;cursor:pointer;gap:2px}
+.cdd{aspect-ratio:1;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.72rem;cursor:pointer;gap:2px;transition:transform 0.1s}
+.cdd:active{transform:scale(0.94)}
 .cdd:hover{background:#f5f5f5}
 .cdd.today{background:#000;color:#fff;font-weight:600}
 .cdots{display:flex;gap:2px;align-items:center;justify-content:center}
@@ -307,7 +320,7 @@ cdot.n{background:var(--c-n)}cdot.f{background:var(--c-f)}cdot.i{background:var(
   </div>
 
   <!-- Portfolio dynamic stats -->
-  <div id="pfRow" style="display:none"><div class="pf"><span>Value <span class="v" id="pfV"></span></span><span>·</span><span id="pfP"></span><span id="pfR"></span></div></div>
+  <div id="pfRow"><div class="pf"><span>Value <span class="v" id="pfV"></span></span><span>·</span><span id="pfP"></span><span id="pfR"></span></div></div>
 
   <!-- Remote -->
   <div class="sl">Remote</div>
@@ -351,7 +364,7 @@ document.getElementById('dbTxt').textContent=td.toLocaleDateString('zh-CN',{year
 fetch('archive-data.json').then(r=>r.json()).then(d=>{ARCHIVE=d}).catch(()=>{});
 fetch('portfolio-latest.json').then(r=>r.json()).then(d=>{
   if(d.value&&d.value>0){
-    document.getElementById('pfRow').style.display='';
+    document.getElementById('pfRow').classList.add('show');
     const f=n=>n.toLocaleString();
     document.getElementById('pfV').textContent='¥'+f(d.value);
     const p=d.pnl,el=document.getElementById('pfP');
