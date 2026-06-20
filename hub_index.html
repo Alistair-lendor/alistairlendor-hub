@@ -38,8 +38,6 @@
   --focus:#0070f3;
   --f:-apple-system,'Inter','SF Pro Display','Helvetica Neue',sans-serif;
 }
-
-/* ── Global focus ring (Vercel standard) ── */
 :focus-visible{outline:2px solid var(--focus);outline-offset:2px}
 
 body{
@@ -48,10 +46,9 @@ body{
   color:var(--t1);
   min-height:100vh;
   -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
 }
 
-/* ── Vercel geometric grid background ── */
+/* ── Vercel geometric grid ── */
 body::before{
   content:'';position:fixed;inset:0;
   background-image:
@@ -95,13 +92,13 @@ body::before{
 /* ── Container ── */
 .c{position:relative;z-index:2;max-width:440px;margin:0 auto;padding:36px 16px 64px}
 
-/* ── Section label ── */
+/* ── Section label — Vercel: small uppercase, no line ── */
 .sl{
   font-size:0.62rem;font-weight:600;letter-spacing:0.06em;
   color:var(--t3);margin:48px 0 12px 2px;text-transform:uppercase;
 }
 
-/* ── Product icon grid ── */
+/* ── Product grid — 2×2 ── */
 .ig{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .it{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
@@ -124,8 +121,6 @@ body::before{
   font-size:0.65rem;color:var(--t3);font-weight:500;
   font-feature-settings:"tnum";
 }
-
-/* Product-specific icon bg (Vercel-style very subtle) */
 .it-n .it-ico{background:#f4f2ff}
 .it-f .it-ico{background:#f0faf3}
 .it-i .it-ico{background:#f0f6ff}
@@ -134,8 +129,8 @@ body::before{
 /* ── Portfolio inline row ── */
 #pfRow{opacity:0;transition:opacity 0.35s ease,transform 0.35s ease;transform:translateY(-4px)}
 #pfRow.show{opacity:1;transform:translateY(0)}
-.pf{display:flex;gap:12px;justify-content:center;margin:8px 0 0;font-size:0.7rem;color:var(--t3);font-variant-numeric:tabular-nums}
-.pf .v{color:#000;font-weight:600}
+.pf{display:flex;gap:12px;justify-content:center;margin:10px 0 0;font-size:0.72rem;color:var(--t3);font-variant-numeric:tabular-nums}
+.pf .v{color:#000;font-weight:700}
 
 /* ── Card row ── */
 .card{
@@ -191,7 +186,7 @@ body::before{
 .cn{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
 .cnb{background:var(--bg);border-radius:6px;padding:3px 9px;cursor:pointer;font-size:0.72rem;color:var(--t2);box-shadow:var(--brdr);font-family:inherit;border:none}
 .cnb:hover{background:var(--bg-sm)}
-.cm{font-size:0.78rem;font-weight:600}
+.cm{font-size:0.78rem;font-weight:600;color:var(--t1)}
 .cw{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:3px}
 .cwd{text-align:center;font-size:0.6rem;color:#bbb;padding:3px 0}
 .cd{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
@@ -247,28 +242,18 @@ cdot.n{background:var(--c-n)}cdot.f{background:var(--c-f)}cdot.i{background:var(
   </div>
 </div>
 
-<!-- ═══ History Overlay ═══ -->
 <div class="overlay" id="overlay">
   <div class="panel">
-    <div class="ph">
-      <h3>History</h3>
-      <button class="px" id="px">✕</button>
-    </div>
-    <div class="cn">
-      <button class="cnb" id="calP">◀</button>
-      <span class="cm" id="calM"></span>
-      <button class="cnb" id="calN">▶</button>
-    </div>
+    <div class="ph"><h3>History</h3><button class="px" id="px">✕</button></div>
+    <div class="cn"><button class="cnb" id="calP">◀</button><span class="cm" id="calM"></span><button class="cnb" id="calN">▶</button></div>
     <div class="cw" id="calW"></div>
     <div class="cd" id="calD"></div>
     <div class="dd" id="dd"></div>
   </div>
 </div>
 
-<!-- ═══ Content ═══ -->
 <div class="c">
 
-  <!-- Products -->
   <div class="sl">Products</div>
   <div class="ig">
     <a href="https://news.alistairlendor.com" class="it it-n" target="_blank">
@@ -319,10 +304,8 @@ cdot.n{background:var(--c-n)}cdot.f{background:var(--c-f)}cdot.i{background:var(
     </a>
   </div>
 
-  <!-- Portfolio dynamic stats -->
   <div id="pfRow"><div class="pf"><span>Value <span class="v" id="pfV"></span></span><span>·</span><span id="pfP"></span><span id="pfR"></span></div></div>
 
-  <!-- Remote -->
   <div class="sl">Remote</div>
   <a href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" class="card card-w" target="_blank">
     <div class="card-ico">
@@ -331,14 +314,10 @@ cdot.n{background:var(--c-n)}cdot.f{background:var(--c-f)}cdot.i{background:var(
         <line x1="13" y1="3" x2="18" y2="8" stroke="#7b1fa2" stroke-width="1.6" stroke-linecap="round"/>
       </svg>
     </div>
-    <div class="card-ct">
-      <div class="card-t">Create Task</div>
-      <div class="card-d">GitHub Issue → auto-process</div>
-    </div>
+    <div class="card-ct"><div class="card-t">Create Task</div><div class="card-d">GitHub Issue → auto-process</div></div>
     <span class="card-b">ANYTIME</span>
   </a>
 
-  <!-- Schedule -->
   <div class="sl">Schedule</div>
   <div class="ac">
     <span class="ac-i"><span class="ac-d"></span> 00:00 Finance</span>
@@ -354,7 +333,6 @@ cdot.n{background:var(--c-n)}cdot.f{background:var(--c-f)}cdot.i{background:var(
   </div>
 </div>
 
-<!-- ═══ Scripts ═══ -->
 <script>
 let ARCHIVE={};
 const PM={news:{label:'Briefing',color:'#5648a0',bg:'#f4f2ff'},invest:{label:'Portfolio',color:'#1565c0',bg:'#f0f6ff'},finance:{label:'Finance',color:'#2e7d32',bg:'#f0faf3'},usage:{label:'Tokens',color:'#e65100',bg:'#fff8f0'}};
