@@ -1,1 +1,11 @@
-{"value":10000,"pnl":0,"return_pct":0,"updated":""}
+{
+  "value": 10332,
+  "pnl": 332,
+  "return_pct": 3.32,
+  "updated": "2026-06-21T02:00:00+08:00",
+  "holdings": {
+    "006131": { "name": "沪深300ETF联接C", "ratio": 50, "value": 5166 },
+    "004348": { "name": "中证500ETF联接C", "ratio": 30, "value": 3100 },
+    "余额宝": { "name": "银华多利宝货币A", "ratio": 20, "value": 2066 }
+  }
+}
