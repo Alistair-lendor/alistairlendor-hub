@@ -104,9 +104,9 @@ body{
 .profile-b:hover{background:var(--fill-hv)}
 .profile-b:active{transform:scale(0.92)}
 
-/* ── Portfolio holdings card ── */
-.holdings{margin:0 16px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);background:var(--bg-card);display:none}
-.holdings.show{display:block;animation:fadeIn 0.3s ease}
+/* ── Portfolio holdings card (always visible) ── */
+.holdings{margin:0 16px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);background:var(--bg-card);opacity:0;transform:translateY(6px);transition:opacity 0.4s ease,transform 0.4s ease}
+.holdings.show{opacity:1;transform:translateY(0)}
 .hl{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--separator)}
 .hl:last-child{border-bottom:none}
 .hl-l{display:flex;align-items:center;gap:10px}
@@ -354,7 +354,7 @@ body{
         <circle cx="13" cy="12" r="1.5" fill="currentColor"/>
         <circle cx="21" cy="6" r="1.5" fill="currentColor"/>
       </svg>
-      <span class="app-badge" id="portBadge" style="display:none">3</span>
+      <span class="app-badge" id="portBadge" style="display:none">R</span>
     </div>
     <span class="app-lbl">Portfolio</span>
     <span class="app-time">16:00</span>
@@ -490,6 +490,7 @@ body{
         /* ── Render holdings ── */
         if (d.holdings) {
           portBadge.style.display = 'flex';
+          hc.classList.add('show');
           const items = Object.entries(d.holdings);
           const rows = hc.querySelectorAll('.hl');
           rows.forEach((row, i) => {
@@ -614,11 +615,23 @@ body{
     dd.innerHTML = html;
   }
 
-  /* ── Portfolio toggle ── */
-  let holdingsOpen = false;
+  /* ── Portfolio button → opens latest report ── */
   portBtn.addEventListener('click', () => {
-    holdingsOpen = !holdingsOpen;
-    hc.classList.toggle('show', holdingsOpen);
+    ov.classList.add('open');
+    calDate.setDate(1);
+    calDate.setMonth(today.getMonth());
+    calDate.setFullYear(today.getFullYear());
+    renderCal();
+    /* Find latest invest entry */
+    const dates = Object.keys(ARCHIVE).sort().reverse();
+    for (const date of dates) {
+      if (ARCHIVE[date].invest) {
+        showDay(date);
+        return;
+      }
+    }
+    /* Fallback: just show today */
+    showDay(key(today));
   });
 
   /* ── Dark mode status bar ── */
