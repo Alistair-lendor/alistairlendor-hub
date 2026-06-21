@@ -325,6 +325,10 @@ body{
   <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--red)"></div><div class="hl-info"><div class="hl-name">沪深300ETF联接C</div><div class="hl-code">006131 · 50%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
   <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--blue)"></div><div class="hl-info"><div class="hl-name">中证500ETF联接C</div><div class="hl-code">004348 · 30%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
   <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--orange)"></div><div class="hl-info"><div class="hl-name">银华多利宝货币A</div><div class="hl-code">余额宝 · 20%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
+  <div class="hl" id="reportRow" style="display:none;border-top:0.5px solid var(--separator);cursor:pointer" onclick="document.getElementById('calBtn').click()">
+    <div class="hl-l"><div class="hl-info"><div class="hl-name" style="font-size:0.78rem;color:var(--blue)">📊 查看详细报告</div><div class="hl-code" id="reportDate">最近报告</div></div></div>
+    <div class="hl-r"><span style="color:var(--label3);font-size:0.7rem">历史 →</span></div>
+  </div>
 </div>
 
 <!-- ═══ Products ═══ -->
@@ -524,7 +528,22 @@ body{
   /* ── Fetch archive data ── */
   fetch('archive-data.json')
     .then(r => r.json())
-    .then(d => { ARCHIVE = d; })
+    .then(d => {
+      ARCHIVE = d;
+      /* Show report link if any invest entries exist */
+      const dates = Object.keys(d).sort().reverse();
+      for (const date of dates) {
+        if (d[date].invest) {
+          const rRow = document.getElementById('reportRow');
+          if (rRow) {
+            rRow.style.display = 'flex';
+            const rDate = document.getElementById('reportDate');
+            if (rDate) rDate.textContent = '最近更新: ' + date;
+          }
+          break;
+        }
+      }
+    })
     .catch(() => {});
 
   /* ── Calendar ── */
