@@ -14,222 +14,157 @@
 <link rel="apple-touch-icon" href="/alistair-logo.png">
 <link rel="dns-prefetch" href="//news.alistairlendor.com">
 <link rel="dns-prefetch" href="//finance.alistairlendor.com">
-<link rel="dns-prefetch" href="//invest.alistairlendor.com">
 <link rel="preconnect" href="https://news.alistairlendor.com" crossorigin>
 <link rel="preconnect" href="https://finance.alistairlendor.com" crossorigin>
-<link rel="preconnect" href="https://invest.alistairlendor.com" crossorigin>
 <link rel="preload" href="portfolio-latest.json" as="fetch" crossorigin>
 <link rel="preload" href="archive-data.json" as="fetch" crossorigin>
 
 <style>
-/* ── iOS Design System ── */
 :root{
-  --bg:#F2F2F7;
-  --bg-card:#FFFFFF;
-  --separator:rgba(60,60,67,0.08);
-  --separator-thick:rgba(60,60,67,0.18);
-  --label:#000000;
-  --label2:rgba(60,60,67,0.6);
-  --label3:rgba(60,60,67,0.3);
-  --fill:rgba(120,120,128,0.12);
-  --fill-hv:rgba(120,120,128,0.18);
-  --blue:#007AFF;
-  --green:#34C759;
-  --orange:#FF9500;
-  --red:#FF3B30;
-  --purple:#AF52DE;
-  --teal:#5AC8FA;
-  --radius:13px;
-  --radius-sm:9px;
-  --radius-xl:21px;
+  --bg:#F2F2F7; --bg-card:#FFFFFF;
+  --separator:rgba(60,60,67,0.08); --separator-thick:rgba(60,60,67,0.18);
+  --label:#000000; --label2:rgba(60,60,67,0.6); --label3:rgba(60,60,67,0.3);
+  --fill:rgba(120,120,128,0.12); --fill-hv:rgba(120,120,128,0.18);
+  --blue:#007AFF; --green:#34C759; --orange:#FF9500; --red:#FF3B30; --purple:#AF52DE; --teal:#5AC8FA;
+  --radius-xl:21px; --radius-2xl:26px;
   --safe-bottom:env(safe-area-inset-bottom,0px);
   --f:-apple-system,'Helvetica Neue','SF Pro Display','SF Pro Text',system-ui,sans-serif;
 }
-
-/* ── Dark Mode ── */
 @media(prefers-color-scheme:dark){
   :root{
-    --bg:#1C1C1E;
-    --bg-card:#2C2C2E;
-    --separator:rgba(255,255,255,0.08);
-    --separator-thick:rgba(255,255,255,0.18);
-    --label:#FFFFFF;
-    --label2:rgba(255,255,255,0.6);
-    --label3:rgba(255,255,255,0.3);
-    --fill:rgba(120,120,128,0.24);
-    --fill-hv:rgba(120,120,128,0.36);
-    --blue:#0A84FF;
-    --green:#30D158;
-    --orange:#FF9F0A;
-    --red:#FF453A;
-    --purple:#BF5AF2;
-    --teal:#64D2FF;
+    --bg:#1C1C1E; --bg-card:#2C2C2E;
+    --separator:rgba(255,255,255,0.08); --separator-thick:rgba(255,255,255,0.18);
+    --label:#FFFFFF; --label2:rgba(255,255,255,0.6); --label3:rgba(255,255,255,0.3);
+    --fill:rgba(120,120,128,0.24); --fill-hv:rgba(120,120,128,0.36);
+    --blue:#0A84FF; --green:#30D158; --orange:#FF9F0A; --red:#FF453A; --purple:#BF5AF2; --teal:#64D2FF;
   }
   .profile-av{box-shadow:0 2px 8px rgba(0,0,0,0.3)}
-  .networth,.app-item,.profile,.sch-chip,.section-list{box-shadow:0 0.5px 1.5px rgba(0,0,0,0.2)}
-  .status-bar{background:rgba(28,28,30,0.94);border-bottom-color:rgba(255,255,255,0.08)}
-  .app-ico.ico-brief{background:rgba(10,132,255,0.12)}
-  .app-ico.ico-fin{background:rgba(48,209,88,0.12)}
-  .app-ico.ico-port{background:rgba(191,90,242,0.12)}
-  .app-ico.ico-usage{background:rgba(255,159,10,0.12)}
+  .status-bar{background:rgba(28,28,30,0.94)}
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
-html{height:100%}
 body{
-  font-family:var(--f);
-  background:var(--bg);
-  color:var(--label);
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  padding-bottom:var(--safe-bottom);
-  min-height:100%;
+  font-family:var(--f); background:var(--bg); color:var(--label);
+  -webkit-font-smoothing:antialiased; padding-bottom:var(--safe-bottom); min-height:100%;
+  max-width:480px; margin:0 auto;
 }
 
-/* ── Status bar spacer ── */
-.status-bar{height:44px;background:rgba(249,249,249,0.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:600;letter-spacing:0.3px;color:var(--label);border-bottom:0.5px solid var(--separator)}
+/* ── Status Bar ── */
+.status-bar{height:44px;background:rgba(249,249,249,0.94);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:600;color:var(--label);border-bottom:0.5px solid var(--separator)}
 .status-bar time{font-variant-numeric:tabular-nums}
 
-/* ── Profile header ── */
-.profile{margin:8px 16px 0;padding:20px 20px 18px;background:var(--bg-card);border-radius:var(--radius-xl);display:flex;align-items:center;gap:14px;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04)}
-.profile-av{
-  width:56px;height:56px;border-radius:50%;background:#000;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  box-shadow:0 2px 8px rgba(0,0,0,0.12)
-}
-.profile-av svg{width:28px;height:28px}
+/* ── Profile ── */
+.profile{margin:8px 16px 0;padding:16px 18px;background:var(--bg-card);border-radius:var(--radius-2xl);display:flex;align-items:center;gap:12px}
+.profile-av{width:48px;height:48px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.profile-av svg{width:24px;height:24px}
 .profile-ct{flex:1;min-width:0}
-.profile-n{font-size:1.25rem;font-weight:700;letter-spacing:-0.3px;line-height:1.2}
-.profile-s{font-size:0.82rem;color:var(--label2);margin-top:1px}
-.profile-b{
-  width:36px;height:36px;border-radius:50%;background:var(--fill);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-  border:none;cursor:pointer;transition:background 0.12s;color:var(--blue);font-size:0.9rem
-}
-.profile-b:hover{background:var(--fill-hv)}
+.profile-n{font-size:1.1rem;font-weight:700;letter-spacing:-0.3px}
+.profile-s{font-size:0.78rem;color:var(--label2);margin-top:1px}
+.profile-b{width:32px;height:32px;border-radius:50%;background:var(--fill);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:none;cursor:pointer;color:var(--blue);font-size:0.82rem}
 .profile-b:active{transform:scale(0.92)}
 
-/* ── Portfolio holdings card (always visible) ── */
-.holdings{margin:0 16px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);background:var(--bg-card);opacity:0;transform:translateY(6px);transition:opacity 0.4s ease,transform 0.4s ease}
-.holdings.show{opacity:1;transform:translateY(0)}
-.hl{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--separator)}
-.hl:last-child{border-bottom:none}
-.hl-l{display:flex;align-items:center;gap:10px}
-.hl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-.hl-info{min-width:0}
-.hl-name{font-size:0.82rem;font-weight:600;color:var(--label)}
-.hl-code{font-size:0.64rem;color:var(--label3);margin-top:1px;font-feature-settings:"tnum"}
-.hl-r{text-align:right}
-.hl-val{font-size:0.85rem;font-weight:600;color:var(--label);font-feature-settings:"tnum"}
-.hl-pct{font-size:0.65rem;color:var(--label2);margin-top:1px}
-.hl-bar{height:3px;border-radius:2px;margin-top:6px;background:var(--fill)}
-.hl-bar-f{height:100%;border-radius:2px}
+/* ── Section ── */
+.sh{margin:20px 16px 6px}
+.sh-l{font-size:0.75rem;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:0.5px}
 
-/* ── Net worth card ── */
-.networth{margin:12px 16px 0;padding:0;background:var(--bg-card);border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);opacity:0;transform:translateY(6px);transition:opacity 0.4s ease,transform 0.4s ease}
-.networth.show{opacity:1;transform:translateY(0)}
-.nw-in{padding:20px 20px 18px;display:flex;align-items:baseline;gap:12px}
-.nw-l{font-size:0.76rem;font-weight:500;color:var(--label2);text-transform:uppercase;letter-spacing:0.5px}
-.nw-v{font-size:1.8rem;font-weight:700;letter-spacing:-0.5px;font-variant-numeric:tabular-nums}
-.nw-ch{font-size:0.85rem;font-weight:600;margin-left:auto;font-variant-numeric:tabular-nums}
-.nw-bar{height:3px;background:var(--fill);margin:0 20px;border-radius:2px;overflow:hidden}
-.nw-bar-f{height:100%;border-radius:2px;transition:width 0.6s ease;background:linear-gradient(90deg,var(--green),var(--teal))}
-
-/* ── Sparkline ── */
-.nw-spark{margin:0 16px;border-radius:var(--radius-xl);overflow:hidden;background:var(--bg-card);box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);display:none;padding:6px 20px 4px}
-.nw-spark.show{display:block}
-
-/* ── Section header ── */
-.sh{margin:20px 16px 8px;display:flex;align-items:baseline;justify-content:space-between}
-.sh-l{font-size:0.82rem;font-weight:600;color:var(--label2);text-transform:uppercase;letter-spacing:0.4px}
-.sh-r{font-size:0.72rem;color:var(--blue);text-decoration:none;font-weight:500}
-
-/* ── App grid (iOS springboard style) ── */
-.app-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:0 16px}
-.app-item{
-  display:flex;flex-direction:column;align-items:center;gap:6px;
-  padding:18px 8px 14px;
-  background:var(--bg-card);border-radius:var(--radius-xl);
-  box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);
-  text-decoration:none;color:inherit;cursor:pointer;
-  transition:transform 0.15s,box-shadow 0.15s;
-  -webkit-user-select:none;user-select:none;
+/* ── Product Card ── */
+.p-card{
+  margin:0 16px 12px;padding:16px 16px 14px;
+  background:var(--bg-card);border-radius:var(--radius-2xl);
+  cursor:pointer;transition:transform 0.15s;
 }
-.app-item:active{transform:scale(0.96);box-shadow:none}
-.app-ico{
-  width:52px;height:52px;border-radius:var(--radius-sm);
-  display:flex;align-items:center;justify-content:center;
-  position:relative;transition:transform 0.15s;
-}
-.app-item:active .app-ico{transform:scale(0.92)}
-.app-ico svg{width:26px;height:26px}
-.app-lbl{font-size:0.78rem;font-weight:600;color:var(--label)}
-.app-time{font-size:0.62rem;color:var(--label3);font-weight:500;margin-top:-2px}
-.app-ico.ico-brief{background:#EEF2FF}
-.app-ico.ico-brief svg{stroke:var(--blue)}
-.app-ico.ico-fin{background:#F0FAF3}
-.app-ico.ico-fin svg{stroke:var(--green)}
-.app-ico.ico-port{background:#F5F0FF}
-.app-ico.ico-port svg{stroke:var(--purple)}
-.app-ico.ico-usage{background:#FFF5F0}
-.app-ico.ico-usage svg{stroke:var(--orange)}
+.p-card:active{transform:scale(0.98)}
+.p-card-h{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.p-card-ico{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.p-card-ico svg{width:15px;height:15px}
+.p-card-title{font-size:0.85rem;font-weight:600;color:var(--label)}
+.p-card-time{font-size:0.6rem;color:var(--label3);font-weight:500;margin-left:auto}
+.p-card-body{font-size:0.72rem;color:var(--label2);line-height:1.5}
 
-/* ── Badge on app icon ── */
-.app-badge{
-  position:absolute;top:-4px;right:-4px;min-width:18px;height:18px;
-  border-radius:9px;background:var(--red);color:#fff;
-  font-size:0.55rem;font-weight:700;display:flex;align-items:center;justify-content:center;
-  padding:0 5px;box-shadow:0 1px 3px rgba(255,59,48,0.3);
-}
+/* ── Briefing ── */
+.brief-headline{font-size:0.82rem;font-weight:600;color:var(--label);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.brief-summary{font-size:0.7rem;color:var(--label2);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:3px}
 
-/* ── Section list (inset grouped style) ── */
-.section-list{margin:0 16px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04)}
+/* ── Portfolio ── */
+.port-top{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:6px}
+.port-nw{font-size:1.3rem;font-weight:700;color:var(--label);letter-spacing:-0.5px;font-variant-numeric:tabular-nums}
+.port-ch{font-size:0.78rem;font-weight:600;font-variant-numeric:tabular-nums}
+.port-spark{height:32px;margin-bottom:8px}
+.port-spark svg{width:100%;height:32px;display:block}
+.port-divider{height:0.5px;background:var(--separator);margin:8px 0}
+.port-hold{display:flex;align-items:center;padding:4px 0}
+.port-hl{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.port-hd{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.port-hn{font-size:0.7rem;font-weight:500;color:var(--label);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.port-hc{font-size:0.6rem;color:var(--label3);margin-left:4px;font-feature-settings:"tnum"}
+.port-hr{text-align:right;flex-shrink:0}
+.port-hv{font-size:0.72rem;font-weight:600;color:var(--label);font-feature-settings:"tnum"}
+.port-bar{height:3px;border-radius:2px;background:var(--fill);margin-top:3px;overflow:hidden}
+.port-bar-f{height:100%;border-radius:2px}
+.port-empty,.fin-empty,.tok-empty,.brief-empty{font-size:0.68rem;color:var(--label3);font-style:italic;padding:6px 0}
+.port-loading,.fin-loading,.tok-loading{font-size:0.62rem;color:var(--label3);padding:6px 0}
+
+/* ── Finance ── */
+.fin-row{display:flex;align-items:baseline;justify-content:space-between;padding:3px 0}
+.fin-l{font-size:0.7rem;color:var(--label2)}
+.fin-v{font-size:0.82rem;font-weight:600;font-variant-numeric:tabular-nums}
+.fin-v.inc{color:var(--red)}.fin-v.exp{color:var(--green)}.fin-v.net{color:var(--blue)}
+.fin-divider{height:0.5px;background:var(--separator);margin:6px 0}
+
+/* ── Tokens ── */
+.tok-total{display:flex;align-items:baseline;gap:8px;margin-bottom:8px}
+.tok-tv{font-size:1rem;font-weight:700;font-variant-numeric:tabular-nums}
+.tok-tl{font-size:0.65rem;color:var(--label3)}
+.tok-tc{font-size:0.72rem;font-weight:600;margin-left:auto;font-variant-numeric:tabular-nums}
+.tok-cost{font-size:0.62rem;color:var(--label3);text-align:right;margin-top:-2px;margin-bottom:6px}
+.tok-divider{height:0.5px;background:var(--separator);margin:8px 0;position:relative}
+.tok-divider::before{content:'各模型消耗';position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:var(--bg-card);padding:0 10px;font-size:0.58rem;color:var(--label3);white-space:nowrap}
+.tok-model{padding:5px 0}
+.tok-mh{display:flex;align-items:center;justify-content:space-between;margin-bottom:3px}
+.tok-mn{font-size:0.7rem;font-weight:500;color:var(--label);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tok-mt{font-size:0.65rem;color:var(--label2);font-feature-settings:"tnum";margin:0 6px}
+.tok-mp{font-size:0.6rem;color:var(--label3);width:30px;text-align:right;font-feature-settings:"tnum"}
+.tok-bar{height:5px;border-radius:3px;background:var(--fill);overflow:hidden}
+.tok-bar-f{height:100%;border-radius:3px}
+
+/* ── Quick Actions ── */
+.section-list{margin:0 16px;border-radius:var(--radius-2xl);overflow:hidden}
 .section-list .row{
-  display:flex;align-items:center;gap:12px;
-  padding:14px 16px;background:var(--bg-card);
-  text-decoration:none;color:inherit;cursor:pointer;
-  transition:background 0.08s;min-height:48px;
+  display:flex;align-items:center;gap:12px;padding:14px 16px;
+  background:var(--bg-card);text-decoration:none;color:inherit;cursor:pointer;
   border-bottom:0.5px solid var(--separator);
-  position:relative;
 }
 .section-list .row:last-child{border-bottom:none}
 .section-list .row:active{background:var(--fill)}
-.row-ico{
-  width:30px;height:30px;border-radius:8px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.row-ico svg{width:16px;height:16px}
+.row-ico{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.row-ico svg{width:15px;height:15px}
 .row-ct{flex:1;min-width:0}
-.row-t{font-size:0.88rem;font-weight:500}
-.row-d{font-size:0.72rem;color:var(--label2);margin-top:1px}
-.row-acc{color:var(--label3);font-size:0.72rem;display:flex;align-items:center;gap:4px}
-.row-acc::after{content:'›';font-size:1.1rem;line-height:1}
+.row-t{font-size:0.85rem;font-weight:500}
+.row-d{font-size:0.7rem;color:var(--label2);margin-top:1px}
+.row-acc{color:var(--label3);font-size:0.7rem}
+.row-acc::after{content:'\203A';font-size:1.05rem}
 
-/* ── Schedule chips ── */
-.schedule{padding:0 16px;display:flex;flex-wrap:wrap;gap:8px}
+/* ── Schedule ── */
+.schedule{padding:0 16px;display:flex;flex-wrap:wrap;gap:6px}
 .sch-chip{
-  display:flex;align-items:center;gap:6px;
-  padding:7px 14px 7px 10px;
-  background:var(--bg-card);border-radius:var(--radius-xl);
-  box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);
-  font-size:0.76rem;font-weight:500;color:var(--label);
-  font-variant-numeric:tabular-nums;
+  display:flex;align-items:center;gap:5px;padding:6px 12px 6px 9px;
+  background:var(--bg-card);border-radius:var(--radius-2xl);
+  font-size:0.72rem;font-weight:500;color:var(--label);font-variant-numeric:tabular-nums;
 }
-.sch-dot{width:7px;height:7px;border-radius:50%;display:inline-block}
-.sch-dot.on{background:var(--green);box-shadow:0 0 0 1.5px rgba(52,199,89,0.2)}
+.sch-dot{width:6px;height:6px;border-radius:50%;display:inline-block}
+.sch-dot.on{background:var(--green)}
 .sch-dot.off{background:var(--separator-thick)}
 .sch-label{color:var(--label2);font-weight:400}
 
-/* ── Calendar overlay (iOS bottom sheet) ── */
+/* ── Calendar Overlay ── */
 .overlay{display:none;position:fixed;inset:0;z-index:100}
 .overlay.open{display:block}
 .overlay-bg{position:absolute;inset:0;background:rgba(0,0,0,0.3);animation:fadeIn 0.2s ease}
 @keyframes fadeIn{from{opacity:0}}
 .sheet{
   position:absolute;bottom:0;left:0;right:0;
-  background:var(--bg-card);border-radius:var(--radius-xl) var(--radius-xl) 0 0;
-  padding:0 0 var(--safe-bottom);
-  max-height:85vh;overflow-y:auto;
+  background:var(--bg-card);border-radius:var(--radius-2xl) var(--radius-2xl) 0 0;
+  padding:0 0 var(--safe-bottom);max-height:85vh;overflow-y:auto;
   animation:slideUp 0.3s cubic-bezier(0.32,0.72,0,1);
 }
 @keyframes slideUp{from{transform:translateY(100%)}}
@@ -237,74 +172,44 @@ body{
   display:flex;align-items:center;justify-content:space-between;
   padding:16px 20px 8px;position:sticky;top:0;background:var(--bg-card);z-index:2;
 }
-.sheet-h::before{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:38px;height:5px;border-radius:3px;background:var(--separator-thick)}
-.sheet-h h3{font-size:1.05rem;font-weight:700}
-.sheet-x{width:32px;height:32px;border-radius:50%;border:none;background:var(--fill);cursor:pointer;font-size:0.85rem;color:var(--label2);display:flex;align-items:center;justify-content:center;transition:background 0.12s}
+.sheet-h::before{content:'';position:absolute;top:6px;left:50%;transform:translateX(-50%);width:36px;height:4px;border-radius:2px;background:var(--separator-thick)}
+.sheet-h h3{font-size:1rem;font-weight:700}
+.sheet-x{width:30px;height:30px;border-radius:50%;border:none;background:var(--fill);cursor:pointer;font-size:0.82rem;color:var(--label2);display:flex;align-items:center;justify-content:center}
 .sheet-x:active{background:var(--fill-hv)}
-
-/* ── Calendar nav ── */
-.cal-nav{display:flex;align-items:center;justify-content:space-between;padding:4px 20px 8px}
-.cal-nav-btn{width:36px;height:36px;border-radius:50%;border:none;background:var(--fill);cursor:pointer;font-size:0.85rem;color:var(--blue);display:flex;align-items:center;justify-content:center;transition:background 0.12s}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;padding:4px 20px 10px}
+.cal-nav-btn{width:34px;height:34px;border-radius:50%;border:none;background:var(--fill);cursor:pointer;font-size:0.82rem;color:var(--blue);display:flex;align-items:center;justify-content:center}
 .cal-nav-btn:active{background:var(--fill-hv)}
-.cal-nav-lbl{font-size:0.88rem;font-weight:600}
-
-/* ── Calendar grid ── */
+.cal-nav-lbl{font-size:0.85rem;font-weight:600}
 .cal-week{display:grid;grid-template-columns:repeat(7,1fr);padding:0 20px}
 .cal-wd{text-align:center;font-size:0.6rem;color:var(--label3);padding:6px 0;font-weight:500}
 .cal-days{display:grid;grid-template-columns:repeat(7,1fr);padding:0 20px 12px;gap:2px}
-.cal-day{
-  aspect-ratio:1;border-radius:var(--radius-sm);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  font-size:0.78rem;cursor:pointer;gap:2px;transition:transform 0.08s,background 0.08s;
-  position:relative;
-}
+.cal-day{aspect-ratio:1;border-radius:var(--radius-xl);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.75rem;cursor:pointer;gap:2px;transition:transform 0.08s}
 .cal-day:active{transform:scale(0.92)}
 .cal-day.tdy{background:var(--blue);color:#fff;font-weight:600}
 .cal-day.emp{visibility:hidden}
 .cal-day .cdots{display:flex;gap:2px;align-items:center;justify-content:center}
 .cal-day .cdot{width:4px;height:4px;border-radius:50%}
-.cal-day .cdot.b{background:var(--blue)}
-.cal-day .cdot.g{background:var(--green)}
-.cal-day .cdot.p{background:var(--purple)}
-.cal-day .cdot.o{background:var(--orange)}
-
-/* ── Day detail ── */
+.cal-day .cdot.b{background:var(--blue)}.cal-day .cdot.g{background:var(--green)}.cal-day .cdot.p{background:var(--purple)}.cal-day .cdot.o{background:var(--orange)}
 .day-detail{padding:8px 20px 16px;display:none}
 .day-detail.show{display:block}
-.day-dtl-h{font-size:0.7rem;color:var(--label3);margin-bottom:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.3px}
-.day-dtl-item{
-  display:flex;align-items:center;gap:10px;
-  padding:10px 12px;border-radius:var(--radius-sm);
-  text-decoration:none;color:inherit;
-  margin-bottom:4px;transition:background 0.08s;
-}
+.day-dtl-h{font-size:0.68rem;color:var(--label3);margin-bottom:8px;font-weight:500;letter-spacing:0.3px}
+.day-dtl-item{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-xl);text-decoration:none;color:inherit;margin-bottom:4px}
 .day-dtl-item:active{background:var(--fill)}
-.day-dtl-ico{
-  width:28px;height:28px;border-radius:7px;
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.day-dtl-ico svg{width:15px;height:15px}
-.day-dtl-lbl{font-size:0.82rem;font-weight:500}
+.day-dtl-ico{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.day-dtl-ico svg{width:14px;height:14px}
+.day-dtl-lbl{font-size:0.8rem;font-weight:500}
 
 /* ── Footer ── */
-.ftr{text-align:center;padding:28px 16px 24px;font-size:0.65rem;color:var(--label3)}
+.ftr{text-align:center;padding:24px 16px 20px;font-size:0.62rem;color:var(--label3)}
 .ftr a{color:var(--label2);text-decoration:none}
-.ftr a:hover{color:var(--label)}
-
-/* ── Connection status indicators ── */
-.status-dots{display:flex;gap:4px;align-items:center}
-.status-dot{width:5px;height:5px;border-radius:50%}
-.status-dot.g{background:var(--green)}
-.status-dot.o{background:var(--orange)}
-.status-dot.r{background:var(--red)}
 </style>
 </head>
 <body>
 
-<!-- ═══ Status Bar ═══ -->
+<!-- Status Bar -->
 <div class="status-bar"><time id="statusTime"></time></div>
 
-<!-- ═══ Profile ═══ -->
+<!-- Profile -->
 <div class="profile">
   <div class="profile-av">
     <svg viewBox="0 0 100 100" fill="none">
@@ -316,110 +221,83 @@ body{
     <div class="profile-n">Alistair</div>
     <div class="profile-s" id="profDate"></div>
   </div>
-  <button class="profile-b" id="calBtn" aria-label="History">&#x1F4C5;</button>
+  <button class="profile-b" id="calBtn">📅</button>
 </div>
 
-<!-- ═══ Net Worth (loaded dynamically) ═══ -->
-<div class="networth" id="nwCard">
-  <div class="nw-in">
-    <div><div class="nw-l">Net Worth</div></div>
-    <div class="nw-v" id="nwValue">--</div>
-    <div class="nw-ch" id="nwChange"></div>
-  </div>
-  <div class="nw-bar"><div class="nw-bar-f" id="nwBar" style="width:0%"></div></div>
-</div>
-
-<!-- ═══ Sparkline (hidden until data loads) ═══ -->
-<div class="nw-spark" id="sparkRow">
-  <div class="spark-wrap">
-    <svg id="sparkSvg" viewBox="0 0 220 40" preserveAspectRatio="none" style="width:100%;height:40px;display:block"></svg>
-  </div>
-</div>
-
-<!-- ═══ Portfolio Holdings (loaded dynamically) ═══ -->
-<div class="holdings" id="holdCard">
-  <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--red)"></div><div class="hl-info"><div class="hl-name">沪深300ETF联接C</div><div class="hl-code">006131 · 50%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
-  <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--blue)"></div><div class="hl-info"><div class="hl-name">中证500ETF联接C</div><div class="hl-code">004348 · 30%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
-  <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--orange)"></div><div class="hl-info"><div class="hl-name">银华多利宝货币A</div><div class="hl-code">余额宝 · 20%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
-  <div class="hl" id="reportRow" style="display:none;border-top:0.5px solid var(--separator);cursor:pointer" onclick="document.getElementById('calBtn').click()">
-    <div class="hl-l"><div class="hl-info"><div class="hl-name" style="font-size:0.78rem;color:var(--blue)">📊 查看详细报告</div><div class="hl-code" id="reportDate">最近报告</div></div></div>
-    <div class="hl-r"><span style="color:var(--label3);font-size:0.7rem">历史 →</span></div>
-  </div>
-</div>
-
-<!-- ═══ Products ═══ -->
+<!-- PRODUCTS -->
 <div class="sh"><span class="sh-l">Products</span></div>
-<div class="app-grid">
-  <a href="https://news.alistairlendor.com" class="app-item" target="_blank">
-    <div class="app-ico ico-brief">
-      <svg viewBox="0 0 24 24" fill="none">
-        <rect x="3" y="3" width="18" height="18" rx="3" stroke-width="1.8"/>
-        <line x1="7" y1="8" x2="17" y2="8" stroke-width="1.6" stroke-linecap="round"/>
-        <line x1="7" y1="12" x2="17" y2="12" stroke-width="1.6" stroke-linecap="round"/>
-        <line x1="7" y1="16" x2="13" y2="16" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
+
+<!-- Briefing -->
+<div class="p-card" id="briefCard" onclick="window.open('https://news.alistairlendor.com','_blank')">
+  <div class="p-card-h">
+    <div class="p-card-ico" style="background:#EEF2FF">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#007AFF" stroke-width="1.8"/><line x1="7" y1="8" x2="17" y2="8" stroke="#007AFF" stroke-width="1.6" stroke-linecap="round"/><line x1="7" y1="12" x2="17" y2="12" stroke="#007AFF" stroke-width="1.6" stroke-linecap="round"/><line x1="7" y1="16" x2="13" y2="16" stroke="#007AFF" stroke-width="1.6" stroke-linecap="round"/></svg>
     </div>
-    <span class="app-lbl">Briefing</span>
-    <span class="app-time">09:00</span>
-  </a>
-  <a href="javascript:void(0)" class="app-item" id="portBtn">
-    <div class="app-ico ico-port">
-      <svg viewBox="0 0 24 24" fill="none">
-        <polyline points="3,17 8,10 13,12 21,6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="8" cy="10" r="1.5" fill="currentColor"/>
-        <circle cx="13" cy="12" r="1.5" fill="currentColor"/>
-        <circle cx="21" cy="6" r="1.5" fill="currentColor"/>
-      </svg>
-      <span class="app-badge" id="portBadge" style="display:none">R</span>
-    </div>
-    <span class="app-lbl">Portfolio</span>
-    <span class="app-time">16:00</span>
-  </a>
-  <a href="https://finance.alistairlendor.com" class="app-item" target="_blank">
-    <div class="app-ico ico-fin">
-      <svg viewBox="0 0 24 24" fill="none">
-        <rect x="2" y="7" width="20" height="10" rx="2.5" stroke-width="1.8"/>
-        <path d="M2 12h20" stroke-width="1.6"/>
-        <circle cx="19" cy="14.5" r="1.5" fill="currentColor"/>
-      </svg>
-    </div>
-    <span class="app-lbl">Finance</span>
-    <span class="app-time">00:00</span>
-  </a>
-  <a href="https://alistairlendor.com/usage/usage_dashboard.html" class="app-item" target="_blank">
-    <div class="app-ico ico-usage">
-      <svg viewBox="0 0 24 24" fill="none">
-        <path d="M5 15 A7 7 0 1 1 19 15" stroke-width="1.8" stroke-linecap="round"/>
-        <line x1="12" y1="11" x2="12" y2="7" stroke-width="1.8" stroke-linecap="round"/>
-        <circle cx="12" cy="11" r="1.2" fill="currentColor"/>
-      </svg>
-    </div>
-    <span class="app-lbl">Tokens</span>
-    <span class="app-time">12h</span>
-  </a>
+    <span class="p-card-title">Briefing</span>
+    <span class="p-card-time">09:00</span>
+  </div>
+  <div class="p-card-body" id="briefBody">
+    <div class="brief-empty">加载中...</div>
+  </div>
 </div>
 
-<!-- ═══ Remote ═══ -->
+<!-- Portfolio -->
+<div class="p-card" id="portCard">
+  <div class="p-card-h">
+    <div class="p-card-ico" style="background:#F5F0FF">
+      <svg viewBox="0 0 24 24" fill="none"><polyline points="3,17 8,10 13,12 21,6" stroke="#AF52DE" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><circle cx="8" cy="10" r="1.5" fill="#AF52DE"/><circle cx="13" cy="12" r="1.5" fill="#AF52DE"/><circle cx="21" cy="6" r="1.5" fill="#AF52DE"/></svg>
+    </div>
+    <span class="p-card-title">Portfolio</span>
+    <span class="p-card-time">16:00</span>
+  </div>
+  <div class="p-card-body" id="portBody">
+    <div class="port-loading">加载中...</div>
+  </div>
+</div>
+
+<!-- Finance -->
+<div class="p-card" id="finCard" onclick="window.open('https://finance.alistairlendor.com','_blank')">
+  <div class="p-card-h">
+    <div class="p-card-ico" style="background:#F0FAF3">
+      <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="7" width="20" height="10" rx="2.5" stroke="#34C759" stroke-width="1.8"/><path d="M2 12h20" stroke="#34C759" stroke-width="1.6"/><circle cx="19" cy="14.5" r="1.5" fill="#34C759"/></svg>
+    </div>
+    <span class="p-card-title">Finance</span>
+    <span class="p-card-time">00:00</span>
+  </div>
+  <div class="p-card-body" id="finBody">
+    <div class="fin-loading">加载中...</div>
+  </div>
+</div>
+
+<!-- Tokens -->
+<div class="p-card" id="tokCard" onclick="window.open('https://alistairlendor.com/usage/usage_dashboard.html','_blank')">
+  <div class="p-card-h">
+    <div class="p-card-ico" style="background:#FFF5F0">
+      <svg viewBox="0 0 24 24" fill="none"><path d="M5 15 A7 7 0 1 1 19 15" stroke="#FF9500" stroke-width="1.8" stroke-linecap="round"/><line x1="12" y1="11" x2="12" y2="7" stroke="#FF9500" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="11" r="1.2" fill="#FF9500"/></svg>
+    </div>
+    <span class="p-card-title">Tokens</span>
+    <span class="p-card-time">12h</span>
+  </div>
+  <div class="p-card-body" id="tokBody">
+    <div class="tok-loading">加载中...</div>
+  </div>
+</div>
+
+<!-- QUICK ACTIONS -->
 <div class="sh"><span class="sh-l">Quick Actions</span></div>
 <div class="section-list">
   <a href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" class="row" target="_blank">
     <div class="row-ico" style="background:#F5F0FF">
-      <svg viewBox="0 0 22 22" fill="none">
-        <path d="M13 4l5 5-10 10H3v-5L13 4z" stroke="#AF52DE" stroke-width="1.6" stroke-linejoin="round"/>
-        <line x1="13" y1="4" x2="18" y2="9" stroke="#AF52DE" stroke-width="1.6" stroke-linecap="round"/>
-      </svg>
+      <svg viewBox="0 0 22 22" fill="none"><path d="M13 4l5 5-10 10H3v-5L13 4z" stroke="#AF52DE" stroke-width="1.6" stroke-linejoin="round"/><line x1="13" y1="4" x2="18" y2="9" stroke="#AF52DE" stroke-width="1.6" stroke-linecap="round"/></svg>
     </div>
-    <div class="row-ct">
-      <div class="row-t">Create Task</div>
-      <div class="row-d">Submit a GitHub Issue</div>
-    </div>
+    <div class="row-ct"><div class="row-t">Create Task</div><div class="row-d">Submit a GitHub Issue</div></div>
     <div class="row-acc">Anytime</div>
   </a>
 </div>
 
-<!-- ═══ Schedule ═══ -->
+<!-- SCHEDULE -->
 <div class="sh"><span class="sh-l">Schedule</span></div>
-<div class="schedule" id="schedule">
+<div class="schedule">
   <span class="sch-chip"><span class="sch-dot on"></span><span>00:00</span> <span class="sch-label">Finance</span></span>
   <span class="sch-chip"><span class="sch-dot on"></span><span>09:00</span> <span class="sch-label">Briefing</span></span>
   <span class="sch-chip"><span class="sch-dot off"></span><span>13:00</span> <span class="sch-label">PingPong</span></span>
@@ -428,13 +306,13 @@ body{
   <span class="sch-chip"><span class="sch-dot on"></span><span>12h</span> <span class="sch-label">Usage</span></span>
 </div>
 
-<!-- ═══ Footer ═══ -->
+<!-- Footer -->
 <div class="ftr">
   Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a>
   &middot; <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a>
 </div>
 
-<!-- ═══ Calendar Overlay (iOS Bottom Sheet) ═══ -->
+<!-- Calendar Overlay -->
 <div class="overlay" id="overlay">
   <div class="overlay-bg" id="ovBg"></div>
   <div class="sheet">
@@ -454,7 +332,6 @@ body{
 (function(){
   'use strict';
 
-  /* ── Constants ── */
   const P_MAP = {
     news:    { label:'Briefing',  color:'#007AFF', bg:'#EEF2FF' },
     invest:  { label:'Portfolio', color:'#AF52DE', bg:'#F5F0FF' },
@@ -468,246 +345,169 @@ body{
     usage:'<svg viewBox="0 0 14 14" fill="none"><path d="M3 9.5 A4.5 4.5 0 1 1 11 9.5" stroke="#FF9500" stroke-width="1.2" stroke-linecap="round"/><line x1="7" y1="7" x2="7" y2="4.5" stroke="#FF9500" stroke-width="1.2" stroke-linecap="round"/><circle cx="7" cy="7" r="0.8" fill="#FF9500"/></svg>'
   };
   const WEEKDAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+  const TOKEN_COLORS = ['#3b82f6','#22c55e','#f59e0b','#8b5cf6','#ec4899','#14b8a6'];
 
-  /* ── State ── */
   let ARCHIVE = {};
-  let calDate = new Date();
-  calDate.setDate(1);
+  let calDate = new Date(); calDate.setDate(1);
 
-  /* ── DOM refs ── */
   const $ = id => document.getElementById(id);
-  const nwCard = $('nwCard'), nwVal = $('nwValue'), nwCh = $('nwChange'), nwBar = $('nwBar');
-  const hc = $('holdCard'), portBtn = $('portBtn'), portBadge = $('portBadge');
-  const statusTime = $('statusTime');
+  const statusTime = $('statusTime'), profDate = $('profDate');
+  const briefBody = $('briefBody'), portBody = $('portBody'), finBody = $('finBody'), tokBody = $('tokBody');
   const ov = $('overlay'), calM = $('calM'), calD = $('calD'), calW = $('calW'), dd = $('dd');
 
-  /* ── Init status bar time ── */
   const now = new Date();
   const pad = n => String(n).padStart(2,'0');
   statusTime.textContent = now.toLocaleDateString('zh-CN',{weekday:'short'}) + ' ' + pad(now.getHours()) + ':' + pad(now.getMinutes());
-  $('profDate').textContent = now.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+  profDate.textContent = now.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
 
-  /* ── Fetch portfolio ── */
-  fetch('portfolio-latest.json')
-    .then(r => r.json())
-    .then(d => {
-      if (d && typeof d.value === 'number' && d.value > 0) {
-        nwCard.classList.add('show');
-        const fmt = n => n.toLocaleString();
-        nwVal.textContent = '\u00A5' + fmt(d.value);
-        const p = d.pnl || 0;
-        nwCh.textContent = (p >= 0 ? '+' : '') + '\u00A5' + fmt(p);
-        nwCh.style.color = p >= 0 ? '#FF3B30' : '#34C759';
-        const pct = d.return_pct || 0;
-        if (pct) nwCh.textContent += ' (' + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%)';
-        const fillPct = Math.min(Math.max(((d.value - 10000) / 10000) * 100 + 50, 5), 100);
-        nwBar.style.width = fillPct + '%';
-
-        /* ── Render holdings ── */
-        if (d.holdings) {
-          portBadge.style.display = 'flex';
-          hc.classList.add('show');
-          const items = Object.entries(d.holdings);
-          const rows = hc.querySelectorAll('.hl');
-          rows.forEach((row, i) => {
-            if (i < items.length) {
-              const [code, info] = items[i];
-              const valEl = row.querySelector('.hl-val');
-              const pctEl = row.querySelector('.hl-pct');
-              const nameEl = row.querySelector('.hl-name');
-              const codeEl = row.querySelector('.hl-code');
-              if (nameEl) nameEl.textContent = info.name;
-              if (codeEl) codeEl.textContent = code + ' \u00B7 ' + info.ratio + '%';
-              if (valEl) valEl.textContent = '\u00A5' + fmt(info.value);
-              if (pctEl) pctEl.textContent = info.ratio + '% allocation';
-              /* color bar */
-              const bar = row.querySelector('.hl-bar');
-              if (bar) {
-                const fill = bar.querySelector('.hl-bar-f');
-                if (fill) fill.style.width = info.ratio + '%';
-              }
-            }
-          });
-          /* Add bar fills */
-          rows.forEach(r => {
-            if (!r.querySelector('.hl-bar')) {
-              const bar = document.createElement('div');
-              bar.className = 'hl-bar';
-              bar.innerHTML = '<div class="hl-bar-f"></div>';
-              r.appendChild(bar);
-            }
-          });
-        }
-        /* ── Render sparkline ── */
-        const sparkRow = document.getElementById('sparkRow');
-        if (sparkRow) {
-          sparkRow.classList.add('show');
-          const svg = document.getElementById('sparkSvg');
-          if (svg && d.sparkline && d.sparkline.length > 1) {
-            const pts = d.sparkline;
-            const min = Math.min(...pts), max = Math.max(...pts);
-            const range = max - min || 1;
-            const w = 220, h = 40, pad = 2;
-            const xs = pts.map((_,i) => (i / (pts.length-1)) * (w - pad*2) + pad);
-            const ys = pts.map(v => h - pad - ((v - min) / range) * (h - pad*2));
-            const color = pts[pts.length-1] >= pts[0] ? 'var(--green)' : 'var(--red)';
-            /* Line */
-            const line = xs.map((x,i) => (i === 0 ? 'M' : 'L') + x.toFixed(1) + ',' + ys[i].toFixed(1)).join(' ');
-            /* Gradient */
-            svg.innerHTML = '<defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+color+'" stop-opacity="0.15"/><stop offset="100%" stop-color="'+color+'" stop-opacity="0"/></linearGradient></defs><path d="'+line+'" fill="none" stroke="'+color+'" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/><path d="'+line+' L'+xs[xs.length-1].toFixed(1)+','+h+' L'+xs[0].toFixed(1)+','+h+' Z" fill="url(#sg)"/>';
-          }
-        }
+  /* ── Portfolio ── */
+  const holdHtml = (d, color) => '<div class="port-hold"><div class="port-hl"><span class="port-hd" style="background:'+color+'"></span><span class="port-hn">'+d.name+'</span><span class="port-hc">'+d.code+'</span></div><div class="port-hr"><span class="port-hv">¥'+(d.value).toLocaleString()+'</span></div></div><div class="port-bar"><div class="port-bar-f" style="width:'+d.ratio+'%;background:'+color+'"></div></div>';
+  fetch('portfolio-latest.json').then(r=>r.json()).then(d=>{
+    if(d&&typeof d.value==='number'&&d.value>0){
+      const fmt=n=>n.toLocaleString(), p=d.pnl||0, pct=d.return_pct||0;
+      let chColor=p>=0?'var(--red)':'var(--green)';
+      let spark='';
+      if(d.sparkline&&d.sparkline.length>1){
+        const pts=d.sparkline,min=Math.min(...pts),max=Math.max(...pts),range=max-min||1;
+        const w=420,h=32,pd=2,xs=pts.map((_,i)=>(i/(pts.length-1))*(w-pd*2)+pd);
+        const ys=pts.map(v=>h-pd-((v-min)/range)*(h-pd*2));
+        const col=pts[pts.length-1]>=pts[0]?'var(--red)':'var(--green)';
+        const line=xs.map((x,i)=>(i===0?'M':'L')+x.toFixed(1)+','+ys[i].toFixed(1)).join(' ');
+        spark='<svg viewBox="0 0 420 32" preserveAspectRatio="none"><defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="'+col+'" stop-opacity="0.2"/><stop offset="100%" stop-color="'+col+'" stop-opacity="0"/></linearGradient></defs><path d="'+line+'" fill="none" stroke="'+col+'" stroke-width="1.5"/><path d="'+line+' L'+xs[xs.length-1].toFixed(1)+',32 L'+xs[0].toFixed(1)+',32 Z" fill="url(#sg)"/></svg>';
       }
-    })
-    .catch(() => {});
-
-  /* ── Fetch archive data ── */
-  fetch('archive-data.json')
-    .then(r => r.json())
-    .then(d => {
-      ARCHIVE = d;
-      /* Show report link if any invest entries exist */
-      const dates = Object.keys(d).sort().reverse();
-      for (const date of dates) {
-        if (d[date].invest) {
-          const rRow = document.getElementById('reportRow');
-          if (rRow) {
-            rRow.style.display = 'flex';
-            const rDate = document.getElementById('reportDate');
-            if (rDate) rDate.textContent = '最近更新: ' + date;
-          }
-          break;
-        }
+      let holds='';
+      const colors=['var(--red)','var(--blue)','var(--orange)','var(--purple)','var(--green)'];
+      let i=0;
+      for(const[code,info]of Object.entries(d.holdings||{})){
+        holds+=holdHtml({name:info.name,code:code,value:info.value,ratio:info.ratio},colors[i%colors.length]);
+        i++;
       }
-    })
-    .catch(() => {});
-
-  /* ── Calendar ── */
-  const key = d => d.getFullYear() + '-' + pad(d.getMonth()+1) + '-' + pad(d.getDate());
-  const sameDay = (a, b) => a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
-  const today = new Date();
-
-  function renderCal() {
-    const y = calDate.getFullYear(), m = calDate.getMonth();
-    calM.textContent = new Date(y, m).toLocaleDateString('en-US', { year:'numeric', month:'long' });
-    calD.innerHTML = '';
-    const fd = new Date(y, m, 1).getDay();
-    const dim = new Date(y, m+1, 0).getDate();
-
-    /* empty cells */
-    for (let i = 0; i < fd; i++) {
-      const e = document.createElement('div');
-      e.className = 'cal-day emp';
-      calD.appendChild(e);
+      portBody.innerHTML='<div class="port-top"><span class="port-nw">¥'+fmt(d.value)+'</span><span class="port-ch" style="color:'+chColor+'">'+(p>=0?'+':'')+'¥'+fmt(p)+(pct?' ('+(pct>=0?'+':'')+pct.toFixed(2)+'%)':'')+'</span></div>'+(spark?'<div class="port-spark">'+spark+'</div>':'')+(holds?'<div class="port-divider"></div>'+holds:'');
+    } else {
+      portBody.innerHTML='<div class="port-empty">暂无数据</div>';
     }
-    /* day cells */
-    for (let d = 1; d <= dim; d++) {
-      const dt = new Date(y, m, d);
-      const k = key(dt);
-      const el = document.createElement('div');
-      el.className = 'cal-day';
-      if (sameDay(dt, today)) el.classList.add('tdy');
+  }).catch(()=>{portBody.innerHTML='<div class="port-empty">暂无数据</div>'});
 
-      if (ARCHIVE[k]) {
-        const ds = document.createElement('div');
-        ds.className = 'cdots';
-        const types = { news:'b', invest:'p', finance:'g', usage:'o' };
-        for (const [t, cls] of Object.entries(types)) {
-          if (ARCHIVE[k][t]) {
-            const s = document.createElement('span');
-            s.className = 'cdot ' + cls;
-            ds.appendChild(s);
-          }
-        }
-        el.appendChild(ds);
-        el.addEventListener('click', () => showDay(k));
-      } else {
-        el.addEventListener('click', () => { dd.classList.remove('show'); });
-      }
-      const n = document.createElement('span');
-      n.textContent = d;
-      el.prepend(n);
-      calD.appendChild(el);
-    }
-  }
-
-  function showDay(k) {
-    const data = ARCHIVE[k];
-    if (!data) { dd.classList.remove('show'); return; }
-    dd.classList.add('show');
-    const d = new Date(k);
-    const lb = d.toLocaleDateString('zh-CN', { year:'numeric', month:'long', day:'numeric', weekday:'short' });
-    let html = '<div class="day-dtl-h">' + lb + '</div>';
-    const order = ['news','invest','finance','usage'];
-    order.forEach(p => {
-      if (data[p]) {
-        html += '<a class="day-dtl-item" href="' + data[p] + '" target="_blank">'
-          + '<div class="day-dtl-ico" style="background:' + P_MAP[p].bg + '">'
-          + SVG_MAP[p]
-          + '</div><span class="day-dtl-lbl">' + P_MAP[p].label + '</span></a>';
-      }
-    });
-    dd.innerHTML = html;
-  }
-
-  /* ── Portfolio button → opens latest report ── */
-  portBtn.addEventListener('click', () => {
-    ov.classList.add('open');
-    calDate.setDate(1);
-    calDate.setMonth(today.getMonth());
-    calDate.setFullYear(today.getFullYear());
-    renderCal();
-    /* Find latest invest entry */
-    const dates = Object.keys(ARCHIVE).sort().reverse();
-    for (const date of dates) {
-      if (ARCHIVE[date].invest) {
-        showDay(date);
+  /* ── Briefing ── */
+  fetch('archive-data.json').then(r=>r.json()).then(d=>{
+    const dates=Object.keys(d).sort().reverse();
+    for(const date of dates){
+      if(d[date].news){
+        const url=d[date].news;
+        fetch(url).then(r=>r.text()).then(html=>{
+          const title=html.match(/<title>(.*?)<\/title>/i);
+          const body=html.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim();
+          const summary=body.length>120?body.substring(0,120)+'...':body;
+          briefBody.innerHTML='<div class="brief-headline">'+(title?title[1].replace(' - 新闻简报',''):'今日简报')+'</div><div class="brief-summary">'+summary+'</div>';
+        }).catch(()=>{
+          briefBody.innerHTML='<div class="brief-headline">今日简报已生成</div><div class="brief-summary">点击查看完整内容</div>';
+        });
         return;
       }
     }
-    /* Fallback: just show today */
-    showDay(key(today));
+    briefBody.innerHTML='<div class="brief-empty">暂无简报</div>';
+  }).catch(()=>{briefBody.innerHTML='<div class="brief-empty">暂无简报</div>'});
+
+  /* ── Finance ── */
+  fetch('finance-records.json').then(r=>r.json()).then(data=>{
+    if(!data||!data.length){finBody.innerHTML='<div class="fin-empty">暂无数据</div>';return;}
+    const now=new Date(),thisMonth=String(now.getFullYear())+'-'+pad(now.getMonth()+1);
+    const thisYear=String(now.getFullYear());
+    let mInc=0,mExp=0,yInc=0,yExp=0;
+    data.forEach(r=>{
+      const d=r.date||'';
+      if(d.startsWith(thisYear)){if(r.type==='收入'||r.type==='income')yInc+=r.amount;else yExp+=r.amount;}
+      if(d.startsWith(thisMonth)){if(r.type==='收入'||r.type==='income')mInc+=r.amount;else mExp+=r.amount;}
+    });
+    const fmt=n=>'¥'+Math.round(n).toLocaleString();
+    finBody.innerHTML=
+      '<div class="fin-row"><span class="fin-l">本月收入</span><span class="fin-v inc">'+fmt(mInc)+'</span></div>'+
+      '<div class="fin-row"><span class="fin-l">本月支出</span><span class="fin-v exp">'+fmt(mExp)+'</span></div>'+
+      '<div class="fin-divider"></div>'+
+      '<div class="fin-row"><span class="fin-l">年度收入</span><span class="fin-v">'+fmt(yInc)+'</span></div>'+
+      '<div class="fin-row"><span class="fin-l">年度支出</span><span class="fin-v">'+fmt(yExp)+'</span></div>'+
+      '<div class="fin-row"><span class="fin-l">净结余</span><span class="fin-v net">'+(yInc-yExp>=0?'+':'')+fmt(yInc-yExp)+'</span></div>';
+  }).catch(()=>{finBody.innerHTML='<div class="fin-empty">暂无财务数据</div>'});
+
+  /* ── Tokens ―─ */
+  const tokModels=[
+    {name:'deepseek-v4-flash',tokens:3876448,cost:40.88,future:53.79,pct:51.9,color:TOKEN_COLORS[0]},
+    {name:'hy3-preview-agent',tokens:3313670,cost:5.85,future:7.70,pct:44.4,color:TOKEN_COLORS[1]},
+    {name:'glm-5.2',tokens:120757,cost:6.74,future:8.87,pct:1.6,color:TOKEN_COLORS[2]},
+    {name:'kimi-k2.7',tokens:60173,cost:2.20,future:2.90,pct:0.8,color:TOKEN_COLORS[3]},
+    {name:'minimax-m3',tokens:59766,cost:2.71,future:3.56,pct:0.8,color:TOKEN_COLORS[4]},
+    {name:'auto',tokens:39981,cost:0.06,future:0.08,pct:0.5,color:TOKEN_COLORS[5]}
+  ];
+  const totalTokens=tokModels.reduce((s,m)=>s+m.tokens,0);
+  const totalCost=tokModels.reduce((s,m)=>s+m.cost,0);
+  const futureCost=tokModels.reduce((s,m)=>s+m.future,0);
+  const fmtT=n=>n.toLocaleString();
+  let tokHtml='<div class="tok-total"><span class="tok-tv">'+fmtT(totalTokens)+'</span><span class="tok-tl">总 Token</span><span class="tok-tc" style="color:var(--red)">¥'+totalCost.toFixed(2)+'</span></div>'+
+    '<div class="tok-cost">当前费率 · 7月后 <span style="color:var(--red)">¥'+futureCost.toFixed(2)+'</span> (涨'+(Math.round((futureCost/totalCost-1)*100))+'% ⚠️)</div>'+
+    '<div class="tok-divider"></div>';
+  tokModels.forEach(m=>{
+    tokHtml+='<div class="tok-model"><div class="tok-mh"><span class="tok-mn">'+m.name+'</span><span class="tok-mt">'+fmtT(m.tokens)+'</span><span class="tok-mp">'+m.pct+'%</span></div><div class="tok-bar"><div class="tok-bar-f" style="width:'+m.pct+'%;background:'+m.color+'"></div></div></div>';
+  });
+  tokBody.innerHTML=tokHtml;
+
+  /* ── Portfolio toggle ── */
+  let portOpen=false;
+  $('portCard').addEventListener('click',()=>{
+    const holds=portBody.querySelectorAll('.port-hold,.port-bar');
+    holds.forEach(el=>{el.style.display=portOpen?'':'none'});
+    const div=portBody.querySelector('.port-divider');
+    if(div)div.style.display=portOpen?'':'none';
+    portOpen=!portOpen;
   });
 
-  /* ── Dark mode status bar ── */
-  const mq = window.matchMedia('(prefers-color-scheme:dark)');
-  function updateStatusBar(dark) {
-    const bar = document.querySelector('.status-bar');
-    if (bar) bar.style.background = dark ? 'rgba(28,28,30,0.94)' : 'rgba(249,249,249,0.94)';
-  }
-  updateStatusBar(mq.matches);
-  mq.addEventListener('change', e => updateStatusBar(e.matches));
+  /* ── Calendar ── */
+  const key=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+  const sameDay=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
+  const today=new Date();
 
-  /* ── Register service worker ── */
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  function renderCal(){
+    const y=calDate.getFullYear(),m=calDate.getMonth();
+    calM.textContent=new Date(y,m).toLocaleDateString('en-US',{year:'numeric',month:'long'});
+    calD.innerHTML='';
+    const fd=new Date(y,m,1).getDay(),dim=new Date(y,m+1,0).getDate();
+    for(let i=0;i<fd;i++){const e=document.createElement('div');e.className='cal-day emp';calD.appendChild(e)}
+    for(let d=1;d<=dim;d++){
+      const dt=new Date(y,m,d),k=key(dt),el=document.createElement('div');
+      el.className='cal-day';if(sameDay(dt,today))el.classList.add('tdy');
+      if(ARCHIVE[k]){const ds=document.createElement('div');ds.className='cdots';const types={news:'b',invest:'p',finance:'g',usage:'o'};
+        for(const[t,cls]of Object.entries(types)){if(ARCHIVE[k][t]){const s=document.createElement('span');s.className='cdot '+cls;ds.appendChild(s)}}
+        el.appendChild(ds);el.addEventListener('click',()=>showDay(k));
+      }else{el.addEventListener('click',()=>dd.classList.remove('show'))}
+      const n=document.createElement('span');n.textContent=d;el.prepend(n);calD.appendChild(el);
+    }
   }
+  function showDay(k){
+    const data=ARCHIVE[k];if(!data){dd.classList.remove('show');return}
+    dd.classList.add('show');
+    const d=new Date(k),lb=d.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'short'});
+    let html='<div class="day-dtl-h">'+lb+'</div>';
+    ['news','invest','finance','usage'].forEach(p=>{if(data[p]){html+='<a class="day-dtl-item" href="'+data[p]+'" target="_blank"><div class="day-dtl-ico" style="background:'+P_MAP[p].bg+'">'+SVG_MAP[p]+'</div><span class="day-dtl-lbl">'+P_MAP[p].label+'</span></a>'}});
+    dd.innerHTML=html;
+  }
+
+  /* ── Fetch archive ── */
+  fetch('archive-data.json').then(r=>r.json()).then(d=>{ARCHIVE=d}).catch(()=>{});
 
   /* ── Calendar events ── */
-  $('calBtn').addEventListener('click', () => {
-    ov.classList.add('open');
-    renderCal();
-    const k = key(today);
-    if (ARCHIVE[k]) showDay(k);
-  });
-  $('ovBg').addEventListener('click', () => ov.classList.remove('open'));
-  $('sheetX').addEventListener('click', () => ov.classList.remove('open'));
-  $('calP').addEventListener('click', () => {
-    calDate.setMonth(calDate.getMonth() - 1);
-    renderCal();
-  });
-  $('calN').addEventListener('click', () => {
-    calDate.setMonth(calDate.getMonth() + 1);
-    renderCal();
-  });
+  $('calBtn').addEventListener('click',()=>{ov.classList.add('open');renderCal();const k=key(today);if(ARCHIVE[k])showDay(k)});
+  $('ovBg').addEventListener('click',()=>ov.classList.remove('open'));
+  $('sheetX').addEventListener('click',()=>ov.classList.remove('open'));
+  $('calP').addEventListener('click',()=>{calDate.setMonth(calDate.getMonth()-1);renderCal()});
+  $('calN').addEventListener('click',()=>{calDate.setMonth(calDate.getMonth()+1);renderCal()});
+  WEEKDAYS.forEach(d=>{const e=document.createElement('div');e.className='cal-wd';e.textContent=d;calW.appendChild(e)});
 
-  /* ── Render week headers ── */
-  WEEKDAYS.forEach(d => {
-    const e = document.createElement('div');
-    e.className = 'cal-wd';
-    e.textContent = d;
-    calW.appendChild(e);
-  });
+  /* ── Dark mode status bar ── */
+  const mq=window.matchMedia('(prefers-color-scheme:dark)');
+  function updateBar(dark){const bar=document.querySelector('.status-bar');if(bar)bar.style.background=dark?'rgba(28,28,30,0.94)':'rgba(249,249,249,0.94)'}
+  updateBar(mq.matches);mq.addEventListener('change',e=>updateBar(e.matches));
+
+  /* ── Service Worker ── */
+  if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 
 })();
 </script>
