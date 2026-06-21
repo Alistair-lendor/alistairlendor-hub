@@ -3,298 +3,283 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<link rel="manifest" href="/manifest.json">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="Alistair">
-<link rel="apple-touch-icon" href="/alistair-logo.png">
 <title>Alistair</title>
 <style>
 @font-face{font-family:'Geist';src:url('https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-sans/Geist-Variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
 @font-face{font-family:'Geist Mono';src:url('https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-mono/GeistMono-Variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+
 :root{
   --bg:#ffffff; --fg:#171717; --fg2:#4d4d4d; --fg3:#666666; --fg4:#808080;
   --line:#ebebeb; --surface:#fafafa;
-  --blue:#0072f5; --red:#ff5b4f;
-  --f:'Geist',Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,sans-serif;
-  --fm:'Geist Mono',ui-monospace,SFMono-Regular,Roboto Mono,Menlo,monospace;
-  --safe:env(safe-area-inset-bottom,0px);
+  --blue:#0072f5; --red:#ff5b4f; --green:#34c759; --orange:#ff9500;
+  --f:'Geist',Arial,sans-serif;
+  --fm:'Geist Mono',ui-monospace,monospace;
   --font-features:"liga","tnum";
-  --sb:0px 0px 0px 1px rgba(0,0,0,0.08);
+
+  /* Vercel Shadow System */
+  --shadow-border:0px 0px 0px 1px rgba(0,0,0,0.08);
+  --shadow-elevation:0px 2px 2px rgba(0,0,0,0.04);
+  --shadow-ambient:0px 8px 8px -8px rgba(0,0,0,0.04);
+  --shadow-glow:#fafafa 0px 0px 0px 1px;
+
+  /* Card shadow stack - full Vercel */
+  --shadow-card:var(--shadow-border), var(--shadow-elevation), var(--shadow-ambient), var(--shadow-glow);
+
+  /* Section divider */
+  --shadow-divider:0px 1px 0px 0px rgba(0,0,0,0.08);
+
   --focus:hsla(212,100%,48%,1);
 }
+
 @media(prefers-color-scheme:dark){
   :root{
     --bg:#000000; --fg:#ededed; --fg2:#888888; --fg3:#666666; --fg4:#555555;
     --line:#222222; --surface:#111111;
     --blue:#3b82f6; --red:#ff5b4f;
-    --sb:0px 0px 0px 1px rgba(255,255,255,0.08);
+    --shadow-border:0px 0px 0px 1px rgba(255,255,255,0.08);
+    --shadow-elevation:0px 2px 2px rgba(255,255,255,0.04);
+    --shadow-ambient:0px 8px 8px -8px rgba(255,255,255,0.04);
+    --shadow-glow:#111111 0px 0px 0px 1px;
+    --shadow-divider:0px 1px 0px 0px rgba(255,255,255,0.08);
   }
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+*{margin:0;padding:0;box-sizing:border-box}
 *{font-feature-settings:var(--font-features)}
 html,body{height:100%}
 body{
   font-family:var(--f); background:var(--bg); color:var(--fg);
-  -webkit-font-smoothing:antialiased; padding-bottom:var(--safe); line-height:1.5;
-  max-width:560px; margin:0 auto;
+  -webkit-font-smoothing:antialiased; line-height:1.5;
+  max-width:520px; margin:0 auto;
 }
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto}
 
-/* ═══ Hero — centered, 1/3 viewport ═══ */
+/* ═══ Hero — centered, aggressive Vercel scale ═══ */
 .hero{
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:33vh;padding:40px 24px 32px;text-align:center;position:relative;
+  min-height:33vh;padding:48px 24px 40px;text-align:center;position:relative;
 }
-.hero-logo{width:56px;height:56px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.hero-logo svg{width:28px;height:28px}
-.hero-name{font-size:1.1rem;font-weight:500;color:var(--fg);letter-spacing:-0.03em;line-height:1.2;margin-bottom:4px}
-.hero-date{font-size:0.75rem;font-weight:400;color:var(--fg3);letter-spacing:0.01em}
-.hero-cal{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:6px;border:none;background:transparent;color:var(--fg2);font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.12s}
+.hero-logo{width:96px;height:96px;border-radius:50%;overflow:hidden;margin-bottom:24px}
+.hero-logo img{width:100%;height:100%;object-fit:cover}
+.hero-name{
+  font-size:1.75rem;font-weight:600;color:var(--fg);
+  letter-spacing:-1.28px;line-height:1.1;margin-bottom:8px;
+}
+.hero-date{font-size:0.82rem;font-weight:400;color:var(--fg3);letter-spacing:-0.02em}
+.hero-cal{
+  position:absolute;top:24px;right:24px;width:32px;height:32px;
+  border-radius:8px;border:none;background:transparent;color:var(--fg2);
+  font-size:1rem;cursor:pointer;display:flex;align-items:center;
+  justify-content:center;transition:background 0.12s;
+}
 .hero-cal:hover{background:var(--surface)}
+.hero-cal:active{transform:scale(0.97)}
 
-/* ═══ Content — scrollable ═══ */
-.content{padding-bottom:24px}
+/* ═══ Content container ═══ */
+.content{padding:0 16px 40px}
 
-/* Section */
-.sec{border-top:1px solid var(--fg);padding:14px 24px}
-.sec:first-child{border-top:none}
-.sec-l{font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg4);margin-bottom:10px}
+/* ═══ Module section — Vercel full-width divider ═══ */
+.sec{
+  padding:24px 8px;
+  box-shadow:var(--shadow-divider);
+}
+.sec:first-child{padding-top:8px}
 
-/* Briefing */
-.brief{display:block;text-decoration:none;color:inherit;padding:6px 0;transition:opacity 0.12s;cursor:pointer}
+/* Module label — BIG, like Vercel section titles ═══ */
+.sec-l{
+  font-size:1.5rem;font-weight:600;color:var(--fg);
+  letter-spacing:-1.28px;line-height:1.2;margin-bottom:16px;
+}
+
+/* ═══ Briefing ═══ */
+.brief{display:block;padding:4px 0;transition:opacity 0.12s;cursor:pointer}
 .brief:hover{opacity:0.7}
-.brief-t{font-size:0.88rem;font-weight:500;color:var(--fg);line-height:1.4;letter-spacing:-0.02em;margin-bottom:2px}
-.brief-s{font-size:0.75rem;font-weight:400;color:var(--fg2);line-height:1.5}
-.brief-m{font-size:0.68rem;font-weight:400;color:var(--fg4);margin-top:6px}
+.brief-t{font-size:1rem;font-weight:500;color:var(--fg);letter-spacing:-0.32px;line-height:1.4;margin-bottom:4px}
+.brief-s{font-size:0.82rem;font-weight:400;color:var(--fg2);line-height:1.5;letter-spacing:-0.02em}
+.brief-m{font-size:0.72rem;font-weight:400;color:var(--fg4);margin-top:8px;font-family:var(--fm);letter-spacing:0}
 
-/* Portfolio */
-.pw{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px}
-.pv{font-size:2rem;font-weight:600;font-family:var(--fm);color:var(--fg);letter-spacing:-1.2px;line-height:1}
-.pc{font-size:0.82rem;font-weight:500;font-family:var(--fm);color:var(--red);letter-spacing:-0.02em}
-.ps{height:40px;margin:6px 0 14px}
-.ps svg{width:100%;height:40px;display:block}
-.pli{display:flex;align-items:center;padding:4px 0;cursor:pointer;transition:opacity 0.12s}
+/* ═══ Portfolio ═══ */
+.pw{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:8px}
+.pv{font-size:2.25rem;font-weight:600;font-family:var(--fm);color:var(--fg);letter-spacing:-1.28px;line-height:1}
+.pc{font-size:0.92rem;font-weight:500;font-family:var(--fm);color:var(--red);letter-spacing:-0.32px}
+.ps{height:48px;margin:8px 0 16px}
+.ps svg{width:100%;height:48px;display:block}
+.pli{display:flex;align-items:center;padding:6px 0;cursor:pointer;transition:opacity 0.12s}
 .pli:hover{opacity:0.7}
-.pli+.pli{margin-top:2px}
-.pln{font-size:0.72rem;font-weight:400;color:var(--fg3);font-family:var(--fm);min-width:48px}
-.plc{font-size:0.78rem;font-weight:500;color:var(--fg);flex:1;margin-left:6px;letter-spacing:-0.01em}
-.plv{font-size:0.78rem;font-weight:500;font-family:var(--fm);color:var(--fg)}
-.plb{display:flex;align-items:center;gap:6px;margin:0;padding:1px 0 5px 0}
-.plbf{height:2px;border-radius:1px;flex:1}
-.plbp{font-size:0.62rem;font-weight:400;color:var(--fg4);font-family:var(--fm);min-width:20px;text-align:right}
+.pli+.pli{border-top:1px solid var(--line);margin-top:4px;padding-top:10px}
+.pln{font-size:0.78rem;font-weight:400;color:var(--fg3);font-family:var(--fm);min-width:56px;letter-spacing:-0.02em}
+.plc{font-size:0.88rem;font-weight:500;color:var(--fg);flex:1;margin-left:8px;letter-spacing:-0.32px}
+.plv{font-size:0.88rem;font-weight:500;font-family:var(--fm);color:var(--fg)}
+.plb{display:flex;align-items:center;gap:8px;margin:0;padding:2px 0 6px 0}
+.plbf{height:3px;border-radius:2px;flex:1}
+.plbp{font-size:0.72rem;font-weight:400;color:var(--fg4);font-family:var(--fm);min-width:24px;text-align:right}
 
-/* Finance */
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.fgi{box-shadow:var(--sb);border-radius:6px;padding:12px}
-.fgl{font-size:0.65rem;font-weight:400;color:var(--fg4);margin-bottom:3px;letter-spacing:0.01em}
-.fgv{font-size:1.1rem;font-weight:600;font-family:var(--fm);letter-spacing:-0.03em}
-.fd{height:1px;background:var(--fg);margin:8px 0;opacity:0.2}
-.fb{display:flex;justify-content:space-between;padding:3px 0}
-.fb-l{font-size:0.72rem;font-weight:400;color:var(--fg3)}
-.fb-v{font-size:0.78rem;font-weight:500;font-family:var(--fm);color:var(--fg)}
+/* ═══ Finance — Vercel card style ═══ */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.fgi{
+  box-shadow:var(--shadow-card);border-radius:8px;padding:16px;
+  transition:box-shadow 0.12s;
+}
+.fgi:active{transform:scale(0.98)}
+.fgl{font-size:0.75rem;font-weight:400;color:var(--fg4);margin-bottom:6px;letter-spacing:-0.02em}
+.fgv{font-size:1.25rem;font-weight:600;font-family:var(--fm);letter-spacing:-0.64px}
+.fd{height:1px;background:var(--line);margin:12px 0}
+.fb{display:flex;justify-content:space-between;padding:4px 0}
+.fb-l{font-size:0.82rem;font-weight:400;color:var(--fg3);letter-spacing:-0.02em}
+.fb-v{font-size:0.88rem;font-weight:500;font-family:var(--fm);color:var(--fg);letter-spacing:-0.32px}
 
-/* Tokens */
+/* ═══ Tokens ═══ */
 .th{display:flex;align-items:baseline;justify-content:space-between}
-.tt{font-size:1.1rem;font-weight:600;font-family:var(--fm);color:var(--fg);letter-spacing:-0.03em;line-height:1.2}
-.tc{font-size:0.75rem;font-weight:500;font-family:var(--fm);color:var(--red);letter-spacing:-0.02em}
-.tw{font-size:0.62rem;font-weight:400;color:var(--fg4);text-align:right;margin:1px 0 10px}
-.tli{display:flex;align-items:center;gap:6px;padding:3px 0}
-.tln{font-size:0.72rem;font-weight:450;color:var(--fg);width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
-.tlb{flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
+.tt{font-size:1.25rem;font-weight:600;font-family:var(--fm);color:var(--fg);letter-spacing:-0.64px;line-height:1.2}
+.tc{font-size:0.82rem;font-weight:500;font-family:var(--fm);color:var(--red);letter-spacing:-0.32px}
+.tw{font-size:0.72rem;font-weight:400;color:var(--fg4);text-align:right;margin:2px 0 12px;font-family:var(--fm)}
+.tli{display:flex;align-items:center;gap:8px;padding:5px 0}
+.tli+.tli{border-top:1px solid var(--line);margin-top:3px;padding-top:8px}
+.tln{font-size:0.82rem;font-weight:500;color:var(--fg);width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0;letter-spacing:-0.02em}
+.tlb{flex:1;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
 .tlbf{height:100%;border-radius:2px}
-.tla{font-size:0.62rem;font-weight:400;color:var(--fg2);font-family:var(--fm);width:50px;text-align:right;flex-shrink:0}
-.tlp{font-size:0.55rem;font-weight:400;color:var(--fg4);font-family:var(--fm);width:18px;text-align:right;flex-shrink:0}
+.tla{font-size:0.72rem;font-weight:400;color:var(--fg2);font-family:var(--fm);width:56px;text-align:right;flex-shrink:0}
+.tlp{font-size:0.65rem;font-weight:400;color:var(--fg4);font-family:var(--fm);width:24px;text-align:right;flex-shrink:0}
 
-/* Quick Actions */
-.qali{display:flex;align-items:center;padding:8px 0;cursor:pointer;text-decoration:none;color:inherit;transition:opacity 0.12s}
-.qali:hover{opacity:0.7}
-.qa-ic{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px}
-.qa-ic svg{width:12px;height:12px}
-.qa-t{font-size:0.82rem;font-weight:500;flex:1;color:var(--fg);letter-spacing:-0.01em}
-.qa-d{font-size:0.65rem;font-weight:400;color:var(--fg3);margin-left:8px}
-.qa-a{font-size:0.65rem;font-weight:400;color:var(--fg4);transition:color 0.12s}
-.qali:hover .qa-a{color:var(--fg2)}
-.qa-a::after{content:'→';margin-left:4px;display:inline-block;transition:transform 0.12s}
-.qali:hover .qa-a::after{transform:translateX(2px)}
+/* ═══ Quick Actions & Schedule ═══ */
+.qali{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  border-radius:8px;box-shadow:var(--shadow-card);
+  cursor:pointer;transition:all 0.12s;
+}
+.qali:hover{box-shadow:var(--shadow-border), var(--shadow-elevation), var(--shadow-ambient), var(--shadow-glow)}
+.qali:active{transform:scale(0.98)}
+.qa-ic{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.qa-t{font-size:0.92rem;font-weight:500;letter-spacing:-0.32px}
+.qa-d{font-size:0.78rem;color:var(--fg3);letter-spacing:-0.02em}
+.qa-a{margin-left:auto;font-size:0.72rem;color:var(--fg4);font-family:var(--fm);white-space:nowrap}
 
-/* Schedule — Vercel pill badges */
-.sch{display:flex;flex-wrap:wrap;gap:6px}
-.schi{display:flex;align-items:center;gap:4px;padding:2px 10px;border-radius:9999px;font-size:0.72rem;font-weight:500;color:var(--fg)}
+.sch{display:flex;flex-wrap:wrap;gap:8px}
+.schi{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;border-radius:6px;font-size:0.82rem;
+  font-weight:500;letter-spacing:-0.02em;
+  transition:all 0.12s;cursor:default;
+}
 .schi.on{background:var(--fg);color:var(--bg)}
-.schi.off{box-shadow:var(--sb);color:var(--fg2)}
-.sch-d{font-family:var(--fm);font-size:0.68rem;font-weight:500}
-.sch-l{font-weight:400;color:var(--fg3)}
+.schi.off{color:var(--fg3);box-shadow:var(--shadow-border)}
+.sch-d{font-family:var(--fm);font-size:0.75rem;letter-spacing:0}
 
-/* Footer */
-.ft{text-align:center;padding:32px 24px;font-size:0.6rem;font-weight:400;color:var(--fg4);letter-spacing:0.01em}
-.ft a{color:var(--fg2);text-decoration:none;transition:color 0.12s}
-.ft a:hover{color:var(--fg)}
+.ft{text-align:center;font-size:0.75rem;color:var(--fg4);padding:24px 0 32px}
+.ft a{text-decoration:underline;text-underline-offset:2px}
+.ft a:hover{opacity:0.7}
 
-/* Calendar Overlay */
-.ov{display:none;position:fixed;inset:0;z-index:100}
-.ov.open{display:block}
-.ovb{position:absolute;inset:0;background:hsla(0,0%,50%,0.3);animation:fi 0.15s}
-@keyframes fi{from{opacity:0}}
-.sh{position:absolute;bottom:0;left:0;right:0;background:var(--bg);box-shadow:var(--sb),rgba(0,0,0,0.04) 0px -2px 8px;padding:0 0 var(--safe);max-height:85vh;overflow-y:auto;animation:su 0.25s ease-out}
-@keyframes su{from{transform:translateY(16px);opacity:0}}
-.shh{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 6px;position:sticky;top:0;background:var(--bg);z-index:2}
-.shh h3{font-size:0.85rem;font-weight:500;color:var(--fg);letter-spacing:-0.01em}
-.sx{width:28px;height:28px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:0.75rem;color:var(--fg2);display:flex;align-items:center;justify-content:center;transition:background 0.12s}
-.sx:hover{background:var(--surface)}
-.cn{display:flex;align-items:center;justify-content:space-between;padding:4px 24px 8px}
-.cnb{width:28px;height:28px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:0.8rem;color:var(--fg2);display:flex;align-items:center;justify-content:center;transition:background 0.12s}
-.cnb:hover{background:var(--surface)}
-.cnl{font-size:0.82rem;font-weight:500;color:var(--fg);letter-spacing:-0.01em}
-.cw{display:grid;grid-template-columns:repeat(7,1fr);padding:0 24px}
-.cwd{text-align:center;font-size:0.6rem;font-weight:500;color:var(--fg4);padding:5px 0;text-transform:uppercase;letter-spacing:0.04em}
-.cd{display:grid;grid-template-columns:repeat(7,1fr);padding:0 24px 10px;gap:2px}
-.cdy{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.72rem;cursor:pointer;gap:1px;border-radius:6px;color:var(--fg);transition:background 0.12s}
-.cdy:hover{background:var(--surface)}
-.cdy.tdy{background:var(--fg);color:var(--bg)}
-.cdy.emp{visibility:hidden}
-.cdy .cds{display:flex;gap:2px}
-.cdy .cdt{width:3px;height:3px;border-radius:50%}
-.cdy .cdt.b{background:var(--blue)}.cdy .cdt.g{background:var(--red)}.cdy .cdt.p{background:#888}.cdy .cdt.o{background:#bbb}
-.dd{padding:6px 24px 12px;display:none}
-.dd.show{display:block}
-.ddh{font-size:0.62rem;font-weight:500;color:var(--fg4);margin-bottom:6px;letter-spacing:0.02em;text-transform:uppercase}
-.ddi{display:flex;align-items:center;gap:8px;padding:8px 0;text-decoration:none;color:inherit;transition:opacity 0.12s}
-.ddi:hover{opacity:0.7}
-.dii{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.dii svg{width:11px;height:11px}
-.dil{font-size:0.72rem;font-weight:450;color:var(--fg)}
+/* Quick Action Create Task styling */
+.qa-ic svg{width:18px;height:18px}
 </style>
 </head>
 <body>
 
-<!-- ═══ Hero: centered, 1/3 viewport ═══ -->
+<!-- Hero — bigger, bolder, Vercel-style -->
 <div class="hero">
   <div class="hero-logo">
-    <svg viewBox="0 0 100 100" fill="none">
-      <rect x="16" y="16" width="68" height="68" rx="20" stroke="#fff" stroke-width="3"/>
-      <path d="M36 42 h28 M50 42 v26 M39 58 h16" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
-    </svg>
+    <img src="/alistair-logo.png" alt="A" style="width:100%;height:100%;object-fit:cover">
   </div>
   <div class="hero-name">Alistair</div>
-  <div class="hero-date" id="pd"></div>
-  <button class="hero-cal" id="cb">📅</button>
+  <div class="hero-date" id="pd">6月22日 周一</div>
+  <button class="hero-cal" id="cb" aria-label="Calendar">📅</button>
 </div>
 
-<!-- ═══ Content: scrollable ═══ -->
 <div class="content">
 
-  <a href="https://news.alistairlendor.com" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Briefing</div>
-    <div id="bb">
-      <div class="brief-t">今日简报已生成</div>
-      <div class="brief-s">点击查看完整内容</div>
-    </div>
+<!-- Briefing -->
+<div class="sec">
+  <div class="sec-l">Briefing</div>
+  <a class="brief" href="https://news.alistairlendor.com" target="_blank">
+    <div class="brief-t">今日头条 · AI日报新增"具身智能"专题</div>
+    <div class="brief-s">Apple WWDC Siri重构、OpenAI Codex周活破500万、国内首份具身智能标准实施</div>
+    <div class="brief-m">09:00 · 新闻简报</div>
   </a>
-
-  <a href="https://invest.alistairlendor.com" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Portfolio</div>
-    <div id="pb">
-      <div class="pw"><span class="pv">¥10,332</span><span class="pc">+¥332 (+3.32%)</span></div>
-      <div class="ps">
-        <svg viewBox="0 0 512 40" preserveAspectRatio="none">
-          <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--red)" stop-opacity="0.06"/><stop offset="100%" stop-color="var(--red)" stop-opacity="0"/></linearGradient></defs>
-          <path d="M0,32 L80,30 L160,26 L240,22 L320,16 L400,10 L512,8" fill="none" stroke="var(--red)" stroke-width="1" stroke-linecap="round"/>
-          <path d="M0,32 L80,30 L160,26 L240,22 L320,16 L400,10 L512,8 L512,40 L0,40 Z" fill="url(#sg)"/>
-        </svg>
-      </div>
-      <div class="pli"><span class="pln">006131</span><span class="plc">沪深300ETF联接C</span><span class="plv">¥5,166</span></div>
-      <div class="plb"><div class="plbf" style="background:var(--red)"></div><span class="plbp">50%</span></div>
-      <div class="pli"><span class="pln">004348</span><span class="plc">中证500ETF联接C</span><span class="plv">¥3,100</span></div>
-      <div class="plb"><div class="plbf" style="background:#888"></div><span class="plbp">30%</span></div>
-      <div class="pli"><span class="pln">余额宝</span><span class="plc">银华多利宝货币A</span><span class="plv">¥2,066</span></div>
-      <div class="plb"><div class="plbf" style="background:#bbb"></div><span class="plbp">20%</span></div>
-    </div>
-  </a>
-
-  <a href="https://finance.alistairlendor.com" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Finance</div>
-    <div id="fb">
-      <div class="fg">
-        <div class="fgi"><div class="fgl">本月收入</div><div class="fgv" style="color:var(--fg)">¥6,517</div></div>
-        <div class="fgi"><div class="fgl">本月支出</div><div class="fgv" style="color:var(--fg2)">¥3,798</div></div>
-      </div>
-      <div class="fd"></div>
-      <div class="fb"><span class="fb-l">年度收入</span><span class="fb-v">¥82,319</span><span class="fb-l" style="margin-left:24px">年度支出</span><span class="fb-v">¥174,762</span></div>
-      <div class="fb" style="margin-top:2px"><span class="fb-l">本月净结余</span><span class="fb-v" style="color:var(--fg)">+¥2,720</span></div>
-    </div>
-  </a>
-
-  <a href="https://alistairlendor.com/usage/usage_dashboard.html" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Tokens</div>
-    <div id="tb">
-      <div class="th"><span class="tt">7,470,795</span><span class="tc">¥58.44</span></div>
-      <div class="tw">当前 · 7月后 <span>¥76.90</span> (+32%)</div>
-      <div class="tli"><span class="tln">deepseek-v4-flash</span><div class="tlb"><div class="tlbf" style="width:51.9%;background:var(--fg)"></div></div><span class="tla">3,876k</span><span class="tlp">52%</span></div>
-      <div class="tli"><span class="tln">hy3-preview-agent</span><div class="tlb"><div class="tlbf" style="width:44.4%;background:var(--fg2)"></div></div><span class="tla">3,313k</span><span class="tlp">44%</span></div>
-      <div class="tli"><span class="tln">glm-5.2</span><div class="tlb"><div class="tlbf" style="width:1.6%;background:var(--fg3)"></div></div><span class="tla">120k</span><span class="tlp">2%</span></div>
-      <div class="tli"><span class="tln">kimi-k2.7</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">60k</span><span class="tlp">1%</span></div>
-      <div class="tli"><span class="tln">minimax-m3</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">59k</span><span class="tlp">1%</span></div>
-      <div class="tli"><span class="tln">auto</span><div class="tlb"><div class="tlbf" style="width:0.5%;background:var(--fg3)"></div></div><span class="tla">39k</span><span class="tlp">1%</span></div>
-    </div>
-  </a>
-
-  <div class="sec">
-    <div class="sec-l">Quick Actions</div>
-    <a class="qali" href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" target="_blank">
-      <div class="qa-ic"><svg viewBox="0 0 22 22" fill="none"><path d="M13 4l5 5-10 10H3v-5L13 4z" stroke="var(--fg2)" stroke-width="1.6" stroke-linejoin="round"/><line x1="13" y1="4" x2="18" y2="9" stroke="var(--fg2)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <span class="qa-t">Create Task</span><span class="qa-d">GitHub Issue</span>
-      <span class="qa-a">Anytime</span>
-    </a>
-  </div>
-
-  <div class="sec">
-    <div class="sec-l">Schedule</div>
-    <div class="sch">
-      <span class="schi on"><span class="sch-d">00:00</span><span class="sch-l">Finance</span></span>
-      <span class="schi on"><span class="sch-d">09:00</span><span class="sch-l">Briefing</span></span>
-      <span class="schi off"><span class="sch-d">13:00</span><span class="sch-l">PingPong</span></span>
-      <span class="schi on"><span class="sch-d">16:00</span><span class="sch-l">Portfolio</span></span>
-      <span class="schi off"><span class="sch-d">23:55</span><span class="sch-l">Remind</span></span>
-      <span class="schi on"><span class="sch-d">12h</span><span class="sch-l">Usage</span></span>
-    </div>
-  </div>
-
-  <div class="ft">Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a> · <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a></div>
 </div>
 
-<!-- Calendar Overlay -->
-<div class="ov" id="ov"><div class="ovb" id="ovb"></div>
-<div class="sh">
-  <div class="shh"><h3>日历</h3><button class="sx" id="sx">✕</button></div>
-  <div class="cn"><button class="cnb" id="cp">←</button><span class="cnl" id="cm"></span><button class="cnb" id="cn">→</button></div>
-  <div class="cw" id="cw"></div>
-  <div class="cd" id="cd"></div>
-  <div class="dd" id="dd"></div>
-</div></div>
+<!-- Portfolio -->
+<div class="sec">
+  <div class="sec-l">Portfolio</div>
+  <a href="https://invest.alistairlendor.com" target="_blank" style="display:block;color:inherit;text-decoration:none">
+    <div class="pw"><span class="pv">¥10,332</span><span class="pc">+¥332 · +3.32%</span></div>
+    <div class="ps">
+      <svg viewBox="0 0 512 48" preserveAspectRatio="none">
+        <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--red)" stop-opacity="0.06"/><stop offset="100%" stop-color="var(--red)" stop-opacity="0"/></linearGradient></defs>
+        <path d="M0,40 L80,38 L160,34 L240,30 L320,24 L400,16 L512,14" fill="none" stroke="var(--red)" stroke-width="1.5" stroke-linecap="round"/>
+        <path d="M0,40 L80,38 L160,34 L240,30 L320,24 L400,16 L512,14 L512,48 L0,48 Z" fill="url(#sg)"/>
+      </svg>
+    </div>
+    <div class="pli"><span class="pln">006131</span><span class="plc">沪深300ETF联接C</span><span class="plv">¥5,166</span></div>
+    <div class="plb"><div class="plbf" style="background:var(--red)"></div><span class="plbp">50%</span></div>
+    <div class="pli"><span class="pln">004348</span><span class="plc">中证500ETF联接C</span><span class="plv">¥3,100</span></div>
+    <div class="plb"><div class="plbf" style="background:#888"></div><span class="plbp">30%</span></div>
+    <div class="pli"><span class="pln">余额宝</span><span class="plc">银华多利宝货币A</span><span class="plv">¥2,066</span></div>
+    <div class="plb"><div class="plbf" style="background:#bbb"></div><span class="plbp">20%</span></div>
+  </a>
+</div>
+
+<!-- Finance -->
+<div class="sec">
+  <div class="sec-l">Finance</div>
+  <a href="https://finance.alistairlendor.com" target="_blank" style="display:block;color:inherit;text-decoration:none">
+    <div class="fg">
+      <div class="fgi"><div class="fgl">本月收入</div><div class="fgv" style="color:var(--green)">¥6,517</div></div>
+      <div class="fgi"><div class="fgl">本月支出</div><div class="fgv" style="color:var(--red)">¥3,798</div></div>
+    </div>
+    <div class="fb"><span class="fb-l">年度收入</span><span class="fb-v" style="color:var(--green)">+¥82,319</span><span class="fb-l" style="margin-left:24px">年度支出</span><span class="fb-v" style="color:var(--red)">¥174,762</span></div>
+    <div class="fb" style="margin-top:4px"><span class="fb-l">净结余</span><span class="fb-v" style="color:var(--fg)">+¥2,720</span></div>
+  </a>
+</div>
+
+<!-- Tokens -->
+<div class="sec">
+  <div class="sec-l">Tokens</div>
+  <a href="https://alistairlendor.com/usage/usage_dashboard.html" target="_blank" style="display:block;color:inherit;text-decoration:none">
+    <div class="th"><span class="tt">7,470,795</span><span class="tc">¥58.44</span></div>
+    <div class="tw">当前费率 · 7月后 <span style="color:var(--red)">¥76.90</span> (+32%)</div>
+    <div class="tli"><span class="tln">deepseek-v4-flash</span><div class="tlb"><div class="tlbf" style="width:51.9%;background:var(--fg)"></div></div><span class="tla">3,876k</span><span class="tlp">52%</span></div>
+    <div class="tli"><span class="tln">hy3-preview-agent</span><div class="tlb"><div class="tlbf" style="width:44.4%;background:var(--fg2)"></div></div><span class="tla">3,313k</span><span class="tlp">44%</span></div>
+    <div class="tli"><span class="tln">glm-5.2</span><div class="tlb"><div class="tlbf" style="width:1.6%;background:var(--fg3)"></div></div><span class="tla">120k</span><span class="tlp">2%</span></div>
+    <div class="tli"><span class="tln">kimi-k2.7</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">60k</span><span class="tlp">1%</span></div>
+    <div class="tli"><span class="tln">minimax-m3</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">59k</span><span class="tlp">1%</span></div>
+    <div class="tli"><span class="tln">auto</span><div class="tlb"><div class="tlbf" style="width:0.5%;background:var(--fg3)"></div></div><span class="tla">39k</span><span class="tlp">1%</span></div>
+  </a>
+</div>
+
+<!-- Quick Actions -->
+<div class="sec" style="box-shadow:none;padding-top:16px">
+  <div class="sec-l">Quick Actions</div>
+  <a class="qali" href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" target="_blank">
+    <div class="qa-ic" style="box-shadow:var(--shadow-border)"><svg viewBox="0 0 22 22" fill="none"><path d="M13 4l5 5-10 10H3v-5L13 4z" stroke="var(--fg2)" stroke-width="1.6" stroke-linejoin="round"/><line x1="13" y1="4" x2="18" y2="9" stroke="var(--fg2)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <span class="qa-t">Create Task</span><span class="qa-d">GitHub Issue</span>
+    <span class="qa-a">Anytime</span>
+  </a>
+</div>
+
+<!-- Schedule -->
+<div class="sec" style="box-shadow:none;padding-top:8px">
+  <div class="sec-l">Schedule</div>
+  <div class="sch">
+    <span class="schi on"><span class="sch-d">00:00</span> Finance</span>
+    <span class="schi on"><span class="sch-d">09:00</span> Briefing</span>
+    <span class="schi off"><span class="sch-d">13:00</span> PingPong</span>
+    <span class="schi on"><span class="sch-d">16:00</span> Portfolio</span>
+    <span class="schi off"><span class="sch-d">23:55</span> Remind</span>
+    <span class="schi on"><span class="sch-d">12h</span> Usage</span>
+  </div>
+</div>
+
+<div class="ft">Built with <a href="#">WorkBuddy</a> · <a href="#">Alistair Lendor</a></div>
+</div>
 
 <script>
 (function(){
 'use strict';
-const PM={news:{l:'Briefing'},invest:{l:'Portfolio'},finance:{l:'Finance'},usage:{l:'Tokens'}};
-const SM={news:'<svg viewBox="0 0 14 14" fill="none"><rect x="2" y="2" width="10" height="10" rx="2" stroke="var(--fg2)" stroke-width="1.2"/><line x1="4" y1="5" x2="10" y2="5" stroke="var(--fg2)" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="7.5" x2="10" y2="7.5" stroke="var(--fg2)" stroke-width="1" stroke-linecap="round"/><line x1="4" y1="10" x2="7" y2="10" stroke="var(--fg2)" stroke-width="1" stroke-linecap="round"/></svg>',invest:'<svg viewBox="0 0 14 14" fill="none"><polyline points="2,10 5.5,6 8.5,7.5 12,4" stroke="var(--fg2)" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="12" cy="4" r="1" fill="var(--fg2)"/></svg>',finance:'<svg viewBox="0 0 14 14" fill="none"><rect x="1.5" y="4" width="11" height="6" rx="1.5" stroke="var(--fg2)" stroke-width="1.2"/><path d="M1.5 6.5h11" stroke="var(--fg2)" stroke-width="1.2"/><circle cx="11" cy="8.5" r="1" fill="var(--fg2)"/></svg>',usage:'<svg viewBox="0 0 14 14" fill="none"><path d="M3 9.5 A4.5 4.5 0 1 1 11 9.5" stroke="var(--fg2)" stroke-width="1.2" stroke-linecap="round"/><line x1="7" y1="7" x2="7" y2="4.5" stroke="var(--fg2)" stroke-width="1.2" stroke-linecap="round"/><circle cx="7" cy="7" r="0.8" fill="var(--fg2)"/></svg>'};
-const WD=['日','一','二','三','四','五','六'];
-let AR={};let cd=new Date();cd.setDate(1);const $=id=>document.getElementById(id);
-const n=new Date(),p=e=>String(e).padStart(2,'0');
-$('pd').textContent=n.toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'short'});
-const ky=d=>d.getFullYear()+'-'+p(d.getMonth()+1)+'-'+p(d.getDate());
-const sd=(a,b)=>a.getFullYear()===b.getFullYear()&&a.getMonth()===b.getMonth()&&a.getDate()===b.getDate();
-const td=new Date();
-function rc(){const y=cd.getFullYear(),m=cd.getMonth();$('cm').textContent=new Date(y,m).toLocaleDateString('en-US',{year:'numeric',month:'long'});$('cd').innerHTML='';const fd=new Date(y,m,1).getDay(),dm=new Date(y,m+1,0).getDate();for(let i=0;i<fd;i++){const e=document.createElement('div');e.className='cdy emp';$('cd').appendChild(e)}for(let d=1;d<=dm;d++){const dt=new Date(y,m,d),k=ky(dt),el=document.createElement('div');el.className='cdy';if(sd(dt,td))el.classList.add('tdy');if(AR[k]){const ds=document.createElement('div');ds.className='cds';for(const[t,cl]of Object.entries({news:'b',invest:'p',finance:'g',usage:'o'})){if(AR[k][t]){const s=document.createElement('span');s.className='cdt '+cl;ds.appendChild(s)}}el.appendChild(ds);el.addEventListener('click',()=>sd2(k))}else el.addEventListener('click',()=>$('dd').classList.remove('show'));const n=document.createElement('span');n.textContent=d;el.prepend(n);$('cd').appendChild(el)}}
-function sd2(k){const d=AR[k];if(!d){$('dd').classList.remove('show');return}$('dd').classList.add('show');const dt=new Date(k),lb=dt.toLocaleDateString('zh-CN',{year:'numeric',month:'long',day:'numeric',weekday:'short'});let h='<div class="ddh">'+lb+'</div>';['news','invest','finance','usage'].forEach(p=>{if(d[p]){h+='<a class="ddi" href="'+d[p]+'" target="_blank"><div class="dii" style="background:var(--sb)">'+SM[p]+'</div><span class="dil">'+PM[p].l+'</span></a>'}});$('dd').innerHTML=h}
-$('cb').addEventListener('click',()=>{$('ov').classList.add('open');rc();const k=ky(td);if(AR[k])sd2(k)});
-$('ovb').addEventListener('click',()=>$('ov').classList.remove('open'));
-$('sx').addEventListener('click',()=>$('ov').classList.remove('open'));
-$('cp').addEventListener('click',()=>{cd.setMonth(cd.getMonth()-1);rc()});
-$('cn').addEventListener('click',()=>{cd.setMonth(cd.getMonth()+1);rc()});
-WD.forEach(d=>{const e=document.createElement('div');e.className='cwd';e.textContent=d;$('cw').appendChild(e)});
-fetch('archive-data.json').then(r=>r.json()).then(d=>{AR=d;const dates=Object.keys(d).sort().reverse();for(const date of dates){if(d[date].news){const url=d[date].news;fetch(url).then(r=>r.text()).then(h=>{const t=h.match(/<title>(.*?)<\/title>/i);$('bb').innerHTML='<div class="brief-t">'+(t?t[1].replace(' - 新闻简报',''):'今日简报')+'</div><div class="brief-s">'+(h.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim().substring(0,120)||'点击查看完整内容')+'</div><div class="brief-m">09:00 更新</div>'}).catch(()=>{});return}}}).catch(()=>{});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
+const n=new Date();
+document.getElementById('pd').textContent=n.toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'short'});
+if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(function(){});
 })();
 </script>
 </body>
