@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <title>Alistair — Control Center</title>
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23000'/%3E%3Cpath d='M35 40 h30 M50 40 v30 M38 56 h16' stroke='%23fff' stroke-width='4.5' stroke-linecap='round' fill='none'/%3E%3C/svg%3E">
-<meta name="theme-color" content="#F2F2F7">
+<meta name="theme-color" content="#F2F2F7" media="(prefers-color-scheme:light)">
+<meta name="theme-color" content="#1C1C1E" media="(prefers-color-scheme:dark)">
 <link rel="dns-prefetch" href="//news.alistairlendor.com">
 <link rel="dns-prefetch" href="//finance.alistairlendor.com">
 <link rel="dns-prefetch" href="//invest.alistairlendor.com">
@@ -38,6 +39,34 @@
   --radius-xl:21px;
   --safe-bottom:env(safe-area-inset-bottom,0px);
   --f:-apple-system,'Helvetica Neue','SF Pro Display','SF Pro Text',system-ui,sans-serif;
+}
+
+/* ── Dark Mode ── */
+@media(prefers-color-scheme:dark){
+  :root{
+    --bg:#1C1C1E;
+    --bg-card:#2C2C2E;
+    --separator:rgba(255,255,255,0.08);
+    --separator-thick:rgba(255,255,255,0.18);
+    --label:#FFFFFF;
+    --label2:rgba(255,255,255,0.6);
+    --label3:rgba(255,255,255,0.3);
+    --fill:rgba(120,120,128,0.24);
+    --fill-hv:rgba(120,120,128,0.36);
+    --blue:#0A84FF;
+    --green:#30D158;
+    --orange:#FF9F0A;
+    --red:#FF453A;
+    --purple:#BF5AF2;
+    --teal:#64D2FF;
+  }
+  .profile-av{box-shadow:0 2px 8px rgba(0,0,0,0.3)}
+  .networth,.app-item,.profile,.sch-chip,.section-list{box-shadow:0 0.5px 1.5px rgba(0,0,0,0.2)}
+  .status-bar{background:rgba(28,28,30,0.94);border-bottom-color:rgba(255,255,255,0.08)}
+  .app-ico.ico-brief{background:rgba(10,132,255,0.12)}
+  .app-ico.ico-fin{background:rgba(48,209,88,0.12)}
+  .app-ico.ico-port{background:rgba(191,90,242,0.12)}
+  .app-ico.ico-usage{background:rgba(255,159,10,0.12)}
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
@@ -74,6 +103,22 @@ body{
 }
 .profile-b:hover{background:var(--fill-hv)}
 .profile-b:active{transform:scale(0.92)}
+
+/* ── Portfolio holdings card ── */
+.holdings{margin:0 16px;border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);background:var(--bg-card);display:none}
+.holdings.show{display:block;animation:fadeIn 0.3s ease}
+.hl{padding:14px 16px;display:flex;align-items:center;justify-content:space-between;border-bottom:0.5px solid var(--separator)}
+.hl:last-child{border-bottom:none}
+.hl-l{display:flex;align-items:center;gap:10px}
+.hl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.hl-info{min-width:0}
+.hl-name{font-size:0.82rem;font-weight:600;color:var(--label)}
+.hl-code{font-size:0.64rem;color:var(--label3);margin-top:1px;font-feature-settings:"tnum"}
+.hl-r{text-align:right}
+.hl-val{font-size:0.85rem;font-weight:600;color:var(--label);font-feature-settings:"tnum"}
+.hl-pct{font-size:0.65rem;color:var(--label2);margin-top:1px}
+.hl-bar{height:3px;border-radius:2px;margin-top:6px;background:var(--fill)}
+.hl-bar-f{height:100%;border-radius:2px}
 
 /* ── Net worth card ── */
 .networth{margin:12px 16px 0;padding:0;background:var(--bg-card);border-radius:var(--radius-xl);overflow:hidden;box-shadow:0 0.5px 1.5px rgba(0,0,0,0.04);opacity:0;transform:translateY(6px);transition:opacity 0.4s ease,transform 0.4s ease}
@@ -275,6 +320,13 @@ body{
   <div class="nw-bar"><div class="nw-bar-f" id="nwBar" style="width:0%"></div></div>
 </div>
 
+<!-- ═══ Portfolio Holdings (loaded dynamically) ═══ -->
+<div class="holdings" id="holdCard">
+  <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--red)"></div><div class="hl-info"><div class="hl-name">沪深300ETF联接C</div><div class="hl-code">006131 · 50%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
+  <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--blue)"></div><div class="hl-info"><div class="hl-name">中证500ETF联接C</div><div class="hl-code">004348 · 30%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
+  <div class="hl"><div class="hl-l"><div class="hl-dot" style="background:var(--orange)"></div><div class="hl-info"><div class="hl-name">银华多利宝货币A</div><div class="hl-code">余额宝 · 20%</div></div></div><div class="hl-r"><div class="hl-val">--</div><div class="hl-pct"></div></div></div>
+</div>
+
 <!-- ═══ Products ═══ -->
 <div class="sh"><span class="sh-l">Products</span></div>
 <div class="app-grid">
@@ -290,7 +342,7 @@ body{
     <span class="app-lbl">Briefing</span>
     <span class="app-time">09:00</span>
   </a>
-  <a href="https://invest.alistairlendor.com" class="app-item" target="_blank">
+  <a href="javascript:void(0)" class="app-item" id="portBtn">
     <div class="app-ico ico-port">
       <svg viewBox="0 0 24 24" fill="none">
         <polyline points="3,17 8,10 13,12 21,6" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -298,6 +350,7 @@ body{
         <circle cx="13" cy="12" r="1.5" fill="currentColor"/>
         <circle cx="21" cy="6" r="1.5" fill="currentColor"/>
       </svg>
+      <span class="app-badge" id="portBadge" style="display:none">3</span>
     </div>
     <span class="app-lbl">Portfolio</span>
     <span class="app-time">16:00</span>
@@ -404,6 +457,7 @@ body{
   /* ── DOM refs ── */
   const $ = id => document.getElementById(id);
   const nwCard = $('nwCard'), nwVal = $('nwValue'), nwCh = $('nwChange'), nwBar = $('nwBar');
+  const hc = $('holdCard'), portBtn = $('portBtn'), portBadge = $('portBadge');
   const statusTime = $('statusTime');
   const ov = $('overlay'), calM = $('calM'), calD = $('calD'), calW = $('calW'), dd = $('dd');
 
@@ -426,9 +480,43 @@ body{
         nwCh.style.color = p >= 0 ? '#FF3B30' : '#34C759';
         const pct = d.return_pct || 0;
         if (pct) nwCh.textContent += ' (' + (pct >= 0 ? '+' : '') + pct.toFixed(2) + '%)';
-        /* bar fill — cap at 100% */
         const fillPct = Math.min(Math.max(((d.value - 10000) / 10000) * 100 + 50, 5), 100);
         nwBar.style.width = fillPct + '%';
+
+        /* ── Render holdings ── */
+        if (d.holdings) {
+          portBadge.style.display = 'flex';
+          const items = Object.entries(d.holdings);
+          const rows = hc.querySelectorAll('.hl');
+          rows.forEach((row, i) => {
+            if (i < items.length) {
+              const [code, info] = items[i];
+              const valEl = row.querySelector('.hl-val');
+              const pctEl = row.querySelector('.hl-pct');
+              const nameEl = row.querySelector('.hl-name');
+              const codeEl = row.querySelector('.hl-code');
+              if (nameEl) nameEl.textContent = info.name;
+              if (codeEl) codeEl.textContent = code + ' \u00B7 ' + info.ratio + '%';
+              if (valEl) valEl.textContent = '\u00A5' + fmt(info.value);
+              if (pctEl) pctEl.textContent = info.ratio + '% allocation';
+              /* color bar */
+              const bar = row.querySelector('.hl-bar');
+              if (bar) {
+                const fill = bar.querySelector('.hl-bar-f');
+                if (fill) fill.style.width = info.ratio + '%';
+              }
+            }
+          });
+          /* Add bar fills */
+          rows.forEach(r => {
+            if (!r.querySelector('.hl-bar')) {
+              const bar = document.createElement('div');
+              bar.className = 'hl-bar';
+              bar.innerHTML = '<div class="hl-bar-f"></div>';
+              r.appendChild(bar);
+            }
+          });
+        }
       }
     })
     .catch(() => {});
@@ -506,6 +594,22 @@ body{
     });
     dd.innerHTML = html;
   }
+
+  /* ── Portfolio toggle ── */
+  let holdingsOpen = false;
+  portBtn.addEventListener('click', () => {
+    holdingsOpen = !holdingsOpen;
+    hc.classList.toggle('show', holdingsOpen);
+  });
+
+  /* ── Dark mode status bar ── */
+  const mq = window.matchMedia('(prefers-color-scheme:dark)');
+  function updateStatusBar(dark) {
+    const bar = document.querySelector('.status-bar');
+    if (bar) bar.style.background = dark ? 'rgba(28,28,30,0.94)' : 'rgba(249,249,249,0.94)';
+  }
+  updateStatusBar(mq.matches);
+  mq.addEventListener('change', e => updateStatusBar(e.matches));
 
   /* ── Calendar events ── */
   $('calBtn').addEventListener('click', () => {

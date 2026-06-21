@@ -1,0 +1,35 @@
+name: Deploy & Verify
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate HTML
+        run: |
+          if grep -q '</html>' index.html; then
+            echo "✅ index.html is valid"
+          else
+            echo "❌ index.html is malformed"
+            exit 1
+          fi
+
+      - name: Validate JSON
+        run: |
+          for f in portfolio-latest.json archive-data.json; do
+            if [ -f "$f" ]; then
+              python3 -c "import json; json.load(open('$f'))" && echo "✅ $f valid JSON"
+            fi
+          done
+
+      - name: Check CNAME
+        run: |
+          if [ -f CNAME ]; then echo "CNAME: $(cat CNAME)"; fi
