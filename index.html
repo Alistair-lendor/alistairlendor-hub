@@ -16,8 +16,9 @@
   --bg:#ffffff; --fg:#171717; --fg2:#4d4d4d; --fg3:#666666; --fg4:#808080;
   --line:#ebebeb; --surface:#fafafa;
   --blue:#0072f5; --red:#ff5b4f;
-  --f:'Geist',Arial,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,sans-serif;
-  --fm:'Geist Mono',ui-monospace,SFMono-Regular,Roboto Mono,Menlo,monospace;
+  --green:#34c759; --orange:#ff9500;
+  --f:'Geist',Arial,sans-serif;
+  --fm:'Geist Mono',ui-monospace,monospace;
   --safe:env(safe-area-inset-bottom,0px);
   --font-features:"liga","tnum";
   --sb:0px 0px 0px 1px rgba(0,0,0,0.08);
@@ -27,240 +28,253 @@
   :root{
     --bg:#000000; --fg:#ededed; --fg2:#888888; --fg3:#666666; --fg4:#555555;
     --line:#222222; --surface:#111111;
-    --blue:#3b82f6; --red:#ff5b4f;
+    --blue:#3b82f6; --red:#ff5b4f; --green:#30d158; --orange:#ff9f0a;
     --sb:0px 0px 0px 1px rgba(255,255,255,0.08);
   }
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-*{font-feature-settings:var(--font-features)}
-html,body{height:100%}
-body{
-  font-family:var(--f); background:var(--bg); color:var(--fg);
-  -webkit-font-smoothing:antialiased; padding-bottom:var(--safe); line-height:1.5;
-  max-width:560px; margin:0 auto;
-}
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:4px}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--bg);font-feature-settings:var(--font-features)}
+body{background:var(--bg);color:var(--fg);font-family:var(--f);font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;height:auto}
 
-/* ═══ Hero — centered, 1/3 viewport ═══ */
-.hero{
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  min-height:33vh;padding:40px 24px 32px;text-align:center;position:relative;
-}
-.hero-logo{width:56px;height:56px;border-radius:50%;background:#000;display:flex;align-items:center;justify-content:center;margin-bottom:16px}
-.hero-logo svg{width:28px;height:28px}
-.hero-name{font-size:1.1rem;font-weight:500;color:var(--fg);letter-spacing:-0.03em;line-height:1.2;margin-bottom:4px}
-.hero-date{font-size:0.75rem;font-weight:400;color:var(--fg3);letter-spacing:0.01em}
-.hero-cal{position:absolute;top:16px;right:16px;width:28px;height:28px;border-radius:6px;border:none;background:transparent;color:var(--fg2);font-size:0.8rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.12s}
-.hero-cal:hover{background:var(--surface)}
+/* Hero */
+.hero{min-height:33vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:40px 24px 20px;position:relative}
+.hero img{width:48px;height:48px;border-radius:12px;margin-bottom:8px;background:var(--fg)}
+.hero h1{font-size:22px;font-weight:600;letter-spacing:-.5px}
+.hero .pd{font-size:13px;color:var(--fg3);margin-top:2px}
+.hero .cb{position:absolute;top:48px;right:20px;width:32px;height:32px;border-radius:8px;border:none;background:var(--surface);color:var(--fg2);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:.12s}
+.hero .cb:hover{background:var(--line)}
+hr{border:none;border-top:1px solid var(--fg);margin:16px 20px}
 
-/* ═══ Content — scrollable ═══ */
-.content{padding-bottom:24px}
+/* Main container */
+.mc{padding:0 20px 80px;max-width:480px;margin:0 auto}
 
-/* Section */
-.sec{border-top:1px solid var(--fg);padding:14px 24px}
-.sec:first-child{border-top:none}
-.sec-l{font-size:0.72rem;font-weight:500;text-transform:uppercase;letter-spacing:0.05em;color:var(--fg4);margin-bottom:10px}
+/* Balance card */
+.bc{background:var(--fg);color:var(--bg);border-radius:16px;padding:24px 20px;margin-bottom:16px;text-align:center}
+.bc .bl{font-size:12px;color:rgba(255,255,255,.6);margin-bottom:4px}
+.bc .bv{font-family:var(--fm);font-size:36px;font-weight:700;letter-spacing:-1px}
+.bc .bs{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
 
-/* Briefing */
-.brief{display:block;text-decoration:none;color:inherit;padding:6px 0;transition:opacity 0.12s;cursor:pointer}
-.brief:hover{opacity:0.7}
-.brief-t{font-size:0.88rem;font-weight:500;color:var(--fg);line-height:1.4;letter-spacing:-0.02em;margin-bottom:2px}
-.brief-s{font-size:0.75rem;font-weight:400;color:var(--fg2);line-height:1.5}
-.brief-m{font-size:0.68rem;font-weight:400;color:var(--fg4);margin-top:6px}
+/* Card */
+.card{background:var(--surface);border-radius:16px;padding:16px;margin-bottom:12px;box-shadow:var(--sb)}
+.card-t{font-size:11px;font-weight:500;color:var(--fg4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:10px}
 
-/* Portfolio */
-.pw{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px}
-.pv{font-size:2rem;font-weight:600;font-family:var(--fm);color:var(--fg);letter-spacing:-1.2px;line-height:1}
-.pc{font-size:0.82rem;font-weight:500;font-family:var(--fm);color:var(--red);letter-spacing:-0.02em}
-.ps{height:40px;margin:6px 0 14px}
-.ps svg{width:100%;height:40px;display:block}
-.pli{display:flex;align-items:center;padding:4px 0;cursor:pointer;transition:opacity 0.12s}
-.pli:hover{opacity:0.7}
-.pli+.pli{margin-top:2px}
-.pln{font-size:0.72rem;font-weight:400;color:var(--fg3);font-family:var(--fm);min-width:48px}
-.plc{font-size:0.78rem;font-weight:500;color:var(--fg);flex:1;margin-left:6px;letter-spacing:-0.01em}
-.plv{font-size:0.78rem;font-weight:500;font-family:var(--fm);color:var(--fg)}
-.plb{display:flex;align-items:center;gap:6px;margin:0;padding:1px 0 5px 0}
-.plbf{height:2px;border-radius:1px;flex:1}
-.plbp{font-size:0.62rem;font-weight:400;color:var(--fg4);font-family:var(--fm);min-width:20px;text-align:right}
+/* Rows */
+.r{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.r:last-child{border-bottom:none}
+.r-l{font-size:13px}
+.r-r{font-family:var(--fm);font-size:14px;font-weight:500}
+.r-r.g{color:var(--green)}
+.r-r.r{color:var(--red)}
+.r-r.o{color:var(--orange)}
+.r-r.gy{color:var(--fg3)}
+.r-2{border-bottom:2px solid var(--fg);margin-bottom:4px}
+.r-sm{font-size:12px}
+.r-p{padding-top:6px}
 
-/* Finance */
-.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.fgi{box-shadow:var(--sb);border-radius:6px;padding:12px}
-.fgl{font-size:0.65rem;font-weight:400;color:var(--fg4);margin-bottom:3px;letter-spacing:0.01em}
-.fgv{font-size:1.1rem;font-weight:600;font-family:var(--fm);letter-spacing:-0.03em}
-.fd{height:1px;background:var(--fg);margin:8px 0;opacity:0.2}
-.fb{display:flex;justify-content:space-between;padding:3px 0}
-.fb-l{font-size:0.72rem;font-weight:400;color:var(--fg3)}
-.fb-v{font-size:0.78rem;font-weight:500;font-family:var(--fm);color:var(--fg)}
+/* Budget progress */
+.bh{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.bh h2{font-size:14px;font-weight:600}
+.bn{font-family:var(--fm);font-size:17px;font-weight:600}
+.bn .bl{font-size:11px;color:var(--fg3);font-weight:400}
+.bar{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-bottom:3px}
+.bar-f{height:100%;border-radius:4px;transition:width .6s}
+.bar-f.g{background:var(--green)}
+.bar-f.o{background:var(--orange)}
+.bar-f.r{background:var(--red)}
+.bsub{display:flex;justify-content:space-between;font-size:11px;color:var(--fg3)}
 
-/* Tokens */
-.th{display:flex;align-items:baseline;justify-content:space-between}
-.tt{font-size:1.1rem;font-weight:600;font-family:var(--fm);color:var(--fg);letter-spacing:-0.03em;line-height:1.2}
-.tc{font-size:0.75rem;font-weight:500;font-family:var(--fm);color:var(--red);letter-spacing:-0.02em}
-.tw{font-size:0.62rem;font-weight:400;color:var(--fg4);text-align:right;margin:1px 0 10px}
-.tli{display:flex;align-items:center;gap:6px;padding:3px 0}
-.tln{font-size:0.72rem;font-weight:450;color:var(--fg);width:88px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex-shrink:0}
-.tlb{flex:1;height:3px;background:var(--line);border-radius:2px;overflow:hidden}
-.tlbf{height:100%;border-radius:2px}
-.tla{font-size:0.62rem;font-weight:400;color:var(--fg2);font-family:var(--fm);width:50px;text-align:right;flex-shrink:0}
-.tlp{font-size:0.55rem;font-weight:400;color:var(--fg4);font-family:var(--fm);width:18px;text-align:right;flex-shrink:0}
+/* Category items */
+.ci{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.ci:last-child{border:none}
+.cn{font-size:12px;font-weight:500;flex:1}
+.cv{font-family:var(--fm);font-size:12px;white-space:nowrap;text-align:right}
+.cv .b{color:var(--fg4);font-size:11px}
+.cbar{height:3px;background:var(--line);border-radius:2px;overflow:hidden;margin-top:2px;flex:0 0 60px}
+.cbar-f{height:100%;border-radius:2px}
 
-/* Quick Actions */
-.qali{display:flex;align-items:center;padding:8px 0;cursor:pointer;text-decoration:none;color:inherit;transition:opacity 0.12s}
-.qali:hover{opacity:0.7}
-.qa-ic{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-right:10px}
-.qa-ic svg{width:12px;height:12px}
-.qa-t{font-size:0.82rem;font-weight:500;flex:1;color:var(--fg);letter-spacing:-0.01em}
-.qa-d{font-size:0.65rem;font-weight:400;color:var(--fg3);margin-left:8px}
-.qa-a{font-size:0.65rem;font-weight:400;color:var(--fg4);transition:color 0.12s}
-.qali:hover .qa-a{color:var(--fg2)}
-.qa-a::after{content:'→';margin-left:4px;display:inline-block;transition:transform 0.12s}
-.qali:hover .qa-a::after{transform:translateX(2px)}
+/* Debt items */
+.di{padding:8px 0;border-bottom:1px solid var(--line)}
+.di:last-child{border:none}
+.dh{display:flex;justify-content:space-between;align-items:center}
+.dn{font-size:13px;font-weight:500}
+.dv{font-family:var(--fm);font-size:14px}
+.ds{font-size:10px;color:var(--fg4);margin-top:1px}
+.dtag{display:inline-block;font-size:9px;padding:1px 5px;border-radius:999px;margin-left:4px;font-weight:500}
+.dtag.b{background:#e8f0fe;color:#1a73e8}
+.dtag.g{background:#e6f4ea;color:#137333}
+.dtag.o{background:#fef7e0;color:#e37400}
 
-/* Schedule — Vercel pill badges */
+/* Rent fund */
+.rf{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--surface);border-radius:12px;box-shadow:var(--sb)}
+.rf .rl{font-size:13px}
+.rf .rv{font-family:var(--fm);font-size:15px;color:var(--fg3)}
+.rf .rs{font-size:11px;color:var(--fg4);margin-top:1px}
+
+/* Quick Actions & Schedule */
+.sec{padding:0;margin-bottom:20px}
+.sec-l{font-size:11px;font-weight:500;color:var(--fg4);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.qali{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;box-shadow:var(--sb);background:var(--surface);cursor:pointer;transition:.12s}
+.qali:hover{background:var(--line)}
+.qa-ic{width:28px;height:28px;border-radius:8px;background:var(--surface);display:flex;align-items:center;justify-content:center}
+.qa-t{font-size:13px;font-weight:500}
+.qa-d{font-size:11px;color:var(--fg3)}
+.qa-a{margin-left:auto;font-size:10px;color:var(--fg4);white-space:nowrap}
 .sch{display:flex;flex-wrap:wrap;gap:6px}
-.schi{display:flex;align-items:center;gap:4px;padding:2px 10px;border-radius:9999px;font-size:0.72rem;font-weight:500;color:var(--fg)}
+.schi{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;font-size:12px;box-shadow:var(--sb)}
 .schi.on{background:var(--fg);color:var(--bg)}
-.schi.off{box-shadow:var(--sb);color:var(--fg2)}
-.sch-d{font-family:var(--fm);font-size:0.68rem;font-weight:500}
-.sch-l{font-weight:400;color:var(--fg3)}
+.schi.off{color:var(--fg3)}
+.sch-d{font-family:var(--fm);font-size:11px}
+.ft{text-align:center;font-size:11px;color:var(--fg4);padding:16px 0;border-top:1px solid var(--line);margin-top:16px}
+.ft a{text-decoration:underline;text-underline-offset:2px}
 
-/* Footer */
-.ft{text-align:center;padding:32px 24px;font-size:0.6rem;font-weight:400;color:var(--fg4);letter-spacing:0.01em}
-.ft a{color:var(--fg2);text-decoration:none;transition:color 0.12s}
-.ft a:hover{color:var(--fg)}
-
-/* Calendar Overlay */
-.ov{display:none;position:fixed;inset:0;z-index:100}
-.ov.open{display:block}
-.ovb{position:absolute;inset:0;background:hsla(0,0%,50%,0.3);animation:fi 0.15s}
-@keyframes fi{from{opacity:0}}
-.sh{position:absolute;bottom:0;left:0;right:0;background:var(--bg);box-shadow:var(--sb),rgba(0,0,0,0.04) 0px -2px 8px;padding:0 0 var(--safe);max-height:85vh;overflow-y:auto;animation:su 0.25s ease-out}
-@keyframes su{from{transform:translateY(16px);opacity:0}}
-.shh{display:flex;align-items:center;justify-content:space-between;padding:16px 24px 6px;position:sticky;top:0;background:var(--bg);z-index:2}
-.shh h3{font-size:0.85rem;font-weight:500;color:var(--fg);letter-spacing:-0.01em}
-.sx{width:28px;height:28px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:0.75rem;color:var(--fg2);display:flex;align-items:center;justify-content:center;transition:background 0.12s}
-.sx:hover{background:var(--surface)}
-.cn{display:flex;align-items:center;justify-content:space-between;padding:4px 24px 8px}
-.cnb{width:28px;height:28px;border-radius:6px;border:none;background:transparent;cursor:pointer;font-size:0.8rem;color:var(--fg2);display:flex;align-items:center;justify-content:center;transition:background 0.12s}
-.cnb:hover{background:var(--surface)}
-.cnl{font-size:0.82rem;font-weight:500;color:var(--fg);letter-spacing:-0.01em}
-.cw{display:grid;grid-template-columns:repeat(7,1fr);padding:0 24px}
-.cwd{text-align:center;font-size:0.6rem;font-weight:500;color:var(--fg4);padding:5px 0;text-transform:uppercase;letter-spacing:0.04em}
-.cd{display:grid;grid-template-columns:repeat(7,1fr);padding:0 24px 10px;gap:2px}
-.cdy{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:0.72rem;cursor:pointer;gap:1px;border-radius:6px;color:var(--fg);transition:background 0.12s}
+/* Calendar overlay */
+.ov{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.3);opacity:0;pointer-events:none;transition:opacity .25s}
+.ov.open{opacity:1;pointer-events:auto}
+.ovb{position:absolute;inset:0}
+.sh{position:absolute;bottom:0;left:0;right:0;background:var(--bg);border-radius:20px 20px 0 0;padding:20px;max-height:70vh;overflow-y:auto;padding-bottom:calc(20px + var(--safe));transform:translateY(100%);transition:transform .25s ease-out}
+.ov.open .sh{transform:translateY(0)}
+.shh{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.shh h3{font-size:16px;font-weight:600}
+.sx{width:28px;height:28px;border-radius:8px;border:none;background:var(--surface);color:var(--fg2);font-size:13px;cursor:pointer}
+.cn{display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:10px}
+.cnb{background:none;border:none;color:var(--fg);font-size:16px;cursor:pointer;padding:4px 8px}
+.cnl{font-size:14px;font-weight:500}
+.cw{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:4px}
+.cwd{text-align:center;font-size:11px;color:var(--fg3);padding:4px 0}
+#cd{display:grid;grid-template-columns:repeat(7,1fr);gap:2px}
+.cdy{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:8px;font-size:12px;cursor:pointer;position:relative}
 .cdy:hover{background:var(--surface)}
-.cdy.tdy{background:var(--fg);color:var(--bg)}
+.cdy.tdy{font-weight:600}
 .cdy.emp{visibility:hidden}
-.cdy .cds{display:flex;gap:2px}
-.cdy .cdt{width:3px;height:3px;border-radius:50%}
-.cdy .cdt.b{background:var(--blue)}.cdy .cdt.g{background:var(--red)}.cdy .cdt.p{background:#888}.cdy .cdt.o{background:#bbb}
-.dd{padding:6px 24px 12px;display:none}
+.cds{display:flex;gap:2px;margin-top:2px}
+.cdt{width:4px;height:4px;border-radius:2px}
+.cdt.b{background:var(--blue)}
+.cdt.p{background:var(--orange)}
+.cdt.g{background:var(--green)}
+.cdt.o{background:var(--red)}
+.dd{background:var(--surface);border-radius:12px;padding:12px;margin-top:8px;display:none;box-shadow:var(--sb)}
 .dd.show{display:block}
-.ddh{font-size:0.62rem;font-weight:500;color:var(--fg4);margin-bottom:6px;letter-spacing:0.02em;text-transform:uppercase}
-.ddi{display:flex;align-items:center;gap:8px;padding:8px 0;text-decoration:none;color:inherit;transition:opacity 0.12s}
-.ddi:hover{opacity:0.7}
-.dii{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.dii svg{width:11px;height:11px}
-.dil{font-size:0.72rem;font-weight:450;color:var(--fg)}
+.ddh{font-size:13px;font-weight:600;margin-bottom:8px}
+.ddi{display:flex;align-items:center;gap:10px;padding:8px 0;cursor:pointer}
+.ddi:hover{opacity:.6}
+.dii{width:28px;height:28px;border-radius:8px;display:flex;align-items:center;justify-content:center}
+.dil{font-size:13px}
 </style>
 </head>
 <body>
 
-<!-- ═══ Hero: centered, 1/3 viewport ═══ -->
+<!-- Hero -->
 <div class="hero">
-  <div class="hero-logo">
-    <svg viewBox="0 0 100 100" fill="none">
-      <rect x="16" y="16" width="68" height="68" rx="20" stroke="#fff" stroke-width="3"/>
-      <path d="M36 42 h28 M50 42 v26 M39 58 h16" stroke="#fff" stroke-width="5" stroke-linecap="round"/>
-    </svg>
-  </div>
-  <div class="hero-name">Alistair</div>
-  <div class="hero-date" id="pd"></div>
-  <button class="hero-cal" id="cb">📅</button>
+  <img src="/alistair-logo.png" alt="A" onerror="this.style.display='none'">
+  <h1>Alistair</h1>
+  <div class="pd" id="pd"></div>
+  <button class="cb" id="cb" aria-label="Calendar">&#x1F4C5;</button>
+</div>
+<hr>
+
+<div class="mc">
+
+<!-- 可用余额 -->
+<div class="bc">
+  <div class="bl">可用余额</div>
+  <div class="bv">¥1,231</div>
+  <div class="bs">截至 2026年6月22日</div>
 </div>
 
-<!-- ═══ Content: scrollable ═══ -->
-<div class="content">
+<!-- 月度总览 -->
+<div class="card">
+  <div class="card-t">本月财务总览</div>
+  <div class="r"><span class="r-l">收入</span><span class="r-r g">+¥6,517</span></div>
+  <div class="r"><span class="r-l">日常支出</span><span class="r-r r">-¥2,939</span></div>
+  <div class="r"><span class="r-l">固定支出</span><span class="r-r r">-¥5,817</span></div>
+  <div class="r r-2"><span class="r-l" style="font-weight:600">净结余</span><span class="r-r o">-¥2,239</span></div>
+  <div class="r" style="border:none"><span class="r-l r-sm">消费债务还款</span><span class="r-r r r-sm">-¥1,404</span></div>
+  <div class="r" style="border:none;padding-top:2px"><span class="r-l r-sm" style="color:var(--fg4)">租房基金</span><span class="r-r gy r-sm">+¥1,750</span></div>
+</div>
 
-  <a href="https://news.alistairlendor.com" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Briefing</div>
-    <div id="bb">
-      <div class="brief-t">今日简报已生成</div>
-      <div class="brief-s">点击查看完整内容</div>
-    </div>
-  </a>
-
-  <a href="https://invest.alistairlendor.com" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Portfolio</div>
-    <div id="pb">
-      <div class="pw"><span class="pv">¥10,332</span><span class="pc">+¥332 (+3.32%)</span></div>
-      <div class="ps">
-        <svg viewBox="0 0 512 40" preserveAspectRatio="none">
-          <defs><linearGradient id="sg" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="var(--red)" stop-opacity="0.06"/><stop offset="100%" stop-color="var(--red)" stop-opacity="0"/></linearGradient></defs>
-          <path d="M0,32 L80,30 L160,26 L240,22 L320,16 L400,10 L512,8" fill="none" stroke="var(--red)" stroke-width="1" stroke-linecap="round"/>
-          <path d="M0,32 L80,30 L160,26 L240,22 L320,16 L400,10 L512,8 L512,40 L0,40 Z" fill="url(#sg)"/>
-        </svg>
-      </div>
-      <div class="pli"><span class="pln">006131</span><span class="plc">沪深300ETF联接C</span><span class="plv">¥5,166</span></div>
-      <div class="plb"><div class="plbf" style="background:var(--red)"></div><span class="plbp">50%</span></div>
-      <div class="pli"><span class="pln">004348</span><span class="plc">中证500ETF联接C</span><span class="plv">¥3,100</span></div>
-      <div class="plb"><div class="plbf" style="background:#888"></div><span class="plbp">30%</span></div>
-      <div class="pli"><span class="pln">余额宝</span><span class="plc">银华多利宝货币A</span><span class="plv">¥2,066</span></div>
-      <div class="plb"><div class="plbf" style="background:#bbb"></div><span class="plbp">20%</span></div>
-    </div>
-  </a>
-
-  <a href="https://finance.alistairlendor.com" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Finance</div>
-    <div id="fb">
-      <div class="fg">
-        <div class="fgi"><div class="fgl">本月收入</div><div class="fgv" style="color:var(--fg)">¥6,517</div></div>
-        <div class="fgi"><div class="fgl">本月支出</div><div class="fgv" style="color:var(--fg2)">¥3,798</div></div>
-      </div>
-      <div class="fd"></div>
-      <div class="fb"><span class="fb-l">年度收入</span><span class="fb-v">¥82,319</span><span class="fb-l" style="margin-left:24px">年度支出</span><span class="fb-v">¥174,762</span></div>
-      <div class="fb" style="margin-top:2px"><span class="fb-l">本月净结余</span><span class="fb-v" style="color:var(--fg)">+¥2,720</span></div>
-    </div>
-  </a>
-
-  <a href="https://alistairlendor.com/usage/usage_dashboard.html" target="_blank" class="sec" style="display:block;text-decoration:none;color:inherit;cursor:pointer">
-    <div class="sec-l">Tokens</div>
-    <div id="tb">
-      <div class="th"><span class="tt">7,470,795</span><span class="tc">¥58.44</span></div>
-      <div class="tw">当前 · 7月后 <span>¥76.90</span> (+32%)</div>
-      <div class="tli"><span class="tln">deepseek-v4-flash</span><div class="tlb"><div class="tlbf" style="width:51.9%;background:var(--fg)"></div></div><span class="tla">3,876k</span><span class="tlp">52%</span></div>
-      <div class="tli"><span class="tln">hy3-preview-agent</span><div class="tlb"><div class="tlbf" style="width:44.4%;background:var(--fg2)"></div></div><span class="tla">3,313k</span><span class="tlp">44%</span></div>
-      <div class="tli"><span class="tln">glm-5.2</span><div class="tlb"><div class="tlbf" style="width:1.6%;background:var(--fg3)"></div></div><span class="tla">120k</span><span class="tlp">2%</span></div>
-      <div class="tli"><span class="tln">kimi-k2.7</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">60k</span><span class="tlp">1%</span></div>
-      <div class="tli"><span class="tln">minimax-m3</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">59k</span><span class="tlp">1%</span></div>
-      <div class="tli"><span class="tln">auto</span><div class="tlb"><div class="tlbf" style="width:0.5%;background:var(--fg3)"></div></div><span class="tla">39k</span><span class="tlp">1%</span></div>
-    </div>
-  </a>
-
-  <div class="sec">
-    <div class="sec-l">Quick Actions</div>
-    <a class="qali" href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" target="_blank">
-      <div class="qa-ic"><svg viewBox="0 0 22 22" fill="none"><path d="M13 4l5 5-10 10H3v-5L13 4z" stroke="var(--fg2)" stroke-width="1.6" stroke-linejoin="round"/><line x1="13" y1="4" x2="18" y2="9" stroke="var(--fg2)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
-      <span class="qa-t">Create Task</span><span class="qa-d">GitHub Issue</span>
-      <span class="qa-a">Anytime</span>
-    </a>
+<!-- 日常预算 -->
+<div class="card" style="margin-bottom:12px">
+  <div class="card-t">日常预算 · ¥3,000/月</div>
+  <div class="bh">
+    <h2>进度</h2>
+    <div class="bn">¥2,939 <span class="bl">/ ¥3,000</span></div>
   </div>
+  <div class="bar"><div class="bar-f o" style="width:98%"></div></div>
+  <div class="bsub"><span>已用 98%</span><span>剩余 ¥61</span></div>
+</div>
 
-  <div class="sec">
-    <div class="sec-l">Schedule</div>
-    <div class="sch">
-      <span class="schi on"><span class="sch-d">00:00</span><span class="sch-l">Finance</span></span>
-      <span class="schi on"><span class="sch-d">09:00</span><span class="sch-l">Briefing</span></span>
-      <span class="schi off"><span class="sch-d">13:00</span><span class="sch-l">PingPong</span></span>
-      <span class="schi on"><span class="sch-d">16:00</span><span class="sch-l">Portfolio</span></span>
-      <span class="schi off"><span class="sch-d">23:55</span><span class="sch-l">Remind</span></span>
-      <span class="schi on"><span class="sch-d">12h</span><span class="sch-l">Usage</span></span>
-    </div>
+<div class="card" style="padding:10px 12px">
+  <div class="ci"><span class="cn">🍜 餐饮</span><div class="cbar"><div class="cbar-f" style="width:101%;background:var(--red)"></div></div><span class="cv">¥755 <span class="b">/¥750</span></span></div>
+  <div class="ci"><span class="cn">🧴 生活日用</span><div class="cbar"><div class="cbar-f" style="width:112%;background:var(--red)"></div></div><span class="cv">¥559 <span class="b">/¥500</span></span></div>
+  <div class="ci"><span class="cn">⚡ 商户消费</span><div class="cbar"><div class="cbar-f" style="width:114%;background:var(--red)"></div></div><span class="cv">¥513 <span class="b">/¥450</span></span></div>
+  <div class="ci"><span class="cn">👔 穿搭美容</span><div class="cbar"><div class="cbar-f" style="width:116%;background:var(--red)"></div></div><span class="cv">¥349 <span class="b">/¥300</span></span></div>
+  <div class="ci"><span class="cn">🔧 生活服务</span><div class="cbar"><div class="cbar-f" style="width:102%;background:var(--orange)"></div></div><span class="cv">¥256 <span class="b">/¥250</span></span></div>
+  <div class="ci"><span class="cn">✈️ 酒店旅行</span><div class="cbar"><div class="cbar-f" style="width:104%;background:var(--orange)"></div></div><span class="cv">¥104 <span class="b">/¥100</span></span></div>
+  <div class="ci"><span class="cn">🛒 购物</span><div class="cbar"><div class="cbar-f" style="width:93%;background:var(--green)"></div></div><span class="cv">¥140 <span class="b">/¥150</span></span></div>
+  <div class="ci"><span class="cn">🎮 休闲玩乐</span><div class="cbar"><div class="cbar-f" style="width:67%;background:var(--green)"></div></div><span class="cv">¥101 <span class="b">/¥150</span></span></div>
+  <div class="ci"><span class="cn">🚇 交通</span><div class="cbar"><div class="cbar-f" style="width:49%;background:var(--green)"></div></div><span class="cv">¥73 <span class="b">/¥150</span></span></div>
+  <div class="ci"><span class="cn">📱 零散支付</span><div class="cbar"><div class="cbar-f" style="width:76%;background:var(--green)"></div></div><span class="cv">¥38 <span class="b">/¥50</span></span></div>
+  <div class="ci"><span class="cn">🤝 人情社交</span><div class="cbar"><div class="cbar-f" style="width:74%;background:var(--green)"></div></div><span class="cv">¥37 <span class="b">/¥50</span></span></div>
+  <div class="ci"><span class="cn">📦 备用金</span><div class="cbar"><div class="cbar-f" style="width:0%;background:var(--fg4)"></div></div><span class="cv">¥0 <span class="b">/¥200</span></span></div>
+</div>
+
+<!-- 固定支出 -->
+<div class="card">
+  <div class="card-t">固定支出 · ¥5,817/月</div>
+  <div class="di"><div class="dh"><span class="dn">🏠 房贷</span><span class="dv">¥4,581</span></div><div class="ds">每月21日扣款 · 银行卡</div></div>
+  <div class="di"><div class="dh"><span class="dn">🚗 车位贷</span><span class="dv">¥1,091</span></div><div class="ds">每月21日扣款 · 银行卡</div></div>
+  <div class="di" style="border:none"><div class="dh"><span class="dn">🔑 物业费</span><span class="dv">¥145</span></div><div class="ds">每月25日后支付</div></div>
+</div>
+
+<!-- 消费债务 -->
+<div class="card">
+  <div class="card-t">消费债务 · 6月还款 ¥1,404</div>
+  <div class="di">
+    <div class="dh"><span><span class="dn">📦 1688先采后付</span><span class="dtag b">月清</span></span><span class="dv" style="font-size:14px">¥658</span></div>
+    <div class="ds">6月8日已还 · 1688进货采购</div>
   </div>
+  <div class="di">
+    <div class="dh"><span><span class="dn">🌸 花呗</span><span class="dtag g">月清</span></span><span class="dv" style="font-size:14px">¥225</span></div>
+    <div class="ds">6月20日已还 · 日常消费账单</div>
+  </div>
+  <div class="di" style="border:none">
+    <div class="dh"><span><span class="dn">💳 工商银行信用卡</span><span class="dtag o">分期中</span></span><span class="dv" style="font-size:14px">¥521</span></div>
+    <div class="ds">尾号0423 · 6月11日已还 · 分期余额¥5,629（19期）</div>
+  </div>
+</div>
 
-  <div class="ft">Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a> · <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a></div>
+<!-- 租房基金 -->
+<div class="rf" style="margin-bottom:20px">
+  <div><span class="rl">🏠 租房基金</span><div class="rs">押一付六 · 6月起自行储存</div></div>
+  <span class="rv">+¥1,750/月</span>
+</div>
+
+<!-- Quick Actions -->
+<div class="sec">
+  <div class="sec-l">Quick Actions</div>
+  <a class="qali" href="https://github.com/Alistair-lendor/alistairlendor-hub/issues/new/choose" target="_blank">
+    <div class="qa-ic"><svg viewBox="0 0 22 22" fill="none"><path d="M13 4l5 5-10 10H3v-5L13 4z" stroke="var(--fg2)" stroke-width="1.6" stroke-linejoin="round"/><line x1="13" y1="4" x2="18" y2="9" stroke="var(--fg2)" stroke-width="1.6" stroke-linecap="round"/></svg></div>
+    <span class="qa-t">Create Task</span><span class="qa-d">GitHub Issue</span>
+    <span class="qa-a">Anytime</span>
+  </a>
+</div>
+
+<!-- Schedule -->
+<div class="sec">
+  <div class="sec-l">Schedule</div>
+  <div class="sch">
+    <span class="schi on"><span class="sch-d">00:00</span><span class="sch-l">Finance</span></span>
+    <span class="schi on"><span class="sch-d">09:00</span><span class="sch-l">Briefing</span></span>
+    <span class="schi off"><span class="sch-d">13:00</span><span class="sch-l">PingPong</span></span>
+    <span class="schi on"><span class="sch-d">16:00</span><span class="sch-l">Portfolio</span></span>
+    <span class="schi off"><span class="sch-d">23:55</span><span class="sch-l">Remind</span></span>
+    <span class="schi on"><span class="sch-d">12h</span><span class="sch-l">Usage</span></span>
+  </div>
+</div>
+
+<div class="ft">Built with <a href="https://www.codebuddy.cn/work/" target="_blank">WorkBuddy</a> · <a href="https://github.com/Alistair-lendor" target="_blank">Alistair Lendor</a></div>
 </div>
 
 <!-- Calendar Overlay -->
@@ -293,7 +307,7 @@ $('sx').addEventListener('click',()=>$('ov').classList.remove('open'));
 $('cp').addEventListener('click',()=>{cd.setMonth(cd.getMonth()-1);rc()});
 $('cn').addEventListener('click',()=>{cd.setMonth(cd.getMonth()+1);rc()});
 WD.forEach(d=>{const e=document.createElement('div');e.className='cwd';e.textContent=d;$('cw').appendChild(e)});
-fetch('archive-data.json').then(r=>r.json()).then(d=>{AR=d;const dates=Object.keys(d).sort().reverse();for(const date of dates){if(d[date].news){const url=d[date].news;fetch(url).then(r=>r.text()).then(h=>{const t=h.match(/<title>(.*?)<\/title>/i);$('bb').innerHTML='<div class="brief-t">'+(t?t[1].replace(' - 新闻简报',''):'今日简报')+'</div><div class="brief-s">'+(h.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim().substring(0,120)||'点击查看完整内容')+'</div><div class="brief-m">09:00 更新</div>'}).catch(()=>{});return}}}).catch(()=>{});
+fetch('archive-data.json').then(r=>r.json()).then(d=>{AR=d;const dates=Object.keys(d).sort().reverse();for(const date of dates){if(d[date].news){const url=d[date].news;fetch(url).then(r=>r.text()).then(h=>{const t=h.match(/<title>(.*?)<\/title>/i);document.querySelector('.brief-t')&&(document.querySelector('.brief-t').textContent=t?t[1].replace(' - 新闻简报',''):'今日简报');document.querySelector('.brief-s')&&(document.querySelector('.brief-s').textContent=h.replace(/<[^>]*>/g,'').replace(/\s+/g,' ').trim().substring(0,120)||'点击查看完整内容')}).catch(()=>{});return}}}).catch(()=>{});
 if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(()=>{});
 })();
 </script>
