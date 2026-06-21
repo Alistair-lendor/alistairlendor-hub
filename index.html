@@ -8,7 +8,6 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="Alistair">
 <link rel="apple-touch-icon" href="/alistair-logo.png">
-
 <title>Alistair</title>
 <style>
 @font-face{font-family:'Geist';src:url('https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-sans/Geist-Variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
@@ -185,16 +184,15 @@ body{
 <!-- ═══ Content: scrollable ═══ -->
 <div class="content">
 
-  <div class="sec">
+  <div class="sec" onclick="window.open('https://news.alistairlendor.com','_blank')" style="cursor:pointer">
     <div class="sec-l">Briefing</div>
-    <a class="brief" id="bb" href="https://news.alistairlendor.com" target="_blank">
+    <div id="bb">
       <div class="brief-t">今日简报已生成</div>
       <div class="brief-s">点击查看完整内容</div>
-      <div class="brief-m">09:00 更新</div>
-    </a>
+    </div>
   </div>
 
-  <div class="sec">
+  <div class="sec" onclick="window.open('https://invest.alistairlendar.com','_blank')" style="cursor:pointer">
     <div class="sec-l">Portfolio</div>
     <div id="pb">
       <div class="pw"><span class="pv">¥10,332</span><span class="pc">+¥332 (+3.32%)</span></div>
@@ -214,7 +212,7 @@ body{
     </div>
   </div>
 
-  <div class="sec">
+  <div class="sec" onclick="window.open('https://finance.alistairlendor.com','_blank')" style="cursor:pointer">
     <div class="sec-l">Finance</div>
     <div id="fb">
       <div class="fg">
@@ -227,7 +225,7 @@ body{
     </div>
   </div>
 
-  <div class="sec">
+  <div class="sec" onclick="window.open('https://alistairlendor.com/usage/usage_dashboard.html','_blank')" style="cursor:pointer">
     <div class="sec-l">Tokens</div>
     <div id="tb">
       <div class="th"><span class="tt">7,470,795</span><span class="tc">¥58.44</span></div>
