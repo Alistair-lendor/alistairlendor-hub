@@ -9969,5 +9969,23 @@
     "remark": "盒马鲜生(世纪大道万达广场店)",
     "account": "招商银行",
     "source": "账单同步"
+  },
+  {
+    "date": "2026-06-07",
+    "category": "副业收入",
+    "type": "收入",
+    "amount": 281.33,
+    "remark": "PingPong TikTok入账",
+    "account": "PingPong",
+    "source": "PingPong"
+  },
+  {
+    "date": "2026-06-08",
+    "category": "副业收入",
+    "type": "收入",
+    "amount": 147.21,
+    "remark": "PingPong TikTok入账",
+    "account": "PingPong",
+    "source": "PingPong"
   }
 ]
