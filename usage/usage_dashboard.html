@@ -2,620 +2,81 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WorkBuddy 用量监控面板</title>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
+<title>用量 · Alistair</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f1f5f9; color: #1e293b; padding: 20px; }
-.container { max-width: 1200px; margin: 0 auto; }
-.header { background: linear-gradient(135deg, #1e293b, #334155); color: #fff; border-radius: 16px; padding: 30px; margin-bottom: 24px; }
-.header h1 { font-size: 24px; margin-bottom: 8px; }
-.header p { color: #94a3b8; font-size: 14px; }
-.header .time { color: #38bdf8; font-weight: bold; }
-.stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 24px; }
-.stat-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.stat-card .label { font-size: 13px; color: #64748b; margin-bottom: 6px; }
-.stat-card .value { font-size: 28px; font-weight: 700; }
-.stat-card .sub { font-size: 12px; color: #94a3b8; margin-top: 4px; }
-.chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
-@media (max-width: 768px) { .chart-row { grid-template-columns: 1fr; } }
-.chart-card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); }
-.chart-card h3 { font-size: 16px; margin-bottom: 12px; color: #334155; }
-.chart-card canvas { max-height: 300px; }
-table { width: 100%; border-collapse: collapse; }
-th, td { padding: 10px 12px; text-align: left; font-size: 13px; }
-th { background: #f8fafc; color: #64748b; font-weight: 600; position: sticky; top: 0; }
-tr { border-bottom: 1px solid #e2e8f0; }
-tr:hover { background: #f8fafc; }
-.num { text-align: right; font-variant-numeric: tabular-nums; }
-.credit { font-weight: 600; color: #dc2626; }
-.bar-cell { width: 100px; }
-.bar { height: 20px; border-radius: 4px; min-width: 4px; }
-.title-cell { max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.card { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.08); margin-bottom: 24px; }
-.card h3 { font-size: 16px; margin-bottom: 12px; color: #334155; }
-.scroll-wrap { overflow-x: auto; }
-.tag { display: inline-block; padding: 2px 8px; border-radius: 6px; font-size: 11px; font-weight: 600; }
-.tag-red { background: #fef2f2; color: #dc2626; }
-.tag-green { background: #f0fdf4; color: #16a34a; }
-.tag-yellow { background: #fefce8; color: #d97706; }
-.tag-blue { background: #eff6ff; color: #2563eb; }
-.footer { text-align: center; padding: 20px; color: #94a3b8; font-size: 12px; }
+@font-face{font-family:'Geist';src:url('https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-sans/Geist-Variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+@font-face{font-family:'Geist Mono';src:url('https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-mono/GeistMono-Variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
+:root{--bg:#fff;--fg:#171717;--fg2:#4d4d4d;--fg3:#666;--fg4:#808080;--line:#ebebeb;--surface:#fafafa;--f:'Geist',Arial,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;--font-features:"liga","tnum";--shadow-border:0 0 0 1px rgba(0,0,0,.08);--shadow-elevation:0 2px 2px rgba(0,0,0,.04);--shadow-ambient:0 8px 8px -8px rgba(0,0,0,.04);--shadow-glow:#fafafa 0 0 0 1px;--shadow-card:var(--shadow-border),var(--shadow-elevation),var(--shadow-ambient),var(--shadow-glow);--shadow-divider:0 1px 0 0 rgba(0,0,0,.08);--focus:hsla(212,100%,48%,1);--selection:hsla(0,0%,95%,1)}
+@media(prefers-color-scheme:dark){:root{--bg:#000;--fg:#ededed;--fg2:#888;--fg3:#666;--fg4:#555;--line:#222;--surface:#111;--shadow-border:0 0 0 1px rgba(255,255,255,.08);--shadow-elevation:0 2px 2px rgba(255,255,255,.04);--shadow-ambient:0 8px 8px -8px rgba(255,255,255,.04);--shadow-glow:#111 0 0 0 1px;--shadow-divider:0 1px 0 0 rgba(255,255,255,.08)}}
+*{margin:0;padding:0;box-sizing:border-box;font-feature-settings:var(--font-features)}
+::selection{background:var(--selection)}
+html,body{height:100%}
+body{font-family:var(--f);background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;line-height:1.5;max-width:520px;margin:0 auto;padding:0 20px}
+:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
+a{color:inherit;text-decoration:none}
+
+.hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 0 16px;box-shadow:var(--shadow-divider)}
+.hdr-l{font-size:1.5rem;font-weight:600;letter-spacing:-1.28px;line-height:1.2;cursor:pointer;transition:opacity .12s}
+.hdr-l:hover{opacity:.7}
+.hdr-r{font-size:.82rem;font-weight:400;color:var(--fg3);font-family:var(--fm);letter-spacing:-.02em}
+
+.st{font-size:.82rem;font-weight:500;color:var(--fg4);text-transform:uppercase;letter-spacing:.8px;padding-top:24px;padding-bottom:12px;box-shadow:var(--shadow-divider)}
+
+.card{padding:20px;border-radius:8px;box-shadow:var(--shadow-card);margin-bottom:16px}
+.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
+.row+.row{border-top:1px solid var(--line)}
+.rl{font-size:.88rem;font-weight:400;color:var(--fg2)}
+.rv{font-family:var(--fm);font-size:1.1rem;font-weight:600;letter-spacing:-.48px}
+.rv.sm{font-size:.88rem;font-weight:500}
+
+.mi{display:flex;align-items:center;gap:8px;padding:10px 0}
+.mi+.mi{border-top:1px solid var(--line)}
+.mn{font-size:.88rem;font-weight:500;width:96px;flex-shrink:0;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mb{flex:1;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
+.mbf{height:100%;border-radius:2px;background:var(--fg)}
+.mv{font-family:var(--fm);font-size:.72rem;font-weight:400;color:var(--fg3);width:56px;text-align:right;flex-shrink:0}
+.mp{font-family:var(--fm);font-size:.65rem;font-weight:400;color:var(--fg4);width:24px;text-align:right;flex-shrink:0}
+
+.tag{display:inline-block;font-size:.65rem;font-weight:500;padding:2px 8px;border-radius:6px;background:var(--surface);color:var(--fg3);box-shadow:var(--shadow-border)}
+
+.ft{text-align:center;font-size:.72rem;color:var(--fg4);padding:24px 0 32px;border-top:1px solid var(--line);margin-top:16px}
+.ft a{text-decoration:underline;text-underline-offset:2px}
+.ft a:hover{opacity:.7}
 </style>
 </head>
 <body>
-<div class="container">
-    <div class="header">
-        <h1>📊 WorkBuddy 用量监控面板</h1>
-        <p>数据范围: <strong>2026-06-06</strong> 至 <strong>2026-06-22</strong> · 
-        更新于: <span class="time">2026-06-22 14:36</span></p>
-    </div>
+<div class="hdr"><a href="https://alistairlendor.com" class="hdr-l">Alistair</a><span class="hdr-r">用量</span></div>
 
-    <div class="stats-grid">
-        <div class="stat-card">
-            <div class="label">总会话次数</div>
-            <div class="value">112</div>
-            <div class="sub">17 天的数据</div>
-        </div>
-        <div class="stat-card">
-            <div class="label">总 Token 消耗</div>
-            <div class="value">8,662,705</div>
-            <div class="sub">≈ 8.7M Tokens</div>
-        </div>
-        <div class="stat-card">
-            <div class="label">总积分消耗</div>
-            <div class="value">2106</div>
-            <div class="sub">平均每次 18.8 积分</div>
-        </div>
-        <div class="stat-card">
-            <div class="label">总费用（当前价）</div>
-            <div class="value" style="color:#dc2626">¥80.03</div>
-            <div class="sub">7月后 ¥105.31 (涨32%) ⚠️</div>
-        </div>
-    </div>
-
-    <div class="chart-row">
-        <div class="chart-card">
-            <h3>📈 每日积分消耗趋势</h3>
-            <canvas id="dailyChart"></canvas>
-        </div>
-        <div class="chart-card">
-            <h3>🧩 模型积分占比</h3>
-            <canvas id="pieChart"></canvas>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>📋 各模型详细消耗</h3>
-        <div class="scroll-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>模型</th>
-                        <th class="num">会话数</th>
-                        <th class="num">总 Token</th>
-                        <th class="num">总积分</th>
-                        <th class="num">千Token(分)</th>
-                        <th class="num">当前费用</th>
-                        <th class="num">7月后费用</th>
-                        <th>占比</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-            <tr>
-                <td><strong>deepseek-v4-flash</strong></td>
-                <td class="num">45</td>
-                <td class="num">4,708,323</td>
-                <td class="num"><span class="credit">1630.04</span></td>
-                <td class="num">0.3462</td>
-                <td class="num">¥61.94</td>
-                <td class="num">¥81.50</td>
-                <td class="bar-cell"><div class="bar" style="width:77.4%;background:#ef4444;"></div></td>
-            </tr>
-            <tr>
-                <td><strong>glm-5.2</strong></td>
-                <td class="num">2</td>
-                <td class="num">120,757</td>
-                <td class="num"><span class="credit">177.34</span></td>
-                <td class="num">1.4686</td>
-                <td class="num">¥6.74</td>
-                <td class="num">¥8.87</td>
-                <td class="bar-cell"><div class="bar" style="width:8.4%;background:#22c55e;"></div></td>
-            </tr>
-            <tr>
-                <td><strong>hy3-preview-agent</strong></td>
-                <td class="num">62</td>
-                <td class="num">3,673,705</td>
-                <td class="num"><span class="credit">167.98</span></td>
-                <td class="num">0.0457</td>
-                <td class="num">¥6.38</td>
-                <td class="num">¥8.40</td>
-                <td class="bar-cell"><div class="bar" style="width:8.0%;background:#22c55e;"></div></td>
-            </tr>
-            <tr>
-                <td><strong>minimax-m3</strong></td>
-                <td class="num">1</td>
-                <td class="num">59,766</td>
-                <td class="num"><span class="credit">71.23</span></td>
-                <td class="num">1.1918</td>
-                <td class="num">¥2.71</td>
-                <td class="num">¥3.56</td>
-                <td class="bar-cell"><div class="bar" style="width:3.4%;background:#22c55e;"></div></td>
-            </tr>
-            <tr>
-                <td><strong>kimi-k2.7</strong></td>
-                <td class="num">1</td>
-                <td class="num">60,173</td>
-                <td class="num"><span class="credit">57.97</span></td>
-                <td class="num">0.9634</td>
-                <td class="num">¥2.20</td>
-                <td class="num">¥2.90</td>
-                <td class="bar-cell"><div class="bar" style="width:2.8%;background:#22c55e;"></div></td>
-            </tr>
-            <tr>
-                <td><strong>auto</strong></td>
-                <td class="num">1</td>
-                <td class="num">39,981</td>
-                <td class="num"><span class="credit">1.59</span></td>
-                <td class="num">0.0398</td>
-                <td class="num">¥0.06</td>
-                <td class="num">¥0.08</td>
-                <td class="bar-cell"><div class="bar" style="width:0.1%;background:#22c55e;"></div></td>
-            </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>🔥 单次最贵会话 TOP 5</h3>
-        <div class="scroll-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>#</th><th>时间</th><th>模型</th><th class="num">Token</th>
-                        <th class="num">积分</th><th class="num">费用</th><th>标题/内容</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-            <tr>
-                <td>🥇</td>
-                <td>06-21 01:34</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">463,453</td>
-                <td class="num">527.47</td>
-                <td class="num">¥20.04</td>
-                <td class="title-cell">现在给我看一下，关于我的个人信息都有哪些？</td>
-            </tr>
-            <tr>
-                <td>🥈</td>
-                <td>06-07 22:18</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">396,878</td>
-                <td class="num">477.39</td>
-                <td class="num">¥18.14</td>
-                <td class="title-cell">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td>
-            </tr>
-            <tr>
-                <td>🥉</td>
-                <td>06-18 15:06</td>
-                <td>glm-5.2</td>
-                <td class="num">71,019</td>
-                <td class="num">174.05</td>
-                <td class="num">¥6.61</td>
-                <td class="title-cell">@"C:/Users/ADMIN/Desktop/子女赡养费法律咨询.pdf" </td>
-            </tr>
-            <tr>
-                <td>4</td>
-                <td>06-06 18:03</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">223,798</td>
-                <td class="num">103.69</td>
-                <td class="num">¥3.94</td>
-                <td class="title-cell">@scene#28:"金融服务" 我需要你根据我的月收入情况和财务情况，给我一个</td>
-            </tr>
-            <tr>
-                <td>5</td>
-                <td>06-17 23:26</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">185,923</td>
-                <td class="num">99.36</td>
-                <td class="num">¥3.78</td>
-                <td class="title-cell">根据我的信息和我过往的对话，筛选现在更适合我安装的skill以及通用的必装ski</td>
-            </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="card">
-        <h3>📅 每日消耗明细</h3>
-        <div class="scroll-wrap">
-            <table>
-                <thead>
-                    <tr>
-                        <th>日期</th><th>模型</th><th class="num">会话</th>
-                        <th class="num">Token</th><th class="num">积分</th><th class="num">费用</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-            <tr>
-                <td>2026-06-06</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">11</td>
-                <td class="num">1,126,383</td>
-                <td class="num">298.61</td>
-                <td class="num">¥11.35</td>
-            </tr>
-            <tr>
-                <td>2026-06-06</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">1</td>
-                <td class="num">51,608</td>
-                <td class="num">26.14</td>
-                <td class="num">¥0.99</td>
-            </tr>
-            <tr>
-                <td>2026-06-06</td>
-                <td>auto</td>
-                <td class="num">1</td>
-                <td class="num">39,981</td>
-                <td class="num">1.59</td>
-                <td class="num">¥0.06</td>
-            </tr>
-            <tr>
-                <td>2026-06-07</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">2</td>
-                <td class="num">448,733</td>
-                <td class="num">482.57</td>
-                <td class="num">¥18.34</td>
-            </tr>
-            <tr>
-                <td>2026-06-07</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">227,111</td>
-                <td class="num">22.67</td>
-                <td class="num">¥0.86</td>
-            </tr>
-            <tr>
-                <td>2026-06-08</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">3</td>
-                <td class="num">162,280</td>
-                <td class="num">5.51</td>
-                <td class="num">¥0.21</td>
-            </tr>
-            <tr>
-                <td>2026-06-08</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">1</td>
-                <td class="num">68,205</td>
-                <td class="num">2.54</td>
-                <td class="num">¥0.10</td>
-            </tr>
-            <tr>
-                <td>2026-06-09</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">1</td>
-                <td class="num">65,627</td>
-                <td class="num">3.13</td>
-                <td class="num">¥0.12</td>
-            </tr>
-            <tr>
-                <td>2026-06-09</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">2</td>
-                <td class="num">107,396</td>
-                <td class="num">2.82</td>
-                <td class="num">¥0.11</td>
-            </tr>
-            <tr>
-                <td>2026-06-10</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">188,333</td>
-                <td class="num">5.46</td>
-                <td class="num">¥0.21</td>
-            </tr>
-            <tr>
-                <td>2026-06-10</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">1</td>
-                <td class="num">62,239</td>
-                <td class="num">5.08</td>
-                <td class="num">¥0.19</td>
-            </tr>
-            <tr>
-                <td>2026-06-11</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">4</td>
-                <td class="num">271,130</td>
-                <td class="num">15.40</td>
-                <td class="num">¥0.59</td>
-            </tr>
-            <tr>
-                <td>2026-06-11</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">3</td>
-                <td class="num">163,044</td>
-                <td class="num">4.85</td>
-                <td class="num">¥0.18</td>
-            </tr>
-            <tr>
-                <td>2026-06-12</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">3</td>
-                <td class="num">166,008</td>
-                <td class="num">5.03</td>
-                <td class="num">¥0.19</td>
-            </tr>
-            <tr>
-                <td>2026-06-12</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">1</td>
-                <td class="num">72,299</td>
-                <td class="num">2.27</td>
-                <td class="num">¥0.09</td>
-            </tr>
-            <tr>
-                <td>2026-06-13</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">2</td>
-                <td class="num">189,787</td>
-                <td class="num">58.29</td>
-                <td class="num">¥2.22</td>
-            </tr>
-            <tr>
-                <td>2026-06-13</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">239,100</td>
-                <td class="num">8.27</td>
-                <td class="num">¥0.31</td>
-            </tr>
-            <tr>
-                <td>2026-06-14</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">2</td>
-                <td class="num">161,005</td>
-                <td class="num">8.97</td>
-                <td class="num">¥0.34</td>
-            </tr>
-            <tr>
-                <td>2026-06-14</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">6</td>
-                <td class="num">321,679</td>
-                <td class="num">8.61</td>
-                <td class="num">¥0.33</td>
-            </tr>
-            <tr>
-                <td>2026-06-15</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">224,303</td>
-                <td class="num">6.18</td>
-                <td class="num">¥0.23</td>
-            </tr>
-            <tr>
-                <td>2026-06-15</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">1</td>
-                <td class="num">74,374</td>
-                <td class="num">2.99</td>
-                <td class="num">¥0.11</td>
-            </tr>
-            <tr>
-                <td>2026-06-16</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">233,614</td>
-                <td class="num">5.84</td>
-                <td class="num">¥0.22</td>
-            </tr>
-            <tr>
-                <td>2026-06-16</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">1</td>
-                <td class="num">94,402</td>
-                <td class="num">4.02</td>
-                <td class="num">¥0.15</td>
-            </tr>
-            <tr>
-                <td>2026-06-17</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">2</td>
-                <td class="num">286,565</td>
-                <td class="num">107.85</td>
-                <td class="num">¥4.10</td>
-            </tr>
-            <tr>
-                <td>2026-06-17</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">263,543</td>
-                <td class="num">9.16</td>
-                <td class="num">¥0.35</td>
-            </tr>
-            <tr>
-                <td>2026-06-18</td>
-                <td>glm-5.2</td>
-                <td class="num">1</td>
-                <td class="num">71,019</td>
-                <td class="num">174.05</td>
-                <td class="num">¥6.61</td>
-            </tr>
-            <tr>
-                <td>2026-06-18</td>
-                <td>kimi-k2.7</td>
-                <td class="num">1</td>
-                <td class="num">60,173</td>
-                <td class="num">57.97</td>
-                <td class="num">¥2.20</td>
-            </tr>
-            <tr>
-                <td>2026-06-18</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">314,732</td>
-                <td class="num">16.98</td>
-                <td class="num">¥0.65</td>
-            </tr>
-            <tr>
-                <td>2026-06-18</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">1</td>
-                <td class="num">107,477</td>
-                <td class="num">6.32</td>
-                <td class="num">¥0.24</td>
-            </tr>
-            <tr>
-                <td>2026-06-19</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">2</td>
-                <td class="num">210,217</td>
-                <td class="num">13.53</td>
-                <td class="num">¥0.51</td>
-            </tr>
-            <tr>
-                <td>2026-06-19</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">6</td>
-                <td class="num">348,705</td>
-                <td class="num">10.51</td>
-                <td class="num">¥0.40</td>
-            </tr>
-            <tr>
-                <td>2026-06-19</td>
-                <td>glm-5.2</td>
-                <td class="num">1</td>
-                <td class="num">49,738</td>
-                <td class="num">3.29</td>
-                <td class="num">¥0.13</td>
-            </tr>
-            <tr>
-                <td>2026-06-20</td>
-                <td>minimax-m3</td>
-                <td class="num">1</td>
-                <td class="num">59,766</td>
-                <td class="num">71.23</td>
-                <td class="num">¥2.71</td>
-            </tr>
-            <tr>
-                <td>2026-06-20</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">6</td>
-                <td class="num">460,050</td>
-                <td class="num">49.44</td>
-                <td class="num">¥1.88</td>
-            </tr>
-            <tr>
-                <td>2026-06-20</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">302,214</td>
-                <td class="num">16.04</td>
-                <td class="num">¥0.61</td>
-            </tr>
-            <tr>
-                <td>2026-06-21</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">5</td>
-                <td class="num">885,760</td>
-                <td class="num">564.56</td>
-                <td class="num">¥21.45</td>
-            </tr>
-            <tr>
-                <td>2026-06-21</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">4</td>
-                <td class="num">259,791</td>
-                <td class="num">12.43</td>
-                <td class="num">¥0.47</td>
-            </tr>
-            <tr>
-                <td>2026-06-22</td>
-                <td>deepseek-v4-flash</td>
-                <td class="num">2</td>
-                <td class="num">124,070</td>
-                <td class="num">4.47</td>
-                <td class="num">¥0.17</td>
-            </tr>
-            <tr>
-                <td>2026-06-22</td>
-                <td>hy3-preview-agent</td>
-                <td class="num">2</td>
-                <td class="num">100,244</td>
-                <td class="num">1.48</td>
-                <td class="num">¥0.06</td>
-            </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-
-    <div class="footer">
-        自动每12小时更新 · 数据来自本地 workbuddy.db
-    </div>
+<div class="st">总消耗</div>
+<div class="card" style="text-align:center;padding:24px">
+  <div style="font-family:var(--fm);font-size:2.5rem;font-weight:700;letter-spacing:-1.6px;line-height:1">7,470,795</div>
+  <div style="font-size:.82rem;color:var(--fg4);margin-top:8px;letter-spacing:-.02em">Token · 当前费率 ¥58.44</div>
+  <div style="font-size:.72rem;color:var(--fg4);margin-top:4px;font-family:var(--fm)">7月后 ¥76.90 · +32%</div>
 </div>
 
-<script>
-const dayLabels = ["2026-06-06", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22"];
-const dayCredits = [326.3400000000001, 505.24, 8.05, 5.949999999999999, 10.54, 20.250000000000004, 7.3, 66.56, 17.58, 9.169999999999998, 9.86, 117.01, 255.32000000000008, 27.329999999999995, 136.70999999999998, 576.99, 5.949999999999999];
-new Chart(document.getElementById('dailyChart'), {
-    type: 'line',
-    data: {
-        labels: dayLabels,
-        datasets: [{
-            label: '积分消耗',
-            data: dayCredits,
-            borderColor: '#3b82f6',
-            backgroundColor: 'rgba(59,130,246,0.1)',
-            fill: true,
-            tension: 0.3,
-            pointRadius: 4,
-            pointHoverRadius: 6
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: { legend: { display: false } },
-        scales: {
-            y: { beginAtZero: true, title: { display: true, text: '积分' } },
-            x: { ticks: { maxRotation: 45 } }
-        }
-    }
-});
+<div class="st">模型分布</div>
+<div class="card" style="padding:12px 16px">
+  <div class="mi"><span class="mn">deepseek-v4-flash</span><div class="mb"><div class="mbf" style="width:51.9%"></div></div><span class="mv">3,876k</span><span class="mp">52%</span></div>
+  <div class="mi"><span class="mn">hy3-preview-agent</span><div class="mb"><div class="mbf" style="width:44.4%;background:var(--fg2)"></div></div><span class="mv">3,313k</span><span class="mp">44%</span></div>
+  <div class="mi"><span class="mn">glm-5.2</span><div class="mb"><div class="mbf" style="width:1.6%;background:var(--fg3)"></div></div><span class="mv">120k</span><span class="mp">2%</span></div>
+  <div class="mi"><span class="mn">kimi-k2.7</span><div class="mb"><div class="mbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="mv">60k</span><span class="mp">1%</span></div>
+  <div class="mi"><span class="mn">minimax-m3</span><div class="mb"><div class="mbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="mv">59k</span><span class="mp">1%</span></div>
+  <div class="mi" style="border:none"><span class="mn">auto</span><div class="mb"><div class="mbf" style="width:0.5%;background:var(--fg3)"></div></div><span class="mv">39k</span><span class="mp">1%</span></div>
+</div>
 
-const modelLabels = ["deepseek-v4-flash", "glm-5.2", "hy3-preview-agent", "minimax-m3", "kimi-k2.7", "auto"];
-const modelCredits = [1630.0399999999997, 177.34000000000006, 167.98000000000002, 71.22999999999999, 57.97, 1.59];
-const modelColors = ["#3b82f6", "#ef4444", "#f59e0b", "#22c55e", "#8b5cf6", "#ec4899", "#14b8a6", "#f97316"];
-new Chart(document.getElementById('pieChart'), {
-    type: 'doughnut',
-    data: {
-        labels: modelLabels,
-        datasets: [{
-            data: modelCredits,
-            backgroundColor: modelColors.slice(0, modelLabels.length),
-            borderWidth: 2,
-            borderColor: '#fff'
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: { position: 'right', labels: { font: { size: 12 } } }
-        }
-    }
-});
-</script>
+<div class="st">费用参考</div>
+<div class="card" style="padding:12px 16px">
+  <div class="row" style="padding:8px 0"><span class="rl">当前月费</span><span class="rv sm">¥58.44</span></div>
+  <div class="row" style="border:none;padding:8px 0"><span class="rl">7月后预估</span><span class="rv sm">¥76.90</span></div>
+</div>
+
+<div class="st">周期</div>
+<div class="card" style="padding:12px 16px;text-align:center">
+  <div style="font-size:.82rem;color:var(--fg4)">统计周期：12小时自动同步</div>
+  <div style="font-family:var(--fm);font-size:.75rem;color:var(--fg3);margin-top:4px">上次更新：2026-06-22 06:00</div>
+</div>
+
+<div class="ft">Built with <a href="#">WorkBuddy</a> · <a href="#">Alistair Lendor</a></div>
 </body>
 </html>
