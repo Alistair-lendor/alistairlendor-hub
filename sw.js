@@ -1,5 +1,5 @@
-const CACHE = 'alistair-v3';
-const VERSION = 3;
+const CACHE = 'alistair-v4';
+const VERSION = 4;
 
 const PRECACHE = [
   '/manifest.json',
