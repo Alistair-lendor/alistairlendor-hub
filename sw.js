@@ -1,55 +1,84 @@
-const CACHE = 'alistair-v5';
-const VERSION = 5;
-
-const PRECACHE = [
-  '/manifest.json',
-  '/alistair-logo.png',
-  '/alistair-logo-hires.png'
-];
+const CACHE = 'alistair-v6';
+const VERSION = 6;
 
 self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open(CACHE).then(cache => cache.addAll(PRECACHE))
-  );
+  // Force activation without waiting for old tabs
   self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
   event.waitUntil(
+    // Delete ALL caches — don't bother keeping any from old versions
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
-    ).then(() => self.clients.claim())
+      Promise.all(keys.map(k => caches.delete(k)))
+    ).then(() => {
+      // Immediately take control of all clients
+      return self.clients.claim();
+    }).then(() => {
+      // Tell all open tabs to reload so they get the new version
+      return self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
+          client.postMessage({ type: 'SW_UPDATED', version: VERSION });
+        });
+      });
+    })
   );
+});
+
+self.addEventListener('message', event => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting();
+  }
 });
 
 self.addEventListener('fetch', event => {
   const { request } = event;
+
+  // Only handle GET requests
   if (request.method !== 'GET') return;
-  
+
   const url = new URL(request.url);
-  
-  // Only cache static assets (images, fonts), NOT HTML or API data
-  const isStatic = /\.(png|jpg|jpeg|gif|svg|ico|woff2?)$/i.test(url.pathname);
-  
-  if (isStatic) {
+
+  // HTML and navigation requests: ALWAYS fetch from network, zero caching
+  if (request.mode === 'navigate' || request.destination === 'document' ||
+      /\.html$/.test(url.pathname) || url.pathname === '/' || url.pathname === '') {
     event.respondWith(
-      caches.match(request).then(cached =>
-        fetch(request)
-          .then(response => {
-            const clone = response.clone();
-            if (response.ok) caches.open(CACHE).then(c => c.put(request, clone));
-            return response;
-          })
-          .catch(() => cached || new Response('Offline', { status: 503 }))
+      fetch(request, { cache: 'no-store' }).catch(() =>
+        new Response('Offline — please check your connection.', {
+          status: 503,
+          headers: { 'Content-Type': 'text/plain; charset=utf-8' }
+        })
       )
     );
     return;
   }
-  
-  // HTML, JSON, and everything else: always fetch from network, no caching
-  event.respondWith(fetch(request).catch(() => 
-    caches.match(request).then(cached => 
-      cached || new Response('Offline', { status: 503 })
+
+  // Static assets: cache-first with network update
+  const isStatic = /\.(png|jpg|jpeg|gif|svg|ico|woff2?|css|js)$/i.test(url.pathname);
+
+  if (isStatic) {
+    event.respondWith(
+      caches.open(CACHE).then(cache =>
+        cache.match(request).then(cached => {
+          const fetchPromise = fetch(request, { cache: 'no-store' }).then(response => {
+            if (response.ok) {
+              cache.put(request, response.clone());
+            }
+            return response;
+          });
+          return cached || fetchPromise;
+        })
+      )
+    );
+    return;
+  }
+
+  // Everything else: network-first with offline fallback
+  event.respondWith(
+    fetch(request, { cache: 'no-store' }).catch(() =>
+      caches.match(request).then(cached =>
+        cached || new Response('Offline', { status: 503 })
+      )
     )
-  ));
+  );
 });

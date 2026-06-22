@@ -186,7 +186,7 @@ img{max-width:100%;height:auto}
 .qa-ic svg{width:18px;height:18px}
 </style>
 </head>
-<body>
+<body data-version="6">
 
 <!-- Hero — bigger, bolder, Vercel-style -->
 <div class="hero">
@@ -282,9 +282,33 @@ img{max-width:100%;height:auto}
 <script>
 (function(){
 'use strict';
-const n=new Date();
-document.getElementById('pd').textContent=n.toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'short'});
-if('serviceWorker'in navigator)navigator.serviceWorker.register('/sw.js').catch(function(){});
+var BUILD_VERSION = '6';
+
+// Self-healing: if body doesn't have version marker, this is a stale cached page — force reload
+if (document.body && !document.body.hasAttribute('data-version')) {
+  document.body.setAttribute('data-version', '__stale__');
+  // Use location.replace to avoid adding to history, then reload bypassing cache
+  location.reload(true);
+  return;
+}
+
+var n = new Date();
+var el = document.getElementById('pd');
+if (el) el.textContent = n.toLocaleDateString('zh-CN', {month:'long',day:'numeric',weekday:'short'});
+
+if ('serviceWorker' in navigator) {
+  // Kill any old cached HTML responses
+  if ('caches' in window) {
+    caches.keys().then(function(keys) {
+      keys.forEach(function(key) { caches.delete(key); });
+    });
+  }
+  // Unregister ALL old SWs, then register the latest
+  navigator.serviceWorker.getRegistrations().then(function(regs) {
+    regs.forEach(function(r) { r.unregister(); });
+    return navigator.serviceWorker.register('/sw.js?v=' + BUILD_VERSION);
+  }).catch(function(){});
+}
 })();
 </script>
 </body>
