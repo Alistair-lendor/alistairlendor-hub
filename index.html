@@ -300,6 +300,11 @@ if ('serviceWorker' in navigator) {
     return navigator.serviceWorker.register('/sw.js?v=' + BUILD_VERSION);
   }).catch(function(){});
 }
+
+// Clean up cache-busting query param from URL after successful fresh load
+if (location.search.indexOf('_cb=') > -1) {
+  history.replaceState(null, '', location.pathname + location.hash);
+}
 })();
 </script>
 </body>
