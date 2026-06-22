@@ -2,81 +2,420 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
-<title>用量 · Alistair</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WorkBuddy Usage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
-@font-face{font-family:'Geist';src:url('https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-sans/Geist-Variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
-@font-face{font-family:'Geist Mono';src:url('https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/geist-mono/GeistMono-Variable.woff2') format('woff2');font-weight:100 900;font-display:swap}
-:root{--bg:#fff;--fg:#171717;--fg2:#4d4d4d;--fg3:#666;--fg4:#808080;--line:#ebebeb;--surface:#fafafa;--f:'Geist',Arial,sans-serif;--fm:'Geist Mono',ui-monospace,monospace;--font-features:"liga","tnum";--shadow-border:0 0 0 1px rgba(0,0,0,.08);--shadow-elevation:0 2px 2px rgba(0,0,0,.04);--shadow-ambient:0 8px 8px -8px rgba(0,0,0,.04);--shadow-glow:#fafafa 0 0 0 1px;--shadow-card:var(--shadow-border),var(--shadow-elevation),var(--shadow-ambient),var(--shadow-glow);--shadow-divider:0 1px 0 0 rgba(0,0,0,.08);--focus:hsla(212,100%,48%,1);--selection:hsla(0,0%,95%,1)}
-@media(prefers-color-scheme:dark){:root{--bg:#000;--fg:#ededed;--fg2:#888;--fg3:#666;--fg4:#555;--line:#222;--surface:#111;--shadow-border:0 0 0 1px rgba(255,255,255,.08);--shadow-elevation:0 2px 2px rgba(255,255,255,.04);--shadow-ambient:0 8px 8px -8px rgba(255,255,255,.04);--shadow-glow:#111 0 0 0 1px;--shadow-divider:0 1px 0 0 rgba(255,255,255,.08)}}
-*{margin:0;padding:0;box-sizing:border-box;font-feature-settings:var(--font-features)}
-::selection{background:var(--selection)}
-html,body{height:100%}
-body{font-family:var(--f);background:var(--bg);color:var(--fg);-webkit-font-smoothing:antialiased;line-height:1.5;max-width:520px;margin:0 auto;padding:0 20px}
-:focus-visible{outline:2px solid var(--focus);outline-offset:2px;border-radius:6px}
-a{color:inherit;text-decoration:none}
-
-.hdr{display:flex;align-items:center;justify-content:space-between;padding:24px 0 16px;box-shadow:var(--shadow-divider)}
-.hdr-l{font-size:1.5rem;font-weight:600;letter-spacing:-1.28px;line-height:1.2;cursor:pointer;transition:opacity .12s}
-.hdr-l:hover{opacity:.7}
-.hdr-r{font-size:.82rem;font-weight:400;color:var(--fg3);font-family:var(--fm);letter-spacing:-.02em}
-
-.st{font-size:.82rem;font-weight:500;color:var(--fg4);text-transform:uppercase;letter-spacing:.8px;padding-top:24px;padding-bottom:12px;box-shadow:var(--shadow-divider)}
-
-.card{padding:20px;border-radius:8px;box-shadow:var(--shadow-card);margin-bottom:16px}
-.row{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
-.row+.row{border-top:1px solid var(--line)}
-.rl{font-size:.88rem;font-weight:400;color:var(--fg2)}
-.rv{font-family:var(--fm);font-size:1.1rem;font-weight:600;letter-spacing:-.48px}
-.rv.sm{font-size:.88rem;font-weight:500}
-
-.mi{display:flex;align-items:center;gap:8px;padding:10px 0}
-.mi+.mi{border-top:1px solid var(--line)}
-.mn{font-size:.88rem;font-weight:500;width:96px;flex-shrink:0;letter-spacing:-.02em;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.mb{flex:1;height:4px;background:var(--line);border-radius:2px;overflow:hidden}
-.mbf{height:100%;border-radius:2px;background:var(--fg)}
-.mv{font-family:var(--fm);font-size:.72rem;font-weight:400;color:var(--fg3);width:56px;text-align:right;flex-shrink:0}
-.mp{font-family:var(--fm);font-size:.65rem;font-weight:400;color:var(--fg4);width:24px;text-align:right;flex-shrink:0}
-
-.tag{display:inline-block;font-size:.65rem;font-weight:500;padding:2px 8px;border-radius:6px;background:var(--surface);color:var(--fg3);box-shadow:var(--shadow-border)}
-
-.ft{text-align:center;font-size:.72rem;color:var(--fg4);padding:24px 0 32px;border-top:1px solid var(--line);margin-top:16px}
-.ft a{text-decoration:underline;text-underline-offset:2px}
-.ft a:hover{opacity:.7}
+:root {
+  --bg: #ffffff;
+  --card: #ffffff;
+  --border: #e5e5e5;
+  --text-primary: #171717;
+  --text-secondary: #4d4d4d;
+  --text-tertiary: #666666;
+  --text-muted: #808080;
+  --hover: #f5f5f5;
+  --bar-bg: #e5e5e5;
+  --bar-fill: #171717;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0a0a0a;
+    --card: #171717;
+    --border: #262626;
+    --text-primary: #ededed;
+    --text-secondary: #a3a3a3;
+    --text-tertiary: #808080;
+    --text-muted: #666666;
+    --hover: #1f1f1f;
+    --bar-bg: #262626;
+    --bar-fill: #a3a3a3;
+  }
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 20px 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.container { max-width: 520px; margin: 0 auto; }
+.header { margin-bottom: 28px; }
+.header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.header .sub {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.stat-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  transition: background 0.15s;
+}
+.stat-card .label {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
+}
+.stat-card .value {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  font-family: 'Geist Mono', monospace;
+}
+.stat-card .sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+.stat-card.full { grid-column: 1 / -1; }
+.section { margin-bottom: 24px; }
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
+}
+.model-list { list-style: none; }
+.model-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  margin-bottom: 6px;
+  transition: background 0.15s;
+  cursor: default;
+}
+.model-item:hover { background: var(--hover); }
+.model-info { flex: 1; min-width: 0; }
+.model-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 2px;
+}
+.model-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Geist Mono', monospace;
+}
+.model-cost {
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 12px;
+}
+.model-cost .cost-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-family: 'Geist Mono', monospace;
+  letter-spacing: -0.02em;
+}
+.model-cost .cost-sub {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'Geist Mono', monospace;
+}
+.bar-wrap {
+  margin-top: 6px;
+  width: 100%;
+  height: 4px;
+  background: var(--bar-bg);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--bar-fill);
+  border-radius: 2px;
+  transition: width 0.3s;
+}
+.chart-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.chart-card .chart-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+.chart-card canvas { max-height: 220px; }
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th {
+  text-align: left;
+  padding: 8px 10px;
+  color: var(--text-tertiary);
+  font-weight: 500;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-primary);
+  white-space: nowrap;
+}
+td.num { text-align: right; font-family: 'Geist Mono', monospace; color: var(--text-secondary); }
+td.title-cell {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-tertiary);
+  font-size: 11px;
+}
+tr:last-child td { border-bottom: none; }
+.footer {
+  text-align: center;
+  padding: 24px 0 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
 </style>
 </head>
 <body>
-<div class="hdr"><a href="https://alistairlendor.com" class="hdr-l">Alistair</a><span class="hdr-r">用量</span></div>
+<div class="container">
 
-<div class="st">总消耗</div>
-<div class="card" style="text-align:center;padding:24px">
-  <div style="font-family:var(--fm);font-size:2.5rem;font-weight:700;letter-spacing:-1.6px;line-height:1">7,470,795</div>
-  <div style="font-size:.82rem;color:var(--fg4);margin-top:8px;letter-spacing:-.02em">Token · 当前费率 ¥58.44</div>
-  <div style="font-size:.72rem;color:var(--fg4);margin-top:4px;font-family:var(--fm)">7月后 ¥76.90 · +32%</div>
+<div class="header">
+  <h1>Usage</h1>
+  <div class="sub">2026-06-06 &mdash; 2026-06-23 &middot; Updated 2026-06-23 02:42</div>
 </div>
 
-<div class="st">模型分布</div>
-<div class="card" style="padding:12px 16px">
-  <div class="mi"><span class="mn">deepseek-v4-flash</span><div class="mb"><div class="mbf" style="width:51.9%"></div></div><span class="mv">3,876k</span><span class="mp">52%</span></div>
-  <div class="mi"><span class="mn">hy3-preview-agent</span><div class="mb"><div class="mbf" style="width:44.4%;background:var(--fg2)"></div></div><span class="mv">3,313k</span><span class="mp">44%</span></div>
-  <div class="mi"><span class="mn">glm-5.2</span><div class="mb"><div class="mbf" style="width:1.6%;background:var(--fg3)"></div></div><span class="mv">120k</span><span class="mp">2%</span></div>
-  <div class="mi"><span class="mn">kimi-k2.7</span><div class="mb"><div class="mbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="mv">60k</span><span class="mp">1%</span></div>
-  <div class="mi"><span class="mn">minimax-m3</span><div class="mb"><div class="mbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="mv">59k</span><span class="mp">1%</span></div>
-  <div class="mi" style="border:none"><span class="mn">auto</span><div class="mb"><div class="mbf" style="width:0.5%;background:var(--fg3)"></div></div><span class="mv">39k</span><span class="mp">1%</span></div>
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="label">Sessions</div>
+    <div class="value">118</div>
+    <div class="sub">18 days</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Tokens</div>
+    <div class="value">9.0M</div>
+    <div class="sub">9,038,258</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Credits</div>
+    <div class="value">2,451</div>
+    <div class="sub">20.8 avg</div>
+  </div>
+  <div class="stat-card">
+    <div class="label">Cost</div>
+    <div class="value">&yen;93.12</div>
+    <div class="sub">Jul &yen;122.53</div>
+  </div>
 </div>
 
-<div class="st">费用参考</div>
-<div class="card" style="padding:12px 16px">
-  <div class="row" style="padding:8px 0"><span class="rl">当前月费</span><span class="rv sm">¥58.44</span></div>
-  <div class="row" style="border:none;padding:8px 0"><span class="rl">7月后预估</span><span class="rv sm">¥76.90</span></div>
+<div class="section">
+  <div class="section-title">Models</div>
+  <ul class="model-list">
+    <li class="model-item">
+      <div class="model-info">
+        <div class="model-name">deepseek-v4-flash</div>
+        <div class="model-meta">49 sessions &middot; 4,964,108 tokens</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:80.4%"></div></div>
+      </div>
+      <div class="model-cost">
+        <div class="cost-value">&yen;74.85</div>
+        <div class="cost-sub">1,969.7 cr</div>
+      </div>
+    </li>
+    <li class="model-item">
+      <div class="model-info">
+        <div class="model-name">hy3-preview-agent</div>
+        <div class="model-meta">64 sessions &middot; 3,793,473 tokens</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:7.0%"></div></div>
+      </div>
+      <div class="model-cost">
+        <div class="cost-value">&yen;6.56</div>
+        <div class="cost-sub">172.7 cr</div>
+      </div>
+    </li>
+    <li class="model-item">
+      <div class="model-info">
+        <div class="model-name">glm-5.2</div>
+        <div class="model-meta">2 sessions &middot; 120,757 tokens</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:7.2%"></div></div>
+      </div>
+      <div class="model-cost">
+        <div class="cost-value">&yen;6.74</div>
+        <div class="cost-sub">177.3 cr</div>
+      </div>
+    </li>
+    <li class="model-item">
+      <div class="model-info">
+        <div class="model-name">minimax-m3</div>
+        <div class="model-meta">1 session &middot; 59,766 tokens</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:2.9%"></div></div>
+      </div>
+      <div class="model-cost">
+        <div class="cost-value">&yen;2.71</div>
+        <div class="cost-sub">71.2 cr</div>
+      </div>
+    </li>
+    <li class="model-item">
+      <div class="model-info">
+        <div class="model-name">kimi-k2.7</div>
+        <div class="model-meta">1 session &middot; 60,173 tokens</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:2.4%"></div></div>
+      </div>
+      <div class="model-cost">
+        <div class="cost-value">&yen;2.20</div>
+        <div class="cost-sub">58.0 cr</div>
+      </div>
+    </li>
+    <li class="model-item">
+      <div class="model-info">
+        <div class="model-name">auto</div>
+        <div class="model-meta">1 session &middot; 39,981 tokens</div>
+        <div class="bar-wrap"><div class="bar-fill" style="width:0.1%"></div></div>
+      </div>
+      <div class="model-cost">
+        <div class="cost-value">&yen;0.06</div>
+        <div class="cost-sub">1.6 cr</div>
+      </div>
+    </li>
+  </ul>
 </div>
 
-<div class="st">周期</div>
-<div class="card" style="padding:12px 16px;text-align:center">
-  <div style="font-size:.82rem;color:var(--fg4)">统计周期：12小时自动同步</div>
-  <div style="font-family:var(--fm);font-size:.75rem;color:var(--fg3);margin-top:4px">上次更新：2026-06-22 06:00</div>
+<div class="section">
+  <div class="section-title">Daily Trend</div>
+  <div class="chart-card">
+    <div class="chart-label">Credits per Day</div>
+    <canvas id="dailyChart"></canvas>
+  </div>
 </div>
 
-<div class="ft">Built with <a href="#">WorkBuddy</a> · <a href="#">Alistair Lendor</a></div>
+<div class="section">
+  <div class="section-title">Model Share</div>
+  <div class="chart-card">
+    <div class="chart-label">Credits by Model</div>
+    <canvas id="pieChart"></canvas>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">Top Sessions</div>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>#</th><th>Time</th><th>Model</th><th class="num">Tokens</th><th class="num">Cost</th><th>Content</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>06-21 01:34</td><td>deepseek-v4-flash</td><td class="num">295,091</td><td class="num">&yen;22.84</td><td class="title-cell">现在给我看一下，关于我的个人信息都有哪些？</td></tr>
+        <tr><td>2</td><td>06-07 22:18</td><td>deepseek-v4-flash</td><td class="num">396,878</td><td class="num">&yen;18.14</td><td class="title-cell">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td></tr>
+        <tr><td>3</td><td>06-22 23:19</td><td>deepseek-v4-flash</td><td class="num">123,433</td><td class="num">&yen;9.01</td><td class="title-cell">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</td></tr>
+        <tr><td>4</td><td>06-18 15:06</td><td>glm-5.2</td><td class="num">71,019</td><td class="num">&yen;6.61</td><td class="title-cell">子女赡养费法律咨询</td></tr>
+        <tr><td>5</td><td>06-06 18:03</td><td>deepseek-v4-flash</td><td class="num">223,798</td><td class="num">&yen;3.94</td><td class="title-cell">金融服务 — 月收入情况和财务规划</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">Auto-updated every 12 hours</div>
+</div>
+
+<script>
+const dayLabels = ["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23"];
+const dayCredits = [326.34,505.24,8.05,5.95,10.54,20.25,7.30,66.56,17.58,9.17,9.86,117.01,255.32,27.33,136.71,650.63,274.14,2.61];
+
+const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+const textColor = isDark ? '#a3a3a3' : '#666666';
+const gridColor = isDark ? '#262626' : '#e5e5e5';
+const lineColor = isDark ? '#ededed' : '#171717';
+const fillColor = isDark ? 'rgba(237,237,237,0.08)' : 'rgba(23,23,23,0.06)';
+
+new Chart(document.getElementById('dailyChart'), {
+  type: 'line',
+  data: {
+    labels: dayLabels,
+    datasets: [{
+      label: 'Credits',
+      data: dayCredits,
+      borderColor: lineColor,
+      backgroundColor: fillColor,
+      fill: true,
+      tension: 0.3,
+      pointRadius: 2,
+      pointHoverRadius: 4,
+      pointBackgroundColor: lineColor,
+      borderWidth: 1.5
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: {
+        ticks: { color: textColor, font: { size: 9, family: 'Geist Mono' }, maxRotation: 45 },
+        grid: { color: gridColor }
+      },
+      y: {
+        beginAtZero: true,
+        ticks: { color: textColor, font: { size: 9, family: 'Geist Mono' } },
+        grid: { color: gridColor }
+      }
+    }
+  }
+});
+
+const modelLabels = ["deepseek-v4-flash","glm-5.2","hy3-preview-agent","minimax-m3","kimi-k2.7","auto"];
+const modelCredits = [1969.73, 177.34, 172.73, 71.23, 57.97, 1.59];
+const shades = isDark
+  ? ['#ededed','#a3a3a3','#808080','#666666','#4d4d4d','#262626']
+  : ['#171717','#4d4d4d','#666666','#808080','#a3a3a3','#cccccc'];
+
+new Chart(document.getElementById('pieChart'), {
+  type: 'doughnut',
+  data: {
+    labels: modelLabels,
+    datasets: [{
+      data: modelCredits,
+      backgroundColor: shades.slice(0, modelLabels.length),
+      borderWidth: 2,
+      borderColor: isDark ? '#0a0a0a' : '#ffffff'
+    }]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { position: 'bottom', labels: { color: textColor, font: { size: 10, family: 'Geist' }, padding: 12 } }
+    }
+  }
+});
+</script>
 </body>
 </html>
