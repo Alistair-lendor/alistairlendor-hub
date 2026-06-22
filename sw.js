@@ -1,5 +1,5 @@
-const CACHE = 'alistair-v6';
-const VERSION = 6;
+const CACHE = 'alistair-v7';
+const VERSION = 7;
 
 self.addEventListener('install', event => {
   // Force activation without waiting for old tabs

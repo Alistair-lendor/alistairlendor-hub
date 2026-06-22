@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-v="6">
 <head>
+<script>(function(){if(!document.documentElement.hasAttribute('data-v')){document.documentElement.setAttribute('data-v','stale');var u=location.href,l=u.indexOf('?')>-1?'&':'?';location.replace(u+l+'_cb='+Date.now());}})();</script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,viewport-fit=cover">
 <link rel="manifest" href="/manifest.json">
@@ -186,7 +187,7 @@ img{max-width:100%;height:auto}
 .qa-ic svg{width:18px;height:18px}
 </style>
 </head>
-<body data-version="6">
+<body>
 
 <!-- Hero — bigger, bolder, Vercel-style -->
 <div class="hero">
@@ -282,28 +283,18 @@ img{max-width:100%;height:auto}
 <script>
 (function(){
 'use strict';
-var BUILD_VERSION = '6';
-
-// Self-healing: if body doesn't have version marker, this is a stale cached page — force reload
-if (document.body && !document.body.hasAttribute('data-version')) {
-  document.body.setAttribute('data-version', '__stale__');
-  // Use location.replace to avoid adding to history, then reload bypassing cache
-  location.reload(true);
-  return;
-}
+var BUILD_VERSION = '7';
 
 var n = new Date();
 var el = document.getElementById('pd');
 if (el) el.textContent = n.toLocaleDateString('zh-CN', {month:'long',day:'numeric',weekday:'short'});
 
 if ('serviceWorker' in navigator) {
-  // Kill any old cached HTML responses
   if ('caches' in window) {
     caches.keys().then(function(keys) {
       keys.forEach(function(key) { caches.delete(key); });
     });
   }
-  // Unregister ALL old SWs, then register the latest
   navigator.serviceWorker.getRegistrations().then(function(regs) {
     regs.forEach(function(r) { r.unregister(); });
     return navigator.serviceWorker.register('/sw.js?v=' + BUILD_VERSION);
