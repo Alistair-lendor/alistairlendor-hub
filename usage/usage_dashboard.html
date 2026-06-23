@@ -3,598 +3,221 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WorkBuddy 用量监控</title>
+<title>Usage Dashboard - Alistair Lendor</title>
+<link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/geist-sans">
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/geist-mono">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
-
-:root {
-  --bg: #ffffff;
-  --fg: #171717;
-  --fg2: #4d4d4d;
-  --fg3: #666666;
-  --fg4: #808080;
-  --border: #e5e5e5;
-  --card-bg: #ffffff;
-  --hover-bg: #f5f5f5;
-  --bar-bg: #e5e5e5;
-  --bar-fill: #171717;
-  --chart-line: #171717;
-  --chart-fill: rgba(23,23,23,0.05);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0a0a0a;
-    --fg: #ededed;
-    --fg2: #a0a0a0;
-    --fg3: #808080;
-    --fg4: #666666;
-    --border: #262626;
-    --card-bg: #141414;
-    --hover-bg: #1a1a1a;
-    --bar-bg: #262626;
-    --bar-fill: #ededed;
-    --chart-line: #ededed;
-    --chart-fill: rgba(237,237,237,0.05);
-  }
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: var(--bg);
-  color: var(--fg);
-  padding: 24px 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-.num {
-  font-family: 'Inter', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
-  font-variant-numeric: tabular-nums;
-  text-align: right;
-}
-.container {
-  max-width: 520px;
-  margin: 0 auto;
-}
-
-/* Header */
-.header {
-  margin-bottom: 32px;
-}
-.header h1 {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--fg);
-  margin-bottom: 4px;
-}
-.header p {
-  font-size: 13px;
-  color: var(--fg3);
-  line-height: 1.6;
-}
-.header .divider {
-  height: 1px;
-  background: var(--border);
-  margin-top: 12px;
-}
-
-/* Stat Cards */
-.stats-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 8px;
-  margin-bottom: 24px;
-}
-.stat-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-}
-.stat-card .label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--fg4);
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-  margin-bottom: 6px;
-}
-.stat-card .value {
-  font-size: 24px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--fg);
-  font-family: 'Inter', 'SF Mono', 'Fira Code', monospace;
-  font-variant-numeric: tabular-nums;
-}
-.stat-card .sub {
-  font-size: 11px;
-  color: var(--fg4);
-  margin-top: 4px;
-}
-.stat-card.full {
-  grid-column: 1 / -1;
-}
-
-/* Section */
-.section {
-  margin-bottom: 24px;
-}
-.section h2 {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--fg2);
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  margin-bottom: 12px;
-}
-.section .divider {
-  height: 1px;
-  background: var(--border);
-  margin-bottom: 12px;
-}
-
-/* Chart Card */
-.chart-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 12px;
-}
-.chart-card:last-child {
-  margin-bottom: 0;
-}
-.chart-card canvas {
-  max-height: 220px;
-}
-
-/* Model Rankings */
-.model-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
-.model-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-}
-.model-item:last-child {
-  border-bottom: none;
-}
-.model-rank {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--fg4);
-  width: 28px;
-  flex-shrink: 0;
-}
-.model-info {
-  flex: 1;
-  min-width: 0;
-}
-.model-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--fg);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.model-meta {
-  font-size: 11px;
-  color: var(--fg4);
-  margin-top: 2px;
-}
-.model-stats {
-  text-align: right;
-  flex-shrink: 0;
-  margin-left: 8px;
-}
-.model-cost {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--fg);
-  font-family: 'Inter', 'SF Mono', 'Fira Code', monospace;
-  font-variant-numeric: tabular-nums;
-}
-.model-credits {
-  font-size: 11px;
-  color: var(--fg4);
-  margin-top: 1px;
-  font-family: 'Inter', 'SF Mono', 'Fira Code', monospace;
-  font-variant-numeric: tabular-nums;
-}
-.model-bar-wrap {
-  height: 3px;
-  background: var(--bar-bg);
-  border-radius: 2px;
-  margin-top: 6px;
-  width: 100%;
-}
-.model-bar-fill {
-  height: 100%;
-  background: var(--bar-fill);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-/* Daily Trend table */
-.scroll-wrap {
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-}
-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-th {
-  text-align: left;
-  padding: 8px 8px 8px 0;
-  font-weight: 500;
-  color: var(--fg4);
-  font-size: 11px;
-  border-bottom: 1px solid var(--border);
-  white-space: nowrap;
-}
-td {
-  padding: 8px 8px 8px 0;
-  border-bottom: 1px solid var(--border);
-  color: var(--fg2);
-  white-space: nowrap;
-}
-tr:last-child td {
-  border-bottom: none;
-}
-td.num {
-  color: var(--fg);
-  font-weight: 500;
-}
-.title-cell {
-  max-width: 150px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* Footer */
-.footer {
-  text-align: center;
-  padding: 24px 0 8px;
-  font-size: 11px;
-  color: var(--fg4);
-  border-top: 1px solid var(--border);
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Geist Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif; background:#fff; color:#171717; padding:24px 16px; }
+.container { max-width:520px; margin:0 auto; }
+h1 { font-size:22px; font-weight:600; letter-spacing:-0.03em; margin-bottom:4px; }
+h2 { font-size:16px; font-weight:600; letter-spacing:-0.02em; margin-bottom:12px; color:#171717; }
+.header-sub { font-size:13px; color:#808080; margin-bottom:24px; }
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+.stat-card { padding:16px; border:1px solid #e5e5e5; border-radius:8px; }
+.stat-label { font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:#808080; margin-bottom:4px; }
+.stat-value { font-size:24px; font-weight:600; letter-spacing:-0.03em; font-family:'Geist Mono',monospace; color:#171717; }
+.stat-sub { font-size:11px; color:#999; margin-top:2px; }
+.section { margin-bottom:28px; }
+.model-item { margin-bottom:16px; }
+.model-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+.model-name { font-size:13px; font-weight:500; color:#171717; }
+.model-credits { font-size:12px; color:#666; font-family:'Geist Mono',monospace; }
+.model-bar-bg { background:#f0f0f0; border-radius:3px; height:6px; overflow:hidden; }
+.model-bar { height:6px; background:#171717; border-radius:3px; transition:width 0.3s; }
+.model-meta { font-size:11px; color:#999; margin-top:3px; font-family:'Geist Mono',monospace; }
+.chart-card { border:1px solid #e5e5e5; border-radius:8px; padding:16px; margin-bottom:16px; }
+.chart-card canvas { max-height:220px; }
+table { width:100%; border-collapse:collapse; font-size:12px; }
+th, td { padding:8px 10px; text-align:left; border-bottom:1px solid #e5e5e5; }
+th { color:#808080; font-weight:500; font-size:11px; text-transform:uppercase; letter-spacing:0.03em; }
+td { color:#4d4d4d; }
+.num { text-align:right; font-family:'Geist Mono',monospace; }
+.rank { font-family:'Geist Mono',monospace; color:#999; }
+.title-cell { max-width:140px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; color:#808080; }
+.title-cell:empty { color:#ccc; }
+.footer { text-align:center; padding:20px 0; font-size:11px; color:#ccc; }
+.scroll-wrap { overflow-x:auto; }
+/* Dark mode */
+@media (prefers-color-scheme:dark) {
+    body { background:#0a0a0a; color:#f0f0f0; }
+    .stat-card { border-color:#2a2a2a; }
+    .stat-value { color:#f0f0f0; }
+    .stat-sub { color:#666; }
+    .chart-card { border-color:#2a2a2a; }
+    .model-bar-bg { background:#2a2a2a; }
+    .model-bar { background:#e0e0e0; }
+    .model-name { color:#f0f0f0; }
+    .model-credits { color:#999; }
+    th, td { border-color:#2a2a2a; color:#ccc; }
+    td.num { color:#ccc; }
+    th { color:#666; }
+    .header-sub { color:#666; }
+    .title-cell { color:#666; }
+    .footer { color:#333; }
+    h1, h2 { color:#f0f0f0; }
 }
 </style>
 </head>
 <body>
 <div class="container">
+    <h1>Usage</h1>
+    <div class="header-sub">2026-06-06 - 2026-06-24 &middot; Updated 2026-06-24 02:43</div>
 
-  <div class="header">
-    <h1>WorkBuddy 用量监控</h1>
-    <p>2026-06-06 ~ 2026-06-23<br>更新于 2026-06-23 14:42</p>
-    <div class="divider"></div>
-  </div>
-
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="label">会话次数</div>
-      <div class="value">121</div>
-      <div class="sub">18 天</div>
+    
+    <div class="stat-grid">
+        <div class="stat-card"><div class="stat-label">Sessions</div><div class="stat-value">125</div><div class="stat-sub">19 days</div></div>
+        <div class="stat-card"><div class="stat-label">Tokens</div><div class="stat-value">9,739,679</div><div class="stat-sub">9.7M</div></div>
+        <div class="stat-card"><div class="stat-label">Credits</div><div class="stat-value">2498</div><div class="stat-sub">20.0/session</div></div>
+        <div class="stat-card"><div class="stat-label">Cost</div><div class="stat-value">¥94.92</div><div class="stat-sub">Rate ¥0.038/credit</div></div>
     </div>
-    <div class="stat-card">
-      <div class="label">Token 消耗</div>
-      <div class="value">9.3M</div>
-      <div class="sub">9,316,426</div>
+
+    <div class="section">
+        <h2>Models</h2>
+        
+        <div class="model-item">
+            <div class="model-header">
+                <span class="model-name">#1 deepseek-v4-flash</span>
+                <span class="model-credits">2003.19 credits · ¥76.12</span>
+            </div>
+            <div class="model-bar-bg"><div class="model-bar" style="width:100.0%"></div></div>
+            <div class="model-meta">52 sessions · 5,394,033 tokens</div>
+        </div>
+        <div class="model-item">
+            <div class="model-header">
+                <span class="model-name">#2 hy3-preview-agent</span>
+                <span class="model-credits">186.67 credits · ¥7.09</span>
+            </div>
+            <div class="model-bar-bg"><div class="model-bar" style="width:9.3%"></div></div>
+            <div class="model-meta">68 sessions · 4,064,969 tokens</div>
+        </div>
+        <div class="model-item">
+            <div class="model-header">
+                <span class="model-name">#3 glm-5.2</span>
+                <span class="model-credits">177.34 credits · ¥6.74</span>
+            </div>
+            <div class="model-bar-bg"><div class="model-bar" style="width:8.9%"></div></div>
+            <div class="model-meta">2 sessions · 120,757 tokens</div>
+        </div>
+        <div class="model-item">
+            <div class="model-header">
+                <span class="model-name">#4 minimax-m3</span>
+                <span class="model-credits">71.23 credits · ¥2.71</span>
+            </div>
+            <div class="model-bar-bg"><div class="model-bar" style="width:3.6%"></div></div>
+            <div class="model-meta">1 sessions · 59,766 tokens</div>
+        </div>
+        <div class="model-item">
+            <div class="model-header">
+                <span class="model-name">#5 kimi-k2.7</span>
+                <span class="model-credits">57.97 credits · ¥2.20</span>
+            </div>
+            <div class="model-bar-bg"><div class="model-bar" style="width:2.9%"></div></div>
+            <div class="model-meta">1 sessions · 60,173 tokens</div>
+        </div>
+        <div class="model-item">
+            <div class="model-header">
+                <span class="model-name">#6 auto</span>
+                <span class="model-credits">1.59 credits · ¥0.06</span>
+            </div>
+            <div class="model-bar-bg"><div class="model-bar" style="width:0.1%"></div></div>
+            <div class="model-meta">1 sessions · 39,981 tokens</div>
+        </div>
     </div>
-    <div class="stat-card">
-      <div class="label">积分消耗</div>
-      <div class="value">2,466</div>
-      <div class="sub">平均 20.4/次</div>
+
+    <div class="section">
+        <h2>Trends</h2>
+        <div class="chart-card">
+            <canvas id="dailyChart"></canvas>
+        </div>
     </div>
-    <div class="stat-card">
-      <div class="label">当前费用</div>
-      <div class="value">&#165;93.70</div>
-      <div class="sub">7月后 &#165;123.29 (+32%)</div>
+
+    <div class="section">
+        <h2>Top Sessions</h2>
+        <div class="scroll-wrap">
+            <table>
+                <thead><tr><th>#</th><th>Time</th><th>Model</th><th class="num">Tokens</th><th class="num">Credits</th><th>Title</th></tr></thead>
+                <tbody>
+        <tr><td class="rank">1</td><td>06-21 01:34</td><td>deepseek-v4-flash</td><td class="num">295,091</td><td class="num">601.1</td><td class="title-cell">现在给我看一下，关于我的个人信息都有哪些？</td></tr>
+        <tr><td class="rank">2</td><td>06-07 22:18</td><td>deepseek-v4-flash</td><td class="num">396,878</td><td class="num">477.4</td><td class="title-cell">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td></tr>
+        <tr><td class="rank">3</td><td>06-22 23:19</td><td>deepseek-v4-flash</td><td class="num">168,580</td><td class="num">246.9</td><td class="title-cell">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？加载好了的</td></tr>
+        <tr><td class="rank">4</td><td>06-18 15:06</td><td>glm-5.2</td><td class="num">71,019</td><td class="num">174.1</td><td class="title-cell">@"C:/Users/ADMIN/Desktop/子女赡养费法律咨询.pdf" </td></tr>
+        <tr><td class="rank">5</td><td>06-06 18:03</td><td>deepseek-v4-flash</td><td class="num">223,798</td><td class="num">103.7</td><td class="title-cell">@scene#28:"金融服务" 我需要你根据我的月收入情况和财务情况，给我一个</td></tr></tbody>
+            </table>
+        </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>模型消耗排名</h2>
-    <div class="divider"></div>
-    <div class="model-list">
-      <div class="model-item">
-        <div class="model-rank">01</div>
-        <div class="model-info">
-          <div class="model-name">deepseek-v4-flash</div>
-          <div class="model-meta">50 会话 · 5,093,164 Token</div>
+    <div class="section">
+        <h2>Daily Detail</h2>
+        <div class="scroll-wrap">
+            <table>
+                <thead><tr><th>Date</th><th class="num">Sessions</th><th class="num">Tokens</th><th class="num">Credits</th><th class="num">Cost</th></tr></thead>
+                <tbody>
+        <tr><td>2026-06-06</td><td class="num">13</td><td class="num">1,217,972</td><td class="num">326.3</td><td class="num">¥12.40</td></tr>
+        <tr><td>2026-06-07</td><td class="num">6</td><td class="num">675,844</td><td class="num">505.2</td><td class="num">¥19.20</td></tr>
+        <tr><td>2026-06-08</td><td class="num">4</td><td class="num">230,485</td><td class="num">8.0</td><td class="num">¥0.31</td></tr>
+        <tr><td>2026-06-09</td><td class="num">3</td><td class="num">173,023</td><td class="num">5.9</td><td class="num">¥0.23</td></tr>
+        <tr><td>2026-06-10</td><td class="num">5</td><td class="num">250,572</td><td class="num">10.5</td><td class="num">¥0.40</td></tr>
+        <tr><td>2026-06-11</td><td class="num">7</td><td class="num">434,174</td><td class="num">20.3</td><td class="num">¥0.77</td></tr>
+        <tr><td>2026-06-12</td><td class="num">4</td><td class="num">238,307</td><td class="num">7.3</td><td class="num">¥0.28</td></tr>
+        <tr><td>2026-06-13</td><td class="num">6</td><td class="num">428,887</td><td class="num">66.6</td><td class="num">¥2.53</td></tr>
+        <tr><td>2026-06-14</td><td class="num">8</td><td class="num">482,684</td><td class="num">17.6</td><td class="num">¥0.67</td></tr>
+        <tr><td>2026-06-15</td><td class="num">5</td><td class="num">298,677</td><td class="num">9.2</td><td class="num">¥0.35</td></tr>
+        <tr><td>2026-06-16</td><td class="num">5</td><td class="num">328,016</td><td class="num">9.9</td><td class="num">¥0.37</td></tr>
+        <tr><td>2026-06-17</td><td class="num">6</td><td class="num">550,108</td><td class="num">117.0</td><td class="num">¥4.45</td></tr>
+        <tr><td>2026-06-18</td><td class="num">7</td><td class="num">553,401</td><td class="num">255.3</td><td class="num">¥9.70</td></tr>
+        <tr><td>2026-06-19</td><td class="num">9</td><td class="num">608,660</td><td class="num">27.3</td><td class="num">¥1.04</td></tr>
+        <tr><td>2026-06-20</td><td class="num">11</td><td class="num">822,030</td><td class="num">136.7</td><td class="num">¥5.19</td></tr>
+        <tr><td>2026-06-21</td><td class="num">9</td><td class="num">977,189</td><td class="num">650.6</td><td class="num">¥24.72</td></tr>
+        <tr><td>2026-06-22</td><td class="num">9</td><td class="num">771,510</td><td class="num">283.9</td><td class="num">¥10.79</td></tr>
+        <tr><td>2026-06-23</td><td class="num">7</td><td class="num">645,549</td><td class="num">39.0</td><td class="num">¥1.48</td></tr>
+        <tr><td>2026-06-24</td><td class="num">1</td><td class="num">52,591</td><td class="num">1.2</td><td class="num">¥0.04</td></tr></tbody>
+            </table>
         </div>
-        <div class="model-stats">
-          <div class="model-cost">&#165;75.15</div>
-          <div class="model-credits">1,977.62 积分</div>
-        </div>
-      </div>
-      <div class="model-item" style="padding-top:0">
-        <div class="model-rank"></div>
-        <div class="model-bar-wrap" style="margin-left:28px">
-          <div class="model-bar-fill" style="width:80.2%"></div>
-        </div>
-      </div>
-
-      <div class="model-item">
-        <div class="model-rank">02</div>
-        <div class="model-info">
-          <div class="model-name">hy3-preview-agent</div>
-          <div class="model-meta">66 会话 · 3,942,585 Token</div>
-        </div>
-        <div class="model-stats">
-          <div class="model-cost">&#165;6.84</div>
-          <div class="model-credits">180.04 积分</div>
-        </div>
-      </div>
-      <div class="model-item" style="padding-top:0">
-        <div class="model-rank"></div>
-        <div class="model-bar-wrap" style="margin-left:28px">
-          <div class="model-bar-fill" style="width:7.3%"></div>
-        </div>
-      </div>
-
-      <div class="model-item">
-        <div class="model-rank">03</div>
-        <div class="model-info">
-          <div class="model-name">glm-5.2</div>
-          <div class="model-meta">2 会话 · 120,757 Token</div>
-        </div>
-        <div class="model-stats">
-          <div class="model-cost">&#165;6.74</div>
-          <div class="model-credits">177.34 积分</div>
-        </div>
-      </div>
-      <div class="model-item" style="padding-top:0">
-        <div class="model-rank"></div>
-        <div class="model-bar-wrap" style="margin-left:28px">
-          <div class="model-bar-fill" style="width:7.2%"></div>
-        </div>
-      </div>
-
-      <div class="model-item">
-        <div class="model-rank">04</div>
-        <div class="model-info">
-          <div class="model-name">minimax-m3</div>
-          <div class="model-meta">1 会话 · 59,766 Token</div>
-        </div>
-        <div class="model-stats">
-          <div class="model-cost">&#165;2.71</div>
-          <div class="model-credits">71.23 积分</div>
-        </div>
-      </div>
-      <div class="model-item" style="padding-top:0">
-        <div class="model-rank"></div>
-        <div class="model-bar-wrap" style="margin-left:28px">
-          <div class="model-bar-fill" style="width:2.9%"></div>
-        </div>
-      </div>
-
-      <div class="model-item">
-        <div class="model-rank">05</div>
-        <div class="model-info">
-          <div class="model-name">kimi-k2.7</div>
-          <div class="model-meta">1 会话 · 60,173 Token</div>
-        </div>
-        <div class="model-stats">
-          <div class="model-cost">&#165;2.20</div>
-          <div class="model-credits">57.97 积分</div>
-        </div>
-      </div>
-      <div class="model-item" style="padding-top:0">
-        <div class="model-rank"></div>
-        <div class="model-bar-wrap" style="margin-left:28px">
-          <div class="model-bar-fill" style="width:2.4%"></div>
-        </div>
-      </div>
-
-      <div class="model-item">
-        <div class="model-rank">06</div>
-        <div class="model-info">
-          <div class="model-name">auto</div>
-          <div class="model-meta">1 会话 · 39,981 Token</div>
-        </div>
-        <div class="model-stats">
-          <div class="model-cost">&#165;0.06</div>
-          <div class="model-credits">1.59 积分</div>
-        </div>
-      </div>
-      <div class="model-item" style="padding-top:0">
-        <div class="model-rank"></div>
-        <div class="model-bar-wrap" style="margin-left:28px">
-          <div class="model-bar-fill" style="width:0.1%"></div>
-        </div>
-      </div>
     </div>
-  </div>
 
-  <div class="section">
-    <h2>每日趋势</h2>
-    <div class="divider"></div>
-    <div class="chart-card">
-      <canvas id="dailyChart"></canvas>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>模型积分占比</h2>
-    <div class="divider"></div>
-    <div class="chart-card">
-      <canvas id="pieChart"></canvas>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>单次最贵会话 TOP 5</h2>
-    <div class="divider"></div>
-    <div class="scroll-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th><th>时间</th><th>模型</th><th class="num">Token</th><th class="num">积分</th><th class="num">费用</th><th>标题</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td><td>06-21 01:34</td><td>deepseek-v4-flash</td>
-            <td class="num">295,091</td><td class="num">601.11</td><td class="num">&#165;22.84</td>
-            <td class="title-cell">现在给我看一下，关于我的个人信息都有哪些？</td>
-          </tr>
-          <tr>
-            <td>2</td><td>06-07 22:18</td><td>deepseek-v4-flash</td>
-            <td class="num">396,878</td><td class="num">477.39</td><td class="num">&#165;18.14</td>
-            <td class="title-cell">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td>
-          </tr>
-          <tr>
-            <td>3</td><td>06-22 23:19</td><td>deepseek-v4-flash</td>
-            <td class="num">123,433</td><td class="num">237.13</td><td class="num">&#165;9.01</td>
-            <td class="title-cell">现在我开启一个新的对话来打磨我的控制台和对应的模块</td>
-          </tr>
-          <tr>
-            <td>4</td><td>06-18 15:06</td><td>glm-5.2</td>
-            <td class="num">71,019</td><td class="num">174.05</td><td class="num">&#165;6.61</td>
-            <td class="title-cell">子女赡养费法律咨询.pdf</td>
-          </tr>
-          <tr>
-            <td>5</td><td>06-06 18:03</td><td>deepseek-v4-flash</td>
-            <td class="num">223,798</td><td class="num">103.69</td><td class="num">&#165;3.94</td>
-            <td class="title-cell">金融服务 - 月收入情况和财务规划</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="section">
-    <h2>每日消耗明细</h2>
-    <div class="divider"></div>
-    <div class="scroll-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>日期</th><th>模型</th><th class="num">会话</th><th class="num">Token</th><th class="num">积分</th><th class="num">费用</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr><td>06-06</td><td>deepseek-v4-flash</td><td class="num">11</td><td class="num">1,126,383</td><td class="num">298.61</td><td class="num">&#165;11.35</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">1</td><td class="num">51,608</td><td class="num">26.14</td><td class="num">&#165;0.99</td></tr>
-          <tr><td></td><td>auto</td><td class="num">1</td><td class="num">39,981</td><td class="num">1.59</td><td class="num">&#165;0.06</td></tr>
-          <tr><td>06-07</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">448,733</td><td class="num">482.57</td><td class="num">&#165;18.34</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">227,111</td><td class="num">22.67</td><td class="num">&#165;0.86</td></tr>
-          <tr><td>06-08</td><td>hy3-preview-agent</td><td class="num">3</td><td class="num">162,280</td><td class="num">5.51</td><td class="num">&#165;0.21</td></tr>
-          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">68,205</td><td class="num">2.54</td><td class="num">&#165;0.10</td></tr>
-          <tr><td>06-09</td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">65,627</td><td class="num">3.13</td><td class="num">&#165;0.12</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">2</td><td class="num">107,396</td><td class="num">2.82</td><td class="num">&#165;0.11</td></tr>
-          <tr><td>06-10</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">188,333</td><td class="num">5.46</td><td class="num">&#165;0.21</td></tr>
-          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">62,239</td><td class="num">5.08</td><td class="num">&#165;0.19</td></tr>
-          <tr><td>06-11</td><td>deepseek-v4-flash</td><td class="num">4</td><td class="num">271,130</td><td class="num">15.40</td><td class="num">&#165;0.59</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">3</td><td class="num">163,044</td><td class="num">4.85</td><td class="num">&#165;0.18</td></tr>
-          <tr><td>06-12</td><td>hy3-preview-agent</td><td class="num">3</td><td class="num">166,008</td><td class="num">5.03</td><td class="num">&#165;0.19</td></tr>
-          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">72,299</td><td class="num">2.27</td><td class="num">&#165;0.09</td></tr>
-          <tr><td>06-13</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">189,787</td><td class="num">58.29</td><td class="num">&#165;2.22</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">239,100</td><td class="num">8.27</td><td class="num">&#165;0.31</td></tr>
-          <tr><td>06-14</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">161,005</td><td class="num">8.97</td><td class="num">&#165;0.34</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">6</td><td class="num">321,679</td><td class="num">8.61</td><td class="num">&#165;0.33</td></tr>
-          <tr><td>06-15</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">224,303</td><td class="num">6.18</td><td class="num">&#165;0.23</td></tr>
-          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">74,374</td><td class="num">2.99</td><td class="num">&#165;0.11</td></tr>
-          <tr><td>06-16</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">233,614</td><td class="num">5.84</td><td class="num">&#165;0.22</td></tr>
-          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">94,402</td><td class="num">4.02</td><td class="num">&#165;0.15</td></tr>
-          <tr><td>06-17</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">286,565</td><td class="num">107.85</td><td class="num">&#165;4.10</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">263,543</td><td class="num">9.16</td><td class="num">&#165;0.35</td></tr>
-          <tr><td>06-18</td><td>glm-5.2</td><td class="num">1</td><td class="num">71,019</td><td class="num">174.05</td><td class="num">&#165;6.61</td></tr>
-          <tr><td></td><td>kimi-k2.7</td><td class="num">1</td><td class="num">60,173</td><td class="num">57.97</td><td class="num">&#165;2.20</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">314,732</td><td class="num">16.98</td><td class="num">&#165;0.65</td></tr>
-          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">107,477</td><td class="num">6.32</td><td class="num">&#165;0.24</td></tr>
-          <tr><td>06-19</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">210,217</td><td class="num">13.53</td><td class="num">&#165;0.51</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">6</td><td class="num">348,705</td><td class="num">10.51</td><td class="num">&#165;0.40</td></tr>
-          <tr><td></td><td>glm-5.2</td><td class="num">1</td><td class="num">49,738</td><td class="num">3.29</td><td class="num">&#165;0.13</td></tr>
-          <tr><td>06-20</td><td>minimax-m3</td><td class="num">1</td><td class="num">59,766</td><td class="num">71.23</td><td class="num">&#165;2.71</td></tr>
-          <tr><td></td><td>deepseek-v4-flash</td><td class="num">6</td><td class="num">460,050</td><td class="num">49.44</td><td class="num">&#165;1.88</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">302,214</td><td class="num">16.04</td><td class="num">&#165;0.61</td></tr>
-          <tr><td>06-21</td><td>deepseek-v4-flash</td><td class="num">5</td><td class="num">717,398</td><td class="num">638.20</td><td class="num">&#165;24.25</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">259,791</td><td class="num">12.43</td><td class="num">&#165;0.47</td></tr>
-          <tr><td>06-22</td><td>deepseek-v4-flash</td><td class="num">5</td><td class="num">506,351</td><td class="num">267.91</td><td class="num">&#165;10.18</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">220,012</td><td class="num">6.23</td><td class="num">&#165;0.24</td></tr>
-          <tr><td>06-23</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">170,922</td><td class="num">10.50</td><td class="num">&#165;0.40</td></tr>
-          <tr><td></td><td>hy3-preview-agent</td><td class="num">2</td><td class="num">149,112</td><td class="num">7.31</td><td class="num">&#165;0.28</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-
-  <div class="footer">
-    自动每12小时更新 · 数据来自本地 workbuddy.db
-  </div>
+    <div class="footer">Auto-updated every 12h &middot; WorkBuddy Usage</div>
 </div>
-
 <script>
-const dayLabels = ["2026-06-06", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23"];
-const dayCredits = [326.34, 505.24, 8.05, 5.95, 10.54, 20.25, 7.30, 66.56, 17.58, 9.17, 9.86, 117.01, 255.32, 27.33, 136.71, 650.63, 274.14, 17.81];
-
-const rootStyle = getComputedStyle(document.documentElement);
-const chartLine = rootStyle.getPropertyValue('--chart-line').trim();
-const chartFill = rootStyle.getPropertyValue('--chart-fill').trim();
-
+const dayLabels = ["2026-06-06", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23", "2026-06-24"];
+const dayCredits = [326.3400000000001, 505.23999999999995, 8.049999999999999, 5.949999999999999, 10.54, 20.250000000000004, 7.299999999999999, 66.55999999999999, 17.58, 9.17, 9.86, 117.01, 255.32000000000008, 27.33, 136.71, 650.6300000000001, 283.93999999999994, 39.04, 1.1700000000000002];
+const dayTokens = [1217972, 675844, 230485, 173023, 250572, 434174, 238307, 428887, 482684, 298677, 328016, 550108, 553401, 608660, 822030, 977189, 771510, 645549, 52591];
 new Chart(document.getElementById('dailyChart'), {
-    type: 'line',
-    data: {
-        labels: dayLabels,
-        datasets: [{
-            label: '积分消耗',
-            data: dayCredits,
-            borderColor: chartLine,
-            backgroundColor: chartFill,
-            fill: true,
-            tension: 0.3,
-            pointRadius: 3,
-            pointBackgroundColor: chartLine,
-            pointHoverRadius: 5
+    type:'line',
+    data:{
+        labels:dayLabels,
+        datasets:[{
+            label:'Credits',
+            data:dayCredits,
+            borderColor:'#171717',
+            backgroundColor:'rgba(23,23,23,0.04)',
+            fill:true,
+            tension:0.3,
+            pointRadius:3,
+            pointBackgroundColor:'#171717'
+        },{
+            label:'Tokens (k)',
+            data:dayTokens.map(v=>v/1000),
+            borderColor:'#808080',
+            backgroundColor:'rgba(128,128,128,0.04)',
+            fill:true,
+            tension:0.3,
+            pointRadius:3,
+            pointBackgroundColor:'#808080',
+            yAxisID:'y1'
         }]
     },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: { legend: { display: false } },
-        scales: {
-            y: { beginAtZero: true, title: { display: true, text: '积分' },
-                grid: { color: 'var(--border)' },
-                ticks: { color: 'var(--fg4)' } },
-            x: { ticks: { maxRotation: 45, color: 'var(--fg4)' },
-                grid: { display: false } }
-        }
-    }
-});
-
-const modelLabels = ["deepseek-v4-flash", "hy3-preview-agent", "glm-5.2", "minimax-m3", "kimi-k2.7", "auto"];
-const modelCredits = [1977.62, 180.04, 177.34, 71.23, 57.97, 1.59];
-const grayScale = ["#171717","#333333","#4d4d4d","#666666","#808080","#999999"];
-new Chart(document.getElementById('pieChart'), {
-    type: 'doughnut',
-    data: {
-        labels: modelLabels,
-        datasets: [{
-            data: modelCredits,
-            backgroundColor: grayScale.slice(0, modelLabels.length),
-            borderWidth: 2,
-            borderColor: 'var(--bg)'
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: { position: 'right', labels: { color: 'var(--fg2)', font: { size: 11 } } }
+    options:{
+        responsive:true,
+        maintainAspectRatio:true,
+        interaction:{mode:'index',intersect:false},
+        plugins:{legend:{display:true,position:'top',labels:{color:'#808080',font:{size:11,family:'Geist Sans'}},usePointStyle:true}},
+        scales:{
+            x:{ticks:{color:'#808080',font:{size:10,maxTicksLimit:8},maxRotation:45},grid:{color:'#f0f0f0'}},
+            y:{beginAtZero:true,ticks:{color:'#808080',font:{size:10}},grid:{color:'#f0f0f0'},title:{display:true,text:'Credits',color:'#808080',font:{size:10}}},
+            y1:{position:'right',beginAtZero:true,ticks:{color:'#ccc',font:{size:10}},grid:{display:false},title:{display:true,text:'Tokens (k)',color:'#ccc',font:{size:10}}}
         }
     }
 });
