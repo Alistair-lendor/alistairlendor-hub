@@ -3,418 +3,600 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WorkBuddy Usage</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>WorkBuddy 用量监控</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap');
+
 :root {
   --bg: #ffffff;
-  --card: #ffffff;
+  --fg: #171717;
+  --fg2: #4d4d4d;
+  --fg3: #666666;
+  --fg4: #808080;
   --border: #e5e5e5;
-  --text-primary: #171717;
-  --text-secondary: #4d4d4d;
-  --text-tertiary: #666666;
-  --text-muted: #808080;
-  --hover: #f5f5f5;
+  --card-bg: #ffffff;
+  --hover-bg: #f5f5f5;
   --bar-bg: #e5e5e5;
   --bar-fill: #171717;
+  --chart-line: #171717;
+  --chart-fill: rgba(23,23,23,0.05);
 }
+
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0a0a0a;
-    --card: #171717;
+    --fg: #ededed;
+    --fg2: #a0a0a0;
+    --fg3: #808080;
+    --fg4: #666666;
     --border: #262626;
-    --text-primary: #ededed;
-    --text-secondary: #a3a3a3;
-    --text-tertiary: #808080;
-    --text-muted: #666666;
-    --hover: #1f1f1f;
+    --card-bg: #141414;
+    --hover-bg: #1a1a1a;
     --bar-bg: #262626;
-    --bar-fill: #a3a3a3;
+    --bar-fill: #ededed;
+    --chart-line: #ededed;
+    --chart-fill: rgba(237,237,237,0.05);
   }
 }
+
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body {
-  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   background: var(--bg);
-  color: var(--text-primary);
-  padding: 20px 16px;
+  color: var(--fg);
+  padding: 24px 16px;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-.container { max-width: 520px; margin: 0 auto; }
-.header { margin-bottom: 28px; }
+.num {
+  font-family: 'Inter', 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+/* Header */
+.header {
+  margin-bottom: 32px;
+}
 .header h1 {
   font-size: 20px;
   font-weight: 600;
-  letter-spacing: -0.03em;
-  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  color: var(--fg);
   margin-bottom: 4px;
 }
-.header .sub {
+.header p {
   font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 400;
+  color: var(--fg3);
+  line-height: 1.6;
 }
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.header .divider {
+  height: 1px;
+  background: var(--border);
+  margin-top: 12px;
+}
+
+/* Stat Cards */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 24px;
+}
 .stat-card {
-  background: var(--card);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px;
-  transition: background 0.15s;
 }
 .stat-card .label {
   font-size: 11px;
-  color: var(--text-tertiary);
   font-weight: 500;
+  color: var(--fg4);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.03em;
   margin-bottom: 6px;
 }
 .stat-card .value {
-  font-size: 22px;
+  font-size: 24px;
   font-weight: 600;
   letter-spacing: -0.03em;
-  color: var(--text-primary);
-  font-family: 'Geist Mono', monospace;
+  color: var(--fg);
+  font-family: 'Inter', 'SF Mono', 'Fira Code', monospace;
+  font-variant-numeric: tabular-nums;
 }
 .stat-card .sub {
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--fg4);
   margin-top: 4px;
 }
-.stat-card.full { grid-column: 1 / -1; }
-.section { margin-bottom: 24px; }
-.section-title {
+.stat-card.full {
+  grid-column: 1 / -1;
+}
+
+/* Section */
+.section {
+  margin-bottom: 24px;
+}
+.section h2 {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--fg2);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
   margin-bottom: 12px;
 }
-.model-list { list-style: none; }
-.model-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 12px;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  margin-bottom: 6px;
-  transition: background 0.15s;
-  cursor: default;
+.section .divider {
+  height: 1px;
+  background: var(--border);
+  margin-bottom: 12px;
 }
-.model-item:hover { background: var(--hover); }
-.model-info { flex: 1; min-width: 0; }
-.model-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-  margin-bottom: 2px;
-}
-.model-meta {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-family: 'Geist Mono', monospace;
-}
-.model-cost {
-  text-align: right;
-  flex-shrink: 0;
-  margin-left: 12px;
-}
-.model-cost .cost-value {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-family: 'Geist Mono', monospace;
-  letter-spacing: -0.02em;
-}
-.model-cost .cost-sub {
-  font-size: 10px;
-  color: var(--text-muted);
-  font-family: 'Geist Mono', monospace;
-}
-.bar-wrap {
-  margin-top: 6px;
-  width: 100%;
-  height: 4px;
-  background: var(--bar-bg);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.bar-fill {
-  height: 100%;
-  background: var(--bar-fill);
-  border-radius: 2px;
-  transition: width 0.3s;
-}
+
+/* Chart Card */
 .chart-card {
-  background: var(--card);
+  background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
   padding: 16px;
   margin-bottom: 12px;
 }
-.chart-card .chart-label {
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-  letter-spacing: -0.02em;
+.chart-card:last-child {
+  margin-bottom: 0;
 }
-.chart-card canvas { max-height: 220px; }
-.table-wrap { overflow-x: auto; }
-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+.chart-card canvas {
+  max-height: 220px;
+}
+
+/* Model Rankings */
+.model-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.model-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
+}
+.model-item:last-child {
+  border-bottom: none;
+}
+.model-rank {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--fg4);
+  width: 28px;
+  flex-shrink: 0;
+}
+.model-info {
+  flex: 1;
+  min-width: 0;
+}
+.model-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--fg);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.model-meta {
+  font-size: 11px;
+  color: var(--fg4);
+  margin-top: 2px;
+}
+.model-stats {
+  text-align: right;
+  flex-shrink: 0;
+  margin-left: 8px;
+}
+.model-cost {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--fg);
+  font-family: 'Inter', 'SF Mono', 'Fira Code', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.model-credits {
+  font-size: 11px;
+  color: var(--fg4);
+  margin-top: 1px;
+  font-family: 'Inter', 'SF Mono', 'Fira Code', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.model-bar-wrap {
+  height: 3px;
+  background: var(--bar-bg);
+  border-radius: 2px;
+  margin-top: 6px;
+  width: 100%;
+}
+.model-bar-fill {
+  height: 100%;
+  background: var(--bar-fill);
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+/* Daily Trend table */
+.scroll-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
 th {
   text-align: left;
-  padding: 8px 10px;
-  color: var(--text-tertiary);
+  padding: 8px 8px 8px 0;
   font-weight: 500;
+  color: var(--fg4);
   font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
 td {
-  padding: 8px 10px;
+  padding: 8px 8px 8px 0;
   border-bottom: 1px solid var(--border);
-  color: var(--text-primary);
+  color: var(--fg2);
   white-space: nowrap;
 }
-td.num { text-align: right; font-family: 'Geist Mono', monospace; color: var(--text-secondary); }
-td.title-cell {
-  max-width: 160px;
+tr:last-child td {
+  border-bottom: none;
+}
+td.num {
+  color: var(--fg);
+  font-weight: 500;
+}
+.title-cell {
+  max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  color: var(--text-tertiary);
-  font-size: 11px;
 }
-tr:last-child td { border-bottom: none; }
+
+/* Footer */
 .footer {
   text-align: center;
   padding: 24px 0 8px;
   font-size: 11px;
-  color: var(--text-muted);
+  color: var(--fg4);
   border-top: 1px solid var(--border);
-  margin-top: 8px;
 }
 </style>
 </head>
 <body>
 <div class="container">
 
-<div class="header">
-  <h1>Usage</h1>
-  <div class="sub">2026-06-06 &mdash; 2026-06-23 &middot; Updated 2026-06-23 02:42</div>
-</div>
+  <div class="header">
+    <h1>WorkBuddy 用量监控</h1>
+    <p>2026-06-06 ~ 2026-06-23<br>更新于 2026-06-23 14:42</p>
+    <div class="divider"></div>
+  </div>
 
-<div class="stats-grid">
-  <div class="stat-card">
-    <div class="label">Sessions</div>
-    <div class="value">118</div>
-    <div class="sub">18 days</div>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="label">会话次数</div>
+      <div class="value">121</div>
+      <div class="sub">18 天</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Token 消耗</div>
+      <div class="value">9.3M</div>
+      <div class="sub">9,316,426</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">积分消耗</div>
+      <div class="value">2,466</div>
+      <div class="sub">平均 20.4/次</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">当前费用</div>
+      <div class="value">&#165;93.70</div>
+      <div class="sub">7月后 &#165;123.29 (+32%)</div>
+    </div>
   </div>
-  <div class="stat-card">
-    <div class="label">Tokens</div>
-    <div class="value">9.0M</div>
-    <div class="sub">9,038,258</div>
-  </div>
-  <div class="stat-card">
-    <div class="label">Credits</div>
-    <div class="value">2,451</div>
-    <div class="sub">20.8 avg</div>
-  </div>
-  <div class="stat-card">
-    <div class="label">Cost</div>
-    <div class="value">&yen;93.12</div>
-    <div class="sub">Jul &yen;122.53</div>
-  </div>
-</div>
 
-<div class="section">
-  <div class="section-title">Models</div>
-  <ul class="model-list">
-    <li class="model-item">
-      <div class="model-info">
-        <div class="model-name">deepseek-v4-flash</div>
-        <div class="model-meta">49 sessions &middot; 4,964,108 tokens</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:80.4%"></div></div>
+  <div class="section">
+    <h2>模型消耗排名</h2>
+    <div class="divider"></div>
+    <div class="model-list">
+      <div class="model-item">
+        <div class="model-rank">01</div>
+        <div class="model-info">
+          <div class="model-name">deepseek-v4-flash</div>
+          <div class="model-meta">50 会话 · 5,093,164 Token</div>
+        </div>
+        <div class="model-stats">
+          <div class="model-cost">&#165;75.15</div>
+          <div class="model-credits">1,977.62 积分</div>
+        </div>
       </div>
-      <div class="model-cost">
-        <div class="cost-value">&yen;74.85</div>
-        <div class="cost-sub">1,969.7 cr</div>
+      <div class="model-item" style="padding-top:0">
+        <div class="model-rank"></div>
+        <div class="model-bar-wrap" style="margin-left:28px">
+          <div class="model-bar-fill" style="width:80.2%"></div>
+        </div>
       </div>
-    </li>
-    <li class="model-item">
-      <div class="model-info">
-        <div class="model-name">hy3-preview-agent</div>
-        <div class="model-meta">64 sessions &middot; 3,793,473 tokens</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:7.0%"></div></div>
-      </div>
-      <div class="model-cost">
-        <div class="cost-value">&yen;6.56</div>
-        <div class="cost-sub">172.7 cr</div>
-      </div>
-    </li>
-    <li class="model-item">
-      <div class="model-info">
-        <div class="model-name">glm-5.2</div>
-        <div class="model-meta">2 sessions &middot; 120,757 tokens</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:7.2%"></div></div>
-      </div>
-      <div class="model-cost">
-        <div class="cost-value">&yen;6.74</div>
-        <div class="cost-sub">177.3 cr</div>
-      </div>
-    </li>
-    <li class="model-item">
-      <div class="model-info">
-        <div class="model-name">minimax-m3</div>
-        <div class="model-meta">1 session &middot; 59,766 tokens</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:2.9%"></div></div>
-      </div>
-      <div class="model-cost">
-        <div class="cost-value">&yen;2.71</div>
-        <div class="cost-sub">71.2 cr</div>
-      </div>
-    </li>
-    <li class="model-item">
-      <div class="model-info">
-        <div class="model-name">kimi-k2.7</div>
-        <div class="model-meta">1 session &middot; 60,173 tokens</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:2.4%"></div></div>
-      </div>
-      <div class="model-cost">
-        <div class="cost-value">&yen;2.20</div>
-        <div class="cost-sub">58.0 cr</div>
-      </div>
-    </li>
-    <li class="model-item">
-      <div class="model-info">
-        <div class="model-name">auto</div>
-        <div class="model-meta">1 session &middot; 39,981 tokens</div>
-        <div class="bar-wrap"><div class="bar-fill" style="width:0.1%"></div></div>
-      </div>
-      <div class="model-cost">
-        <div class="cost-value">&yen;0.06</div>
-        <div class="cost-sub">1.6 cr</div>
-      </div>
-    </li>
-  </ul>
-</div>
 
-<div class="section">
-  <div class="section-title">Daily Trend</div>
-  <div class="chart-card">
-    <div class="chart-label">Credits per Day</div>
-    <canvas id="dailyChart"></canvas>
+      <div class="model-item">
+        <div class="model-rank">02</div>
+        <div class="model-info">
+          <div class="model-name">hy3-preview-agent</div>
+          <div class="model-meta">66 会话 · 3,942,585 Token</div>
+        </div>
+        <div class="model-stats">
+          <div class="model-cost">&#165;6.84</div>
+          <div class="model-credits">180.04 积分</div>
+        </div>
+      </div>
+      <div class="model-item" style="padding-top:0">
+        <div class="model-rank"></div>
+        <div class="model-bar-wrap" style="margin-left:28px">
+          <div class="model-bar-fill" style="width:7.3%"></div>
+        </div>
+      </div>
+
+      <div class="model-item">
+        <div class="model-rank">03</div>
+        <div class="model-info">
+          <div class="model-name">glm-5.2</div>
+          <div class="model-meta">2 会话 · 120,757 Token</div>
+        </div>
+        <div class="model-stats">
+          <div class="model-cost">&#165;6.74</div>
+          <div class="model-credits">177.34 积分</div>
+        </div>
+      </div>
+      <div class="model-item" style="padding-top:0">
+        <div class="model-rank"></div>
+        <div class="model-bar-wrap" style="margin-left:28px">
+          <div class="model-bar-fill" style="width:7.2%"></div>
+        </div>
+      </div>
+
+      <div class="model-item">
+        <div class="model-rank">04</div>
+        <div class="model-info">
+          <div class="model-name">minimax-m3</div>
+          <div class="model-meta">1 会话 · 59,766 Token</div>
+        </div>
+        <div class="model-stats">
+          <div class="model-cost">&#165;2.71</div>
+          <div class="model-credits">71.23 积分</div>
+        </div>
+      </div>
+      <div class="model-item" style="padding-top:0">
+        <div class="model-rank"></div>
+        <div class="model-bar-wrap" style="margin-left:28px">
+          <div class="model-bar-fill" style="width:2.9%"></div>
+        </div>
+      </div>
+
+      <div class="model-item">
+        <div class="model-rank">05</div>
+        <div class="model-info">
+          <div class="model-name">kimi-k2.7</div>
+          <div class="model-meta">1 会话 · 60,173 Token</div>
+        </div>
+        <div class="model-stats">
+          <div class="model-cost">&#165;2.20</div>
+          <div class="model-credits">57.97 积分</div>
+        </div>
+      </div>
+      <div class="model-item" style="padding-top:0">
+        <div class="model-rank"></div>
+        <div class="model-bar-wrap" style="margin-left:28px">
+          <div class="model-bar-fill" style="width:2.4%"></div>
+        </div>
+      </div>
+
+      <div class="model-item">
+        <div class="model-rank">06</div>
+        <div class="model-info">
+          <div class="model-name">auto</div>
+          <div class="model-meta">1 会话 · 39,981 Token</div>
+        </div>
+        <div class="model-stats">
+          <div class="model-cost">&#165;0.06</div>
+          <div class="model-credits">1.59 积分</div>
+        </div>
+      </div>
+      <div class="model-item" style="padding-top:0">
+        <div class="model-rank"></div>
+        <div class="model-bar-wrap" style="margin-left:28px">
+          <div class="model-bar-fill" style="width:0.1%"></div>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
 
-<div class="section">
-  <div class="section-title">Model Share</div>
-  <div class="chart-card">
-    <div class="chart-label">Credits by Model</div>
-    <canvas id="pieChart"></canvas>
+  <div class="section">
+    <h2>每日趋势</h2>
+    <div class="divider"></div>
+    <div class="chart-card">
+      <canvas id="dailyChart"></canvas>
+    </div>
   </div>
-</div>
 
-<div class="section">
-  <div class="section-title">Top Sessions</div>
-  <div class="table-wrap">
-    <table>
-      <thead>
-        <tr><th>#</th><th>Time</th><th>Model</th><th class="num">Tokens</th><th class="num">Cost</th><th>Content</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>1</td><td>06-21 01:34</td><td>deepseek-v4-flash</td><td class="num">295,091</td><td class="num">&yen;22.84</td><td class="title-cell">现在给我看一下，关于我的个人信息都有哪些？</td></tr>
-        <tr><td>2</td><td>06-07 22:18</td><td>deepseek-v4-flash</td><td class="num">396,878</td><td class="num">&yen;18.14</td><td class="title-cell">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td></tr>
-        <tr><td>3</td><td>06-22 23:19</td><td>deepseek-v4-flash</td><td class="num">123,433</td><td class="num">&yen;9.01</td><td class="title-cell">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</td></tr>
-        <tr><td>4</td><td>06-18 15:06</td><td>glm-5.2</td><td class="num">71,019</td><td class="num">&yen;6.61</td><td class="title-cell">子女赡养费法律咨询</td></tr>
-        <tr><td>5</td><td>06-06 18:03</td><td>deepseek-v4-flash</td><td class="num">223,798</td><td class="num">&yen;3.94</td><td class="title-cell">金融服务 — 月收入情况和财务规划</td></tr>
-      </tbody>
-    </table>
+  <div class="section">
+    <h2>模型积分占比</h2>
+    <div class="divider"></div>
+    <div class="chart-card">
+      <canvas id="pieChart"></canvas>
+    </div>
   </div>
-</div>
 
-<div class="footer">Auto-updated every 12 hours</div>
+  <div class="section">
+    <h2>单次最贵会话 TOP 5</h2>
+    <div class="divider"></div>
+    <div class="scroll-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th><th>时间</th><th>模型</th><th class="num">Token</th><th class="num">积分</th><th class="num">费用</th><th>标题</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td><td>06-21 01:34</td><td>deepseek-v4-flash</td>
+            <td class="num">295,091</td><td class="num">601.11</td><td class="num">&#165;22.84</td>
+            <td class="title-cell">现在给我看一下，关于我的个人信息都有哪些？</td>
+          </tr>
+          <tr>
+            <td>2</td><td>06-07 22:18</td><td>deepseek-v4-flash</td>
+            <td class="num">396,878</td><td class="num">477.39</td><td class="num">&#165;18.14</td>
+            <td class="title-cell">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td>
+          </tr>
+          <tr>
+            <td>3</td><td>06-22 23:19</td><td>deepseek-v4-flash</td>
+            <td class="num">123,433</td><td class="num">237.13</td><td class="num">&#165;9.01</td>
+            <td class="title-cell">现在我开启一个新的对话来打磨我的控制台和对应的模块</td>
+          </tr>
+          <tr>
+            <td>4</td><td>06-18 15:06</td><td>glm-5.2</td>
+            <td class="num">71,019</td><td class="num">174.05</td><td class="num">&#165;6.61</td>
+            <td class="title-cell">子女赡养费法律咨询.pdf</td>
+          </tr>
+          <tr>
+            <td>5</td><td>06-06 18:03</td><td>deepseek-v4-flash</td>
+            <td class="num">223,798</td><td class="num">103.69</td><td class="num">&#165;3.94</td>
+            <td class="title-cell">金融服务 - 月收入情况和财务规划</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>每日消耗明细</h2>
+    <div class="divider"></div>
+    <div class="scroll-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>日期</th><th>模型</th><th class="num">会话</th><th class="num">Token</th><th class="num">积分</th><th class="num">费用</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>06-06</td><td>deepseek-v4-flash</td><td class="num">11</td><td class="num">1,126,383</td><td class="num">298.61</td><td class="num">&#165;11.35</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">1</td><td class="num">51,608</td><td class="num">26.14</td><td class="num">&#165;0.99</td></tr>
+          <tr><td></td><td>auto</td><td class="num">1</td><td class="num">39,981</td><td class="num">1.59</td><td class="num">&#165;0.06</td></tr>
+          <tr><td>06-07</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">448,733</td><td class="num">482.57</td><td class="num">&#165;18.34</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">227,111</td><td class="num">22.67</td><td class="num">&#165;0.86</td></tr>
+          <tr><td>06-08</td><td>hy3-preview-agent</td><td class="num">3</td><td class="num">162,280</td><td class="num">5.51</td><td class="num">&#165;0.21</td></tr>
+          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">68,205</td><td class="num">2.54</td><td class="num">&#165;0.10</td></tr>
+          <tr><td>06-09</td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">65,627</td><td class="num">3.13</td><td class="num">&#165;0.12</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">2</td><td class="num">107,396</td><td class="num">2.82</td><td class="num">&#165;0.11</td></tr>
+          <tr><td>06-10</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">188,333</td><td class="num">5.46</td><td class="num">&#165;0.21</td></tr>
+          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">62,239</td><td class="num">5.08</td><td class="num">&#165;0.19</td></tr>
+          <tr><td>06-11</td><td>deepseek-v4-flash</td><td class="num">4</td><td class="num">271,130</td><td class="num">15.40</td><td class="num">&#165;0.59</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">3</td><td class="num">163,044</td><td class="num">4.85</td><td class="num">&#165;0.18</td></tr>
+          <tr><td>06-12</td><td>hy3-preview-agent</td><td class="num">3</td><td class="num">166,008</td><td class="num">5.03</td><td class="num">&#165;0.19</td></tr>
+          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">72,299</td><td class="num">2.27</td><td class="num">&#165;0.09</td></tr>
+          <tr><td>06-13</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">189,787</td><td class="num">58.29</td><td class="num">&#165;2.22</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">239,100</td><td class="num">8.27</td><td class="num">&#165;0.31</td></tr>
+          <tr><td>06-14</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">161,005</td><td class="num">8.97</td><td class="num">&#165;0.34</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">6</td><td class="num">321,679</td><td class="num">8.61</td><td class="num">&#165;0.33</td></tr>
+          <tr><td>06-15</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">224,303</td><td class="num">6.18</td><td class="num">&#165;0.23</td></tr>
+          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">74,374</td><td class="num">2.99</td><td class="num">&#165;0.11</td></tr>
+          <tr><td>06-16</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">233,614</td><td class="num">5.84</td><td class="num">&#165;0.22</td></tr>
+          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">94,402</td><td class="num">4.02</td><td class="num">&#165;0.15</td></tr>
+          <tr><td>06-17</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">286,565</td><td class="num">107.85</td><td class="num">&#165;4.10</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">263,543</td><td class="num">9.16</td><td class="num">&#165;0.35</td></tr>
+          <tr><td>06-18</td><td>glm-5.2</td><td class="num">1</td><td class="num">71,019</td><td class="num">174.05</td><td class="num">&#165;6.61</td></tr>
+          <tr><td></td><td>kimi-k2.7</td><td class="num">1</td><td class="num">60,173</td><td class="num">57.97</td><td class="num">&#165;2.20</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">314,732</td><td class="num">16.98</td><td class="num">&#165;0.65</td></tr>
+          <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num">107,477</td><td class="num">6.32</td><td class="num">&#165;0.24</td></tr>
+          <tr><td>06-19</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">210,217</td><td class="num">13.53</td><td class="num">&#165;0.51</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">6</td><td class="num">348,705</td><td class="num">10.51</td><td class="num">&#165;0.40</td></tr>
+          <tr><td></td><td>glm-5.2</td><td class="num">1</td><td class="num">49,738</td><td class="num">3.29</td><td class="num">&#165;0.13</td></tr>
+          <tr><td>06-20</td><td>minimax-m3</td><td class="num">1</td><td class="num">59,766</td><td class="num">71.23</td><td class="num">&#165;2.71</td></tr>
+          <tr><td></td><td>deepseek-v4-flash</td><td class="num">6</td><td class="num">460,050</td><td class="num">49.44</td><td class="num">&#165;1.88</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">302,214</td><td class="num">16.04</td><td class="num">&#165;0.61</td></tr>
+          <tr><td>06-21</td><td>deepseek-v4-flash</td><td class="num">5</td><td class="num">717,398</td><td class="num">638.20</td><td class="num">&#165;24.25</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">259,791</td><td class="num">12.43</td><td class="num">&#165;0.47</td></tr>
+          <tr><td>06-22</td><td>deepseek-v4-flash</td><td class="num">5</td><td class="num">506,351</td><td class="num">267.91</td><td class="num">&#165;10.18</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num">220,012</td><td class="num">6.23</td><td class="num">&#165;0.24</td></tr>
+          <tr><td>06-23</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num">170,922</td><td class="num">10.50</td><td class="num">&#165;0.40</td></tr>
+          <tr><td></td><td>hy3-preview-agent</td><td class="num">2</td><td class="num">149,112</td><td class="num">7.31</td><td class="num">&#165;0.28</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="footer">
+    自动每12小时更新 · 数据来自本地 workbuddy.db
+  </div>
 </div>
 
 <script>
-const dayLabels = ["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23"];
-const dayCredits = [326.34,505.24,8.05,5.95,10.54,20.25,7.30,66.56,17.58,9.17,9.86,117.01,255.32,27.33,136.71,650.63,274.14,2.61];
+const dayLabels = ["2026-06-06", "2026-06-07", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-13", "2026-06-14", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19", "2026-06-20", "2026-06-21", "2026-06-22", "2026-06-23"];
+const dayCredits = [326.34, 505.24, 8.05, 5.95, 10.54, 20.25, 7.30, 66.56, 17.58, 9.17, 9.86, 117.01, 255.32, 27.33, 136.71, 650.63, 274.14, 17.81];
 
-const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const textColor = isDark ? '#a3a3a3' : '#666666';
-const gridColor = isDark ? '#262626' : '#e5e5e5';
-const lineColor = isDark ? '#ededed' : '#171717';
-const fillColor = isDark ? 'rgba(237,237,237,0.08)' : 'rgba(23,23,23,0.06)';
+const rootStyle = getComputedStyle(document.documentElement);
+const chartLine = rootStyle.getPropertyValue('--chart-line').trim();
+const chartFill = rootStyle.getPropertyValue('--chart-fill').trim();
 
 new Chart(document.getElementById('dailyChart'), {
-  type: 'line',
-  data: {
-    labels: dayLabels,
-    datasets: [{
-      label: 'Credits',
-      data: dayCredits,
-      borderColor: lineColor,
-      backgroundColor: fillColor,
-      fill: true,
-      tension: 0.3,
-      pointRadius: 2,
-      pointHoverRadius: 4,
-      pointBackgroundColor: lineColor,
-      borderWidth: 1.5
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      x: {
-        ticks: { color: textColor, font: { size: 9, family: 'Geist Mono' }, maxRotation: 45 },
-        grid: { color: gridColor }
-      },
-      y: {
-        beginAtZero: true,
-        ticks: { color: textColor, font: { size: 9, family: 'Geist Mono' } },
-        grid: { color: gridColor }
-      }
+    type: 'line',
+    data: {
+        labels: dayLabels,
+        datasets: [{
+            label: '积分消耗',
+            data: dayCredits,
+            borderColor: chartLine,
+            backgroundColor: chartFill,
+            fill: true,
+            tension: 0.3,
+            pointRadius: 3,
+            pointBackgroundColor: chartLine,
+            pointHoverRadius: 5
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: { legend: { display: false } },
+        scales: {
+            y: { beginAtZero: true, title: { display: true, text: '积分' },
+                grid: { color: 'var(--border)' },
+                ticks: { color: 'var(--fg4)' } },
+            x: { ticks: { maxRotation: 45, color: 'var(--fg4)' },
+                grid: { display: false } }
+        }
     }
-  }
 });
 
-const modelLabels = ["deepseek-v4-flash","glm-5.2","hy3-preview-agent","minimax-m3","kimi-k2.7","auto"];
-const modelCredits = [1969.73, 177.34, 172.73, 71.23, 57.97, 1.59];
-const shades = isDark
-  ? ['#ededed','#a3a3a3','#808080','#666666','#4d4d4d','#262626']
-  : ['#171717','#4d4d4d','#666666','#808080','#a3a3a3','#cccccc'];
-
+const modelLabels = ["deepseek-v4-flash", "hy3-preview-agent", "glm-5.2", "minimax-m3", "kimi-k2.7", "auto"];
+const modelCredits = [1977.62, 180.04, 177.34, 71.23, 57.97, 1.59];
+const grayScale = ["#171717","#333333","#4d4d4d","#666666","#808080","#999999"];
 new Chart(document.getElementById('pieChart'), {
-  type: 'doughnut',
-  data: {
-    labels: modelLabels,
-    datasets: [{
-      data: modelCredits,
-      backgroundColor: shades.slice(0, modelLabels.length),
-      borderWidth: 2,
-      borderColor: isDark ? '#0a0a0a' : '#ffffff'
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {
-      legend: { position: 'bottom', labels: { color: textColor, font: { size: 10, family: 'Geist' }, padding: 12 } }
+    type: 'doughnut',
+    data: {
+        labels: modelLabels,
+        datasets: [{
+            data: modelCredits,
+            backgroundColor: grayScale.slice(0, modelLabels.length),
+            borderWidth: 2,
+            borderColor: 'var(--bg)'
+        }]
+    },
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: { position: 'right', labels: { color: 'var(--fg2)', font: { size: 11 } } }
+        }
     }
-  }
 });
 </script>
 </body>
