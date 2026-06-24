@@ -36,13 +36,16 @@
     "updated": "2026-06-21T23:55:00+08:00"
   },
   "2026-06-22": {
-    "finance": "https://finance.alistairlendor.com"
+    "finance": "https://finance.alistairlendor.com",
+    "invest": "https://invest.alistairlendor.com"
   },
   "2026-06-23": {
-    "finance": "https://finance.alistairlendor.com"
+    "finance": "https://finance.alistairlendor.com",
+    "invest": "https://invest.alistairlendor.com"
   },
   "2026-06-24": {
     "news": "https://news.alistairlendor.com",
-    "usage": "https://alistairlendor.com/usage/usage_dashboard.html"
+    "usage": "https://alistairlendor.com/usage/usage_dashboard.html",
+    "invest": "https://invest.alistairlendor.com"
   }
 }
