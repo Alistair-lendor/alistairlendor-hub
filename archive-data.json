@@ -44,8 +44,6 @@
     "invest": "https://invest.alistairlendor.com"
   },
   "2026-06-24": {
-    "news": "https://news.alistairlendor.com",
-    "usage": "https://alistairlendor.com/usage/usage_dashboard.html",
-    "invest": "https://invest.alistairlendor.com"
+    "finance": "https://finance.alistairlendor.com"
   }
 }
