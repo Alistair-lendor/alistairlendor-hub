@@ -4,56 +4,46 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>WorkBuddy Usage</title>
-<link rel="preconnect" href="https://cdn.jsdelivr.net">
-<link href="https://cdn.jsdelivr.net/npm/geist@1.3.0/dist/font/css/geist.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #ffffff;
-  --card-bg: #ffffff;
-  --border: #e5e5e5;
   --text-primary: #171717;
   --text-secondary: #4d4d4d;
   --text-tertiary: #666666;
   --text-muted: #808080;
+  --border: #e5e5e5;
+  --card-bg: #fafafa;
+  --hover-bg: #f5f5f5;
   --bar-bg: #e5e5e5;
   --bar-fill: #171717;
-  --hover-bg: #f5f5f5;
-  --table-border: #e5e5e5;
-  --shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0a0a0a;
-    --card-bg: #171717;
-    --border: #262626;
-    --text-primary: #fafafa;
+    --text-primary: #ededed;
     --text-secondary: #a3a3a3;
     --text-tertiary: #808080;
     --text-muted: #666666;
+    --border: #262626;
+    --card-bg: #141414;
+    --hover-bg: #1a1a1a;
     --bar-bg: #262626;
-    --bar-fill: #fafafa;
-    --hover-bg: #1f1f1f;
-    --table-border: #262626;
-    --shadow: 0 1px 2px rgba(0,0,0,0.2);
+    --bar-fill: #ededed;
   }
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 body {
-  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text-primary);
-  padding: 16px;
-  min-height: 100vh;
+  padding: 24px 16px;
   -webkit-font-smoothing: antialiased;
-}
-
-.mono {
-  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', monospace;
-  font-variant-numeric: tabular-nums;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .container {
@@ -61,57 +51,55 @@ body {
   margin: 0 auto;
 }
 
-/* Header */
 .header {
-  padding: 24px 0 20px;
+  padding-bottom: 24px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 20px;
+  margin-bottom: 24px;
 }
 
 .header h1 {
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
 
-.header p {
+.header .subtitle {
   font-size: 13px;
   color: var(--text-tertiary);
   line-height: 1.5;
 }
 
-/* Stats Grid */
-.stats-grid {
+.summary-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-bottom: 20px;
+  gap: 12px;
+  margin-bottom: 28px;
 }
 
 .stat-card {
   background: var(--card-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 14px;
-  box-shadow: var(--shadow);
+  padding: 16px;
 }
 
 .stat-card .label {
   font-size: 11px;
   font-weight: 500;
-  color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
   margin-bottom: 6px;
 }
 
 .stat-card .value {
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 600;
-  letter-spacing: -0.03em;
+  letter-spacing: -0.02em;
   color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
 }
 
 .stat-card .sub {
@@ -120,165 +108,166 @@ body {
   margin-top: 4px;
 }
 
-/* Section */
 .section {
-  margin-bottom: 20px;
+  margin-bottom: 28px;
 }
 
 .section-title {
   font-size: 13px;
   font-weight: 600;
-  color: var(--text-secondary);
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
   margin-bottom: 12px;
 }
 
-/* Chart Cards */
-.chart-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-  box-shadow: var(--shadow);
-  margin-bottom: 10px;
-}
-
-.chart-card canvas {
-  max-height: 240px;
-  width: 100% !important;
-}
-
-/* Model Rankings */
 .model-list {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 2px;
 }
 
-.model-item {
+.model-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 6px;
   background: var(--card-bg);
   border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 14px;
-  box-shadow: var(--shadow);
+}
+
+.model-row:hover {
+  background: var(--hover-bg);
 }
 
 .model-header {
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 8px;
+  align-items: center;
 }
 
 .model-name {
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text-primary);
-}
-
-.model-stats {
-  font-size: 12px;
-  color: var(--text-tertiary);
 }
 
 .model-cost {
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   color: var(--text-primary);
 }
 
-.model-bar-track {
+.model-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.model-meta span {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.progress-bar {
   width: 100%;
   height: 4px;
   background: var(--bar-bg);
   border-radius: 2px;
-  margin-bottom: 6px;
+  overflow: hidden;
 }
 
-.model-bar-fill {
+.progress-fill {
   height: 100%;
   background: var(--bar-fill);
   border-radius: 2px;
   transition: width 0.3s ease;
 }
 
-.model-details {
-  display: flex;
-  justify-content: space-between;
-  font-size: 11px;
-  color: var(--text-muted);
+.daily-chart {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
 }
 
-/* Table */
-.table-wrap {
-  overflow-x: auto;
+.daily-chart svg {
+  width: 100%;
+  height: auto;
 }
 
-table {
+.top-table {
   width: 100%;
   border-collapse: collapse;
   font-size: 12px;
 }
 
-thead th {
-  background: var(--bg);
-  color: var(--text-muted);
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  font-size: 10px;
-  padding: 8px 10px;
+.top-table th {
   text-align: left;
-  border-bottom: 1px solid var(--table-border);
-  position: sticky;
-  top: 0;
-  white-space: nowrap;
-}
-
-tbody td {
+  font-weight: 500;
+  color: var(--text-tertiary);
   padding: 8px 10px;
-  border-bottom: 1px solid var(--table-border);
+  border-bottom: 1px solid var(--border);
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.top-table td {
+  padding: 10px;
+  border-bottom: 1px solid var(--border);
   color: var(--text-secondary);
-  vertical-align: top;
+  font-variant-numeric: tabular-nums;
 }
 
-tbody tr:hover {
-  background: var(--hover-bg);
+.top-table tr:last-child td {
+  border-bottom: none;
 }
 
-.num {
+.top-table .num {
   text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+.top-table .date {
+  color: var(--text-muted);
   white-space: nowrap;
 }
 
-.title-cell {
-  max-width: 160px;
+.top-table .model-tag {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+.top-table .title-cell {
+  max-width: 180px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 11px;
   color: var(--text-tertiary);
 }
 
-/* Footer */
 .footer {
   text-align: center;
-  padding: 24px 0;
-  border-top: 1px solid var(--border);
-  margin-top: 20px;
-}
-
-.footer p {
+  padding: 24px 0 8px;
   font-size: 11px;
   color: var(--text-muted);
+  border-top: 1px solid var(--border);
 }
 
-/* Responsive */
-@media (max-width: 400px) {
-  .stats-grid { gap: 8px; }
-  .stat-card { padding: 12px; }
-  .stat-card .value { font-size: 20px; }
+.badge {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 6px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  color: var(--text-muted);
+  background: var(--card-bg);
 }
 </style>
 </head>
@@ -286,319 +275,209 @@ tbody tr:hover {
 <div class="container">
 
   <div class="header">
-    <h1>Usage Dashboard</h1>
-    <p>Jun 06 - Jun 25, 2026<br><span class="mono">Updated 2026-06-25 02:39</span></p>
+    <h1>Usage</h1>
+    <div class="subtitle">2026-06-06 &mdash; 2026-06-25 &middot; Updated 14:37</div>
   </div>
 
-  <!-- Stats -->
-  <div class="stats-grid">
+  <div class="summary-grid">
     <div class="stat-card">
       <div class="label">Sessions</div>
-      <div class="value mono">132</div>
+      <div class="value">135</div>
       <div class="sub">20 days of data</div>
     </div>
     <div class="stat-card">
-      <div class="label">Tokens</div>
-      <div class="value mono">10.3M</div>
-      <div class="sub">10,312,904 total</div>
+      <div class="label">Total Tokens</div>
+      <div class="value">10,537,806</div>
+      <div class="sub">~10.5M</div>
     </div>
     <div class="stat-card">
       <div class="label">Credits</div>
-      <div class="value mono">2,530</div>
-      <div class="sub">Avg 19.2 / session</div>
+      <div class="value">2,538</div>
+      <div class="sub">avg 18.8 / session</div>
     </div>
     <div class="stat-card">
       <div class="label">Cost</div>
-      <div class="value mono">$96.12</div>
-      <div class="sub">$126.48 from Jul (+32%)</div>
+      <div class="value">&#165;96.46</div>
+      <div class="sub">Jul+ &#165;126.92 (+32%)</div>
     </div>
   </div>
 
-  <!-- Model Rankings -->
   <div class="section">
-    <div class="section-title">Model Rankings</div>
+    <div class="section-title">Model Breakdown</div>
     <div class="model-list">
-      <div class="model-item">
+      <div class="model-row">
         <div class="model-header">
           <span class="model-name">deepseek-v4-flash</span>
-          <span class="model-cost mono">$76.88</span>
+          <span class="model-cost">&#165;77.04</span>
         </div>
-        <div class="model-bar-track"><div class="model-bar-fill" style="width:79.9%"></div></div>
-        <div class="model-details">
-          <span>55 sessions</span>
-          <span>5,696,889 tokens</span>
-          <span class="mono">2,023.25 credits</span>
+        <div class="model-meta">
+          <span>56 sessions</span>
+          <span>5,785,457 tokens</span>
+          <span>2,027 cred</span>
         </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:79.9%"></div></div>
       </div>
-      <div class="model-item">
+      <div class="model-row">
         <div class="model-header">
           <span class="model-name">hy3-preview-agent</span>
-          <span class="model-cost mono">$7.53</span>
+          <span class="model-cost">&#165;7.71</span>
         </div>
-        <div class="model-bar-track"><div class="model-bar-fill" style="width:7.8%"></div></div>
-        <div class="model-details">
-          <span>72 sessions</span>
-          <span>4,335,338 tokens</span>
-          <span class="mono">198.20 credits</span>
+        <div class="model-meta">
+          <span>74 sessions</span>
+          <span>4,471,672 tokens</span>
+          <span>203 cred</span>
         </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:8.0%"></div></div>
       </div>
-      <div class="model-item">
+      <div class="model-row">
         <div class="model-header">
           <span class="model-name">glm-5.2</span>
-          <span class="model-cost mono">$6.74</span>
+          <span class="model-cost">&#165;6.74</span>
         </div>
-        <div class="model-bar-track"><div class="model-bar-fill" style="width:7.0%"></div></div>
-        <div class="model-details">
+        <div class="model-meta">
           <span>2 sessions</span>
           <span>120,757 tokens</span>
-          <span class="mono">177.34 credits</span>
+          <span>177 cred</span>
         </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:7.0%"></div></div>
       </div>
-      <div class="model-item">
+      <div class="model-row">
         <div class="model-header">
           <span class="model-name">minimax-m3</span>
-          <span class="model-cost mono">$2.71</span>
+          <span class="model-cost">&#165;2.71</span>
         </div>
-        <div class="model-bar-track"><div class="model-bar-fill" style="width:2.8%"></div></div>
-        <div class="model-details">
+        <div class="model-meta">
           <span>1 session</span>
           <span>59,766 tokens</span>
-          <span class="mono">71.23 credits</span>
+          <span>71 cred</span>
         </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:2.8%"></div></div>
       </div>
-      <div class="model-item">
+      <div class="model-row">
         <div class="model-header">
           <span class="model-name">kimi-k2.7</span>
-          <span class="model-cost mono">$2.20</span>
+          <span class="model-cost">&#165;2.20</span>
         </div>
-        <div class="model-bar-track"><div class="model-bar-fill" style="width:2.3%"></div></div>
-        <div class="model-details">
+        <div class="model-meta">
           <span>1 session</span>
           <span>60,173 tokens</span>
-          <span class="mono">57.97 credits</span>
+          <span>58 cred</span>
         </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:2.3%"></div></div>
       </div>
-      <div class="model-item">
+      <div class="model-row">
         <div class="model-header">
           <span class="model-name">auto</span>
-          <span class="model-cost mono">$0.06</span>
+          <span class="model-cost">&#165;0.06</span>
         </div>
-        <div class="model-bar-track"><div class="model-bar-fill" style="width:0.1%"></div></div>
-        <div class="model-details">
+        <div class="model-meta">
           <span>1 session</span>
           <span>39,981 tokens</span>
-          <span class="mono">1.59 credits</span>
+          <span>2 cred</span>
         </div>
+        <div class="progress-bar"><div class="progress-fill" style="width:0.1%"></div></div>
       </div>
     </div>
   </div>
 
-  <!-- Daily Trend Chart -->
   <div class="section">
     <div class="section-title">Daily Credit Trend</div>
-    <div class="chart-card">
-      <canvas id="dailyChart"></canvas>
+    <div class="daily-chart">
+      <svg viewBox="0 0 488 180" xmlns="http://www.w3.org/2000/svg">
+        <style>
+          .chart-line { fill: none; stroke: var(--bar-fill, #171717); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+          .chart-area { fill: var(--bar-fill, #171717); opacity: 0.06; }
+          .chart-dot { fill: var(--bg, #ffffff); stroke: var(--bar-fill, #171717); stroke-width: 1.5; }
+          .chart-label { font-size: 8px; text-anchor: middle; fill: var(--text-muted, #808080); }
+          .chart-max { font-size: 9px; text-anchor: start; fill: var(--text-muted, #808080); font-variant-numeric: tabular-nums; }
+        </style>
+        <line x1="30" y1="150" x2="478" y2="150" stroke="var(--border,#e5e5e5)" stroke-width="1"/>
+        <text x="32" y="12" class="chart-max">651</text>
+        <text x="32" y="81" class="chart-max" style="text-anchor:end;" transform="translate(-5,3)">300</text>
+        <polygon points="40,147.6 62,81.5 84,149.2 106,149.7 128,148.7 150,146.3 172,148.5 194,132.3 216,142.6 238,148.1 260,148.0 282,120.0 304,78.9 326,143.2 348,104.8 370,1.6 392,23.4 414,137.2 436,141.4 458,147.5 478,150.0 478,150 458,150 436,150 414,150 392,150 370,150 348,150 326,150 304,150 282,150 260,150 238,150 216,150 194,150 172,150 150,150 128,150 106,150 84,150 62,150 40,150" class="chart-area"/>
+        <polyline points="40,147.6 62,81.5 84,149.2 106,149.7 128,148.7 150,146.3 172,148.5 194,132.3 216,142.6 238,148.1 260,148.0 282,120.0 304,78.9 326,13.4 348,104.8 370,1.6 392,23.4 414,137.2 436,141.4 458,147.5 478,150.0" class="chart-line"/>
+        <circle cx="40" cy="147.6" r="2" class="chart-dot"/>
+        <circle cx="62" cy="81.5" r="2" class="chart-dot"/>
+        <circle cx="84" cy="149.2" r="2" class="chart-dot"/>
+        <circle cx="106" cy="149.7" r="2" class="chart-dot"/>
+        <circle cx="128" cy="148.7" r="2" class="chart-dot"/>
+        <circle cx="150" cy="146.3" r="2" class="chart-dot"/>
+        <circle cx="172" cy="148.5" r="2" class="chart-dot"/>
+        <circle cx="194" cy="132.3" r="2" class="chart-dot"/>
+        <circle cx="216" cy="142.6" r="2" class="chart-dot"/>
+        <circle cx="238" cy="148.1" r="2" class="chart-dot"/>
+        <circle cx="260" cy="148.0" r="2" class="chart-dot"/>
+        <circle cx="282" cy="120.0" r="2" class="chart-dot"/>
+        <circle cx="304" cy="78.9" r="2" class="chart-dot"/>
+        <circle cx="326" cy="13.4" r="2" class="chart-dot"/>
+        <circle cx="348" cy="104.8" r="2" class="chart-dot"/>
+        <circle cx="370" cy="1.6" r="2.5" class="chart-dot"/>
+        <circle cx="392" cy="23.4" r="2" class="chart-dot"/>
+        <circle cx="414" cy="137.2" r="2" class="chart-dot"/>
+        <circle cx="436" cy="141.4" r="2" class="chart-dot"/>
+        <circle cx="458" cy="147.5" r="2" class="chart-dot"/>
+        <text x="40" y="162" class="chart-label" transform="rotate(-45,40,162)">06-06</text>
+        <text x="83" y="162" class="chart-label" transform="rotate(-45,83,162)">06-09</text>
+        <text x="128" y="162" class="chart-label" transform="rotate(-45,128,162)">06-12</text>
+        <text x="172" y="162" class="chart-label" transform="rotate(-45,172,162)">06-15</text>
+        <text x="216" y="162" class="chart-label" transform="rotate(-45,216,162)">06-18</text>
+        <text x="260" y="162" class="chart-label" transform="rotate(-45,260,162)">06-21</text>
+        <text x="304" y="162" class="chart-label" transform="rotate(-45,304,162)">06-24</text>
+        <text x="349" y="162" class="chart-label" transform="rotate(-45,349,162)">06-25</text>
+      </svg>
     </div>
   </div>
 
-  <!-- Model Share Chart -->
   <div class="section">
-    <div class="section-title">Model Credit Share</div>
-    <div class="chart-card">
-      <canvas id="pieChart"></canvas>
-    </div>
-  </div>
-
-  <!-- Top 5 Sessions -->
-  <div class="section">
-    <div class="section-title">Top 5 Most Expensive Sessions</div>
-    <div class="chart-card" style="padding:0;">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th><th>Time</th><th>Model</th><th class="num">Tokens</th><th class="num">Credits</th><th class="num">Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1</td><td>06-21 01:34</td><td>deepseek-v4-flash</td>
-              <td class="num mono">295,091</td><td class="num mono">601.11</td><td class="num mono">$22.84</td>
-            </tr>
-            <tr>
-              <td>2</td><td>06-07 22:18</td><td>deepseek-v4-flash</td>
-              <td class="num mono">396,878</td><td class="num mono">477.39</td><td class="num mono">$18.14</td>
-            </tr>
-            <tr>
-              <td>3</td><td>06-22 23:19</td><td>deepseek-v4-flash</td>
-              <td class="num mono">168,580</td><td class="num mono">246.93</td><td class="num mono">$9.38</td>
-            </tr>
-            <tr>
-              <td>4</td><td>06-18 15:06</td><td>glm-5.2</td>
-              <td class="num mono">71,019</td><td class="num mono">174.05</td><td class="num mono">$6.61</td>
-            </tr>
-            <tr>
-              <td>5</td><td>06-06 18:03</td><td>deepseek-v4-flash</td>
-              <td class="num mono">223,798</td><td class="num mono">103.69</td><td class="num mono">$3.94</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- Daily Detail Table -->
-  <div class="section">
-    <div class="section-title">Daily Breakdown</div>
-    <div class="chart-card" style="padding:0;">
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Date</th><th>Model</th><th class="num">Sessions</th><th class="num">Tokens</th><th class="num">Credits</th><th class="num">Cost</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr><td>06-06</td><td>deepseek-v4-flash</td><td class="num">11</td><td class="num mono">1,126,383</td><td class="num mono">298.61</td><td class="num mono">$11.35</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">1</td><td class="num mono">51,608</td><td class="num mono">26.14</td><td class="num mono">$0.99</td></tr>
-            <tr><td></td><td>auto</td><td class="num">1</td><td class="num mono">39,981</td><td class="num mono">1.59</td><td class="num mono">$0.06</td></tr>
-            <tr><td>06-07</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num mono">448,733</td><td class="num mono">482.57</td><td class="num mono">$18.34</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">227,111</td><td class="num mono">22.67</td><td class="num mono">$0.86</td></tr>
-            <tr><td>06-08</td><td>hy3-preview-agent</td><td class="num">3</td><td class="num mono">162,280</td><td class="num mono">5.51</td><td class="num mono">$0.21</td></tr>
-            <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">68,205</td><td class="num mono">2.54</td><td class="num mono">$0.10</td></tr>
-            <tr><td>06-09</td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">65,627</td><td class="num mono">3.13</td><td class="num mono">$0.12</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">2</td><td class="num mono">107,396</td><td class="num mono">2.82</td><td class="num mono">$0.11</td></tr>
-            <tr><td>06-10</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">188,333</td><td class="num mono">5.46</td><td class="num mono">$0.21</td></tr>
-            <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">62,239</td><td class="num mono">5.08</td><td class="num mono">$0.19</td></tr>
-            <tr><td>06-11</td><td>deepseek-v4-flash</td><td class="num">4</td><td class="num mono">271,130</td><td class="num mono">15.40</td><td class="num mono">$0.59</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">3</td><td class="num mono">163,044</td><td class="num mono">4.85</td><td class="num mono">$0.18</td></tr>
-            <tr><td>06-12</td><td>hy3-preview-agent</td><td class="num">3</td><td class="num mono">166,008</td><td class="num mono">5.03</td><td class="num mono">$0.19</td></tr>
-            <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">72,299</td><td class="num mono">2.27</td><td class="num mono">$0.09</td></tr>
-            <tr><td>06-13</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num mono">189,787</td><td class="num mono">58.29</td><td class="num mono">$2.22</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">239,100</td><td class="num mono">8.27</td><td class="num mono">$0.31</td></tr>
-            <tr><td>06-14</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num mono">161,005</td><td class="num mono">8.97</td><td class="num mono">$0.34</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">6</td><td class="num mono">321,679</td><td class="num mono">8.61</td><td class="num mono">$0.33</td></tr>
-            <tr><td>06-15</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">224,303</td><td class="num mono">6.18</td><td class="num mono">$0.23</td></tr>
-            <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">74,374</td><td class="num mono">2.99</td><td class="num mono">$0.11</td></tr>
-            <tr><td>06-16</td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">233,614</td><td class="num mono">5.84</td><td class="num mono">$0.22</td></tr>
-            <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">94,402</td><td class="num mono">4.02</td><td class="num mono">$0.15</td></tr>
-            <tr><td>06-17</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num mono">286,565</td><td class="num mono">107.85</td><td class="num mono">$4.10</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">263,543</td><td class="num mono">9.16</td><td class="num mono">$0.35</td></tr>
-            <tr><td>06-18</td><td>glm-5.2</td><td class="num">1</td><td class="num mono">71,019</td><td class="num mono">174.05</td><td class="num mono">$6.61</td></tr>
-            <tr><td></td><td>kimi-k2.7</td><td class="num">1</td><td class="num mono">60,173</td><td class="num mono">57.97</td><td class="num mono">$2.20</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">314,732</td><td class="num mono">16.98</td><td class="num mono">$0.65</td></tr>
-            <tr><td></td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">107,477</td><td class="num mono">6.32</td><td class="num mono">$0.24</td></tr>
-            <tr><td>06-19</td><td>deepseek-v4-flash</td><td class="num">2</td><td class="num mono">210,217</td><td class="num mono">13.53</td><td class="num mono">$0.51</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">6</td><td class="num mono">348,705</td><td class="num mono">10.51</td><td class="num mono">$0.40</td></tr>
-            <tr><td></td><td>glm-5.2</td><td class="num">1</td><td class="num mono">49,738</td><td class="num mono">3.29</td><td class="num mono">$0.13</td></tr>
-            <tr><td>06-20</td><td>minimax-m3</td><td class="num">1</td><td class="num mono">59,766</td><td class="num mono">71.23</td><td class="num mono">$2.71</td></tr>
-            <tr><td></td><td>deepseek-v4-flash</td><td class="num">6</td><td class="num mono">460,050</td><td class="num mono">49.44</td><td class="num mono">$1.88</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">302,214</td><td class="num mono">16.04</td><td class="num mono">$0.61</td></tr>
-            <tr><td>06-21</td><td>deepseek-v4-flash</td><td class="num">5</td><td class="num mono">717,398</td><td class="num mono">638.20</td><td class="num mono">$24.25</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">259,791</td><td class="num mono">12.43</td><td class="num mono">$0.47</td></tr>
-            <tr><td>06-22</td><td>deepseek-v4-flash</td><td class="num">5</td><td class="num mono">551,498</td><td class="num mono">277.71</td><td class="num mono">$10.55</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">220,012</td><td class="num mono">6.23</td><td class="num mono">$0.24</td></tr>
-            <tr><td>06-23</td><td>deepseek-v4-flash</td><td class="num">3</td><td class="num mono">374,053</td><td class="num mono">25.10</td><td class="num mono">$0.95</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">271,496</td><td class="num mono">13.94</td><td class="num mono">$0.53</td></tr>
-            <tr><td>06-24</td><td>deepseek-v4-flash</td><td class="num">3</td><td class="num mono">312,238</td><td class="num mono">20.07</td><td class="num mono">$0.76</td></tr>
-            <tr><td></td><td>hy3-preview-agent</td><td class="num">4</td><td class="num mono">270,369</td><td class="num mono">11.53</td><td class="num mono">$0.44</td></tr>
-            <tr><td>06-25</td><td>deepseek-v4-flash</td><td class="num">1</td><td class="num mono">43,209</td><td class="num mono">1.16</td><td class="num mono">$0.04</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <div class="section-title">Most Expensive Sessions</div>
+    <table class="top-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date</th>
+          <th>Model</th>
+          <th class="num">Cost</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="badge">1</span></td>
+          <td class="date">06-21 01:34</td>
+          <td><span class="model-tag">deepseek-v4-flash</span></td>
+          <td class="num"><strong>&#165;22.84</strong></td>
+        </tr>
+        <tr>
+          <td><span class="badge">2</span></td>
+          <td class="date">06-07 22:18</td>
+          <td><span class="model-tag">deepseek-v4-flash</span></td>
+          <td class="num"><strong>&#165;18.14</strong></td>
+        </tr>
+        <tr>
+          <td><span class="badge">3</span></td>
+          <td class="date">06-22 23:19</td>
+          <td><span class="model-tag">deepseek-v4-flash</span></td>
+          <td class="num"><strong>&#165;9.38</strong></td>
+        </tr>
+        <tr>
+          <td><span class="badge">4</span></td>
+          <td class="date">06-18 15:06</td>
+          <td><span class="model-tag">glm-5.2</span></td>
+          <td class="num"><strong>&#165;6.61</strong></td>
+        </tr>
+        <tr>
+          <td><span class="badge">5</span></td>
+          <td class="date">06-06 18:03</td>
+          <td><span class="model-tag">deepseek-v4-flash</span></td>
+          <td class="num"><strong>&#165;3.94</strong></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <div class="footer">
-    <p>Auto-updated every 12 hours &middot; Data source: local workbuddy.db</p>
+    Auto-updated every 12h &middot; WorkBuddy
   </div>
 
 </div>
-
-<script>
-const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const cs = getComputedStyle(document.documentElement);
-const txtPrimary = isDark ? '#fafafa' : '#171717';
-const txtMuted = isDark ? '#666666' : '#808080';
-const gridColor = isDark ? '#262626' : '#e5e5e5';
-
-// Daily Credit Trend
-const dayLabels = ["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25"];
-const dayCredits = [326.34,505.24,8.05,5.95,10.54,20.25,7.3,66.56,17.58,9.17,9.86,117.01,255.32,27.33,136.71,650.63,283.94,39.04,31.60,1.16];
-
-new Chart(document.getElementById('dailyChart'), {
-    type: 'line',
-    data: {
-        labels: dayLabels,
-        datasets: [{
-            label: 'Credits',
-            data: dayCredits,
-            borderColor: txtPrimary,
-            backgroundColor: isDark ? 'rgba(250,250,250,0.05)' : 'rgba(23,23,23,0.04)',
-            fill: true,
-            tension: 0.3,
-            pointRadius: 3,
-            pointHoverRadius: 5,
-            pointBackgroundColor: txtPrimary,
-            pointBorderColor: txtPrimary,
-            borderWidth: 1.5
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        plugins: {
-            legend: { display: false }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                grid: { color: gridColor },
-                ticks: { color: txtMuted, font: { size: 10 } },
-                title: { display: true, text: 'Credits', color: txtMuted, font: { size: 10 } }
-            },
-            x: {
-                grid: { display: false },
-                ticks: { color: txtMuted, font: { size: 9 }, maxRotation: 45 }
-            }
-        }
-    }
-});
-
-// Model Credit Share (doughnut)
-const modelLabels = ["deepseek-v4-flash","hy3-preview-agent","glm-5.2","minimax-m3","kimi-k2.7","auto"];
-const modelCredits = [2023.25, 198.20, 177.34, 71.23, 57.97, 1.59];
-const modelGrays = isDark
-    ? ['#fafafa','#d4d4d4','#a3a3a3','#808080','#525252','#262626']
-    : ['#171717','#404040','#666666','#808080','#a3a3a3','#d4d4d4'];
-
-new Chart(document.getElementById('pieChart'), {
-    type: 'doughnut',
-    data: {
-        labels: modelLabels,
-        datasets: [{
-            data: modelCredits,
-            backgroundColor: modelGrays,
-            borderWidth: 2,
-            borderColor: isDark ? '#171717' : '#ffffff'
-        }]
-    },
-    options: {
-        responsive: true,
-        maintainAspectRatio: true,
-        cutout: '55%',
-        plugins: {
-            legend: {
-                position: 'right',
-                labels: {
-                    color: txtPrimary,
-                    font: { size: 11 },
-                    padding: 8
-                }
-            }
-        }
-    }
-});
-</script>
 </body>
 </html>
