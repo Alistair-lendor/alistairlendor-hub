@@ -2,480 +2,406 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WorkBuddy Usage</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
+<title>Usage · WorkBuddy</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:opsz@14..32&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #ffffff;
-  --text-primary: #171717;
-  --text-secondary: #4d4d4d;
-  --text-tertiary: #666666;
-  --text-muted: #808080;
+  --fg: #171717;
+  --fg-secondary: #4d4d4d;
+  --fg-tertiary: #666666;
+  --fg-muted: #808080;
   --border: #e5e5e5;
   --card-bg: #fafafa;
-  --hover-bg: #f5f5f5;
+  --card-hover: #f5f5f5;
   --bar-bg: #e5e5e5;
   --bar-fill: #171717;
+  --red: #171717;
+  --green: #4d4d4d;
 }
-
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme:dark) {
   :root {
     --bg: #0a0a0a;
-    --text-primary: #ededed;
-    --text-secondary: #a3a3a3;
-    --text-tertiary: #808080;
-    --text-muted: #666666;
+    --fg: #ededed;
+    --fg-secondary: #a3a3a3;
+    --fg-tertiary: #808080;
+    --fg-muted: #666666;
     --border: #262626;
     --card-bg: #141414;
-    --hover-bg: #1a1a1a;
+    --card-hover: #1a1a1a;
     --bar-bg: #262626;
     --bar-fill: #ededed;
   }
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
+body{
+  font-family:'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--bg);
+  color:var(--fg);
+  line-height:1.5;
+  padding:0;
+  min-height:100vh;
+}
+.container{max-width:520px;margin:0 auto;padding:24px 16px 48px}
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: var(--bg);
-  color: var(--text-primary);
-  padding: 24px 16px;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Header */
+.header{margin-bottom:24px}
+.header h1{
+  font-size:20px;
+  font-weight:600;
+  letter-spacing:-0.02em;
+  margin-bottom:4px;
+  color:var(--fg);
+}
+.header p{
+  font-size:13px;
+  color:var(--fg-muted);
+  letter-spacing:-0.01em;
+}
+.header .time{
+  color:var(--fg-secondary);
+  font-family:'Geist Mono',monospace;
+  font-size:12px;
 }
 
-.container {
-  max-width: 520px;
-  margin: 0 auto;
+/* Stats grid */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
+.stat-card{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:14px 12px;
+}
+.stat-card .label{
+  font-size:11px;
+  font-weight:500;
+  color:var(--fg-muted);
+  text-transform:uppercase;
+  letter-spacing:0.04em;
+  margin-bottom:4px;
+}
+.stat-card .value{
+  font-size:22px;
+  font-weight:600;
+  letter-spacing:-0.03em;
+  font-family:'Geist Mono',monospace;
+  color:var(--fg);
+}
+.stat-card .sub{
+  font-size:11px;
+  color:var(--fg-tertiary);
+  margin-top:2px;
 }
 
-.header {
-  padding-bottom: 24px;
-  border-bottom: 1px solid var(--border);
-  margin-bottom: 24px;
+/* Section */
+.section{margin-bottom:24px}
+.section-title{
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  color:var(--fg-secondary);
+  margin-bottom:10px;
+  text-transform:uppercase;
 }
 
-.header h1 {
-  font-size: 20px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  margin-bottom: 4px;
+/* Model list */
+.model-list{display:flex;flex-direction:column;gap:0}
+.model-row{
+  display:flex;
+  align-items:center;
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+  gap:10px;
+}
+.model-row:last-child{border-bottom:none}
+.model-info{flex:1;min-width:0}
+.model-name{
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  color:var(--fg);
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.model-stats{
+  font-size:11px;
+  color:var(--fg-tertiary);
+  font-family:'Geist Mono',monospace;
+  margin-top:2px;
+}
+.model-cost{
+  font-size:13px;
+  font-weight:600;
+  font-family:'Geist Mono',monospace;
+  letter-spacing:-0.02em;
+  color:var(--fg);
+  white-space:nowrap;
+  text-align:right;
+}
+.bar-wrap{
+  height:4px;
+  background:var(--bar-bg);
+  border-radius:2px;
+  margin-top:6px;
+  overflow:hidden;
+}
+.bar-fill{
+  height:100%;
+  background:var(--bar-fill);
+  border-radius:2px;
+  transition:width 0.3s ease;
 }
 
-.header .subtitle {
-  font-size: 13px;
-  color: var(--text-tertiary);
-  line-height: 1.5;
+/* Daily trend chart */
+.chart-wrap{
+  background:var(--card-bg);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:16px 12px 12px;
+}
+.chart-title{
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:-0.01em;
+  color:var(--fg-secondary);
+  margin-bottom:12px;
+}
+.chart-svg{width:100%;height:auto;display:block}
+.chart-footer{
+  display:flex;
+  justify-content:space-between;
+  font-size:10px;
+  color:var(--fg-muted);
+  font-family:'Geist Mono',monospace;
+  margin-top:6px;
 }
 
-.summary-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-  margin-bottom: 28px;
+/* Top sessions */
+.session-item{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-start;
+  padding:10px 0;
+  border-bottom:1px solid var(--border);
+  gap:8px;
+}
+.session-item:last-child{border-bottom:none}
+.session-left{flex:1;min-width:0}
+.session-title{
+  font-size:12px;
+  color:var(--fg);
+  line-height:1.4;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+}
+.session-meta{
+  font-size:11px;
+  color:var(--fg-tertiary);
+  font-family:'Geist Mono',monospace;
+  margin-top:2px;
+}
+.session-cost{
+  font-size:13px;
+  font-weight:600;
+  font-family:'Geist Mono',monospace;
+  letter-spacing:-0.02em;
+  color:var(--fg);
+  white-space:nowrap;
 }
 
-.stat-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
+/* Footer */
+.footer{
+  text-align:center;
+  padding:24px 0 0;
+  font-size:11px;
+  color:var(--fg-muted);
+  border-top:1px solid var(--border);
 }
-
-.stat-card .label {
-  font-size: 11px;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-tertiary);
-  margin-bottom: 6px;
-}
-
-.stat-card .value {
-  font-size: 22px;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  color: var(--text-primary);
-  font-variant-numeric: tabular-nums;
-}
-
-.stat-card .sub {
-  font-size: 11px;
-  color: var(--text-muted);
-  margin-top: 4px;
-}
-
-.section {
-  margin-bottom: 28px;
-}
-
-.section-title {
-  font-size: 13px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--text-secondary);
-  margin-bottom: 12px;
-}
-
-.model-list {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.model-row {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  padding: 12px;
-  border-radius: 6px;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-}
-
-.model-row:hover {
-  background: var(--hover-bg);
-}
-
-.model-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.model-name {
-  font-size: 13px;
-  font-weight: 500;
-  color: var(--text-primary);
-}
-
-.model-cost {
-  font-size: 13px;
-  font-weight: 600;
-  font-variant-numeric: tabular-nums;
-  color: var(--text-primary);
-}
-
-.model-meta {
-  display: flex;
-  gap: 12px;
-  font-size: 11px;
-  color: var(--text-muted);
-  font-variant-numeric: tabular-nums;
-}
-
-.model-meta span {
-  display: flex;
-  align-items: center;
-  gap: 2px;
-}
-
-.progress-bar {
-  width: 100%;
-  height: 4px;
-  background: var(--bar-bg);
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  height: 100%;
-  background: var(--bar-fill);
-  border-radius: 2px;
-  transition: width 0.3s ease;
-}
-
-.daily-chart {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 16px;
-}
-
-.daily-chart svg {
-  width: 100%;
-  height: auto;
-}
-
-.top-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-size: 12px;
-}
-
-.top-table th {
-  text-align: left;
-  font-weight: 500;
-  color: var(--text-tertiary);
-  padding: 8px 10px;
-  border-bottom: 1px solid var(--border);
-  font-size: 11px;
-  text-transform: uppercase;
-  letter-spacing: 0.03em;
-}
-
-.top-table td {
-  padding: 10px;
-  border-bottom: 1px solid var(--border);
-  color: var(--text-secondary);
-  font-variant-numeric: tabular-nums;
-}
-
-.top-table tr:last-child td {
-  border-bottom: none;
-}
-
-.top-table .num {
-  text-align: right;
-  font-variant-numeric: tabular-nums;
-}
-
-.top-table .date {
-  color: var(--text-muted);
-  white-space: nowrap;
-}
-
-.top-table .model-tag {
-  font-size: 11px;
-  color: var(--text-muted);
-}
-
-.top-table .title-cell {
-  max-width: 180px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: var(--text-tertiary);
-}
-
-.footer {
-  text-align: center;
-  padding: 24px 0 8px;
-  font-size: 11px;
-  color: var(--text-muted);
-  border-top: 1px solid var(--border);
-}
-
-.badge {
-  display: inline-block;
-  font-size: 10px;
-  padding: 1px 6px;
-  border: 1px solid var(--border);
-  border-radius: 4px;
-  color: var(--text-muted);
-  background: var(--card-bg);
-}
+.footer a{color:var(--fg-secondary);text-decoration:none}
+.footer a:hover{text-decoration:underline}
 </style>
 </head>
 <body>
 <div class="container">
 
   <div class="header">
-    <h1>Usage</h1>
-    <div class="subtitle">2026-06-06 &mdash; 2026-06-25 &middot; Updated 14:37</div>
+    <h1>Usage Dashboard</h1>
+    <p>2026-06-06 &mdash; 2026-06-26<br>
+    <span class="time">Updated 2026-06-26 02:36</span></p>
   </div>
 
-  <div class="summary-grid">
+  <div class="stats">
     <div class="stat-card">
       <div class="label">Sessions</div>
-      <div class="value">135</div>
-      <div class="sub">20 days of data</div>
+      <div class="value">139</div>
+      <div class="sub">21 days</div>
     </div>
     <div class="stat-card">
       <div class="label">Total Tokens</div>
-      <div class="value">10,537,806</div>
-      <div class="sub">~10.5M</div>
+      <div class="value">10.9M</div>
+      <div class="sub">10,884,476</div>
     </div>
     <div class="stat-card">
       <div class="label">Credits</div>
-      <div class="value">2,538</div>
-      <div class="sub">avg 18.8 / session</div>
+      <div class="value">2,567</div>
+      <div class="sub">18.5 / session</div>
     </div>
     <div class="stat-card">
       <div class="label">Cost</div>
-      <div class="value">&#165;96.46</div>
-      <div class="sub">Jul+ &#165;126.92 (+32%)</div>
+      <div class="value">97.54</div>
+      <div class="sub">Post-Jul 128.34</div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Model Breakdown</div>
+    <div class="section-title">Model Ranking</div>
     <div class="model-list">
       <div class="model-row">
-        <div class="model-header">
-          <span class="model-name">deepseek-v4-flash</span>
-          <span class="model-cost">&#165;77.04</span>
+        <div class="model-info">
+          <div class="model-name">deepseek-v4-flash</div>
+          <div class="model-stats">58 sessions &middot; 5,964,986 tokens &middot; 2,043 cr</div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:79.6%"></div></div>
         </div>
-        <div class="model-meta">
-          <span>56 sessions</span>
-          <span>5,785,457 tokens</span>
-          <span>2,027 cred</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:79.9%"></div></div>
+        <div class="model-cost">77.65</div>
       </div>
       <div class="model-row">
-        <div class="model-header">
-          <span class="model-name">hy3-preview-agent</span>
-          <span class="model-cost">&#165;7.71</span>
+        <div class="model-info">
+          <div class="model-name">hy3-preview-agent</div>
+          <div class="model-stats">76 sessions &middot; 4,638,813 tokens &middot; 215 cr</div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:8.4%"></div></div>
         </div>
-        <div class="model-meta">
-          <span>74 sessions</span>
-          <span>4,471,672 tokens</span>
-          <span>203 cred</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:8.0%"></div></div>
+        <div class="model-cost">8.18</div>
       </div>
       <div class="model-row">
-        <div class="model-header">
-          <span class="model-name">glm-5.2</span>
-          <span class="model-cost">&#165;6.74</span>
+        <div class="model-info">
+          <div class="model-name">glm-5.2</div>
+          <div class="model-stats">2 sessions &middot; 120,757 tokens &middot; 177 cr</div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:6.9%"></div></div>
         </div>
-        <div class="model-meta">
-          <span>2 sessions</span>
-          <span>120,757 tokens</span>
-          <span>177 cred</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:7.0%"></div></div>
+        <div class="model-cost">6.74</div>
       </div>
       <div class="model-row">
-        <div class="model-header">
-          <span class="model-name">minimax-m3</span>
-          <span class="model-cost">&#165;2.71</span>
+        <div class="model-info">
+          <div class="model-name">minimax-m3</div>
+          <div class="model-stats">1 session &middot; 59,766 tokens &middot; 71 cr</div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:2.8%"></div></div>
         </div>
-        <div class="model-meta">
-          <span>1 session</span>
-          <span>59,766 tokens</span>
-          <span>71 cred</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:2.8%"></div></div>
+        <div class="model-cost">2.71</div>
       </div>
       <div class="model-row">
-        <div class="model-header">
-          <span class="model-name">kimi-k2.7</span>
-          <span class="model-cost">&#165;2.20</span>
+        <div class="model-info">
+          <div class="model-name">kimi-k2.7</div>
+          <div class="model-stats">1 session &middot; 60,173 tokens &middot; 58 cr</div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:2.3%"></div></div>
         </div>
-        <div class="model-meta">
-          <span>1 session</span>
-          <span>60,173 tokens</span>
-          <span>58 cred</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:2.3%"></div></div>
+        <div class="model-cost">2.20</div>
       </div>
       <div class="model-row">
-        <div class="model-header">
-          <span class="model-name">auto</span>
-          <span class="model-cost">&#165;0.06</span>
+        <div class="model-info">
+          <div class="model-name">auto</div>
+          <div class="model-stats">1 session &middot; 39,981 tokens &middot; 2 cr</div>
+          <div class="bar-wrap"><div class="bar-fill" style="width:0.1%"></div></div>
         </div>
-        <div class="model-meta">
-          <span>1 session</span>
-          <span>39,981 tokens</span>
-          <span>2 cred</span>
-        </div>
-        <div class="progress-bar"><div class="progress-fill" style="width:0.1%"></div></div>
+        <div class="model-cost">0.06</div>
       </div>
     </div>
   </div>
 
   <div class="section">
     <div class="section-title">Daily Credit Trend</div>
-    <div class="daily-chart">
-      <svg viewBox="0 0 488 180" xmlns="http://www.w3.org/2000/svg">
-        <style>
-          .chart-line { fill: none; stroke: var(--bar-fill, #171717); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
-          .chart-area { fill: var(--bar-fill, #171717); opacity: 0.06; }
-          .chart-dot { fill: var(--bg, #ffffff); stroke: var(--bar-fill, #171717); stroke-width: 1.5; }
-          .chart-label { font-size: 8px; text-anchor: middle; fill: var(--text-muted, #808080); }
-          .chart-max { font-size: 9px; text-anchor: start; fill: var(--text-muted, #808080); font-variant-numeric: tabular-nums; }
-        </style>
-        <line x1="30" y1="150" x2="478" y2="150" stroke="var(--border,#e5e5e5)" stroke-width="1"/>
-        <text x="32" y="12" class="chart-max">651</text>
-        <text x="32" y="81" class="chart-max" style="text-anchor:end;" transform="translate(-5,3)">300</text>
-        <polygon points="40,147.6 62,81.5 84,149.2 106,149.7 128,148.7 150,146.3 172,148.5 194,132.3 216,142.6 238,148.1 260,148.0 282,120.0 304,78.9 326,143.2 348,104.8 370,1.6 392,23.4 414,137.2 436,141.4 458,147.5 478,150.0 478,150 458,150 436,150 414,150 392,150 370,150 348,150 326,150 304,150 282,150 260,150 238,150 216,150 194,150 172,150 150,150 128,150 106,150 84,150 62,150 40,150" class="chart-area"/>
-        <polyline points="40,147.6 62,81.5 84,149.2 106,149.7 128,148.7 150,146.3 172,148.5 194,132.3 216,142.6 238,148.1 260,148.0 282,120.0 304,78.9 326,13.4 348,104.8 370,1.6 392,23.4 414,137.2 436,141.4 458,147.5 478,150.0" class="chart-line"/>
-        <circle cx="40" cy="147.6" r="2" class="chart-dot"/>
-        <circle cx="62" cy="81.5" r="2" class="chart-dot"/>
-        <circle cx="84" cy="149.2" r="2" class="chart-dot"/>
-        <circle cx="106" cy="149.7" r="2" class="chart-dot"/>
-        <circle cx="128" cy="148.7" r="2" class="chart-dot"/>
-        <circle cx="150" cy="146.3" r="2" class="chart-dot"/>
-        <circle cx="172" cy="148.5" r="2" class="chart-dot"/>
-        <circle cx="194" cy="132.3" r="2" class="chart-dot"/>
-        <circle cx="216" cy="142.6" r="2" class="chart-dot"/>
-        <circle cx="238" cy="148.1" r="2" class="chart-dot"/>
-        <circle cx="260" cy="148.0" r="2" class="chart-dot"/>
-        <circle cx="282" cy="120.0" r="2" class="chart-dot"/>
-        <circle cx="304" cy="78.9" r="2" class="chart-dot"/>
-        <circle cx="326" cy="13.4" r="2" class="chart-dot"/>
-        <circle cx="348" cy="104.8" r="2" class="chart-dot"/>
-        <circle cx="370" cy="1.6" r="2.5" class="chart-dot"/>
-        <circle cx="392" cy="23.4" r="2" class="chart-dot"/>
-        <circle cx="414" cy="137.2" r="2" class="chart-dot"/>
-        <circle cx="436" cy="141.4" r="2" class="chart-dot"/>
-        <circle cx="458" cy="147.5" r="2" class="chart-dot"/>
-        <text x="40" y="162" class="chart-label" transform="rotate(-45,40,162)">06-06</text>
-        <text x="83" y="162" class="chart-label" transform="rotate(-45,83,162)">06-09</text>
-        <text x="128" y="162" class="chart-label" transform="rotate(-45,128,162)">06-12</text>
-        <text x="172" y="162" class="chart-label" transform="rotate(-45,172,162)">06-15</text>
-        <text x="216" y="162" class="chart-label" transform="rotate(-45,216,162)">06-18</text>
-        <text x="260" y="162" class="chart-label" transform="rotate(-45,260,162)">06-21</text>
-        <text x="304" y="162" class="chart-label" transform="rotate(-45,304,162)">06-24</text>
-        <text x="349" y="162" class="chart-label" transform="rotate(-45,349,162)">06-25</text>
+    <div class="chart-wrap">
+      <div class="chart-title">Credits per Day</div>
+      <svg class="chart-svg" viewBox="0 0 488 180" preserveAspectRatio="xMidYMid meet">
+        <defs>
+          <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="var(--fg)"/>
+            <stop offset="100%" stop-color="var(--bg)" stop-opacity="0.3"/>
+          </linearGradient>
+        </defs>
+        <polyline fill="url(#area)" stroke="none"
+          points="0,180 0,158 24.4,153 48.8,178 73.2,179 97.6,175 122,179 146.4,167 170.8,176 195.2,179 219.6,177 244,155 268.4,138 292.8,148 317.2,175 341.6,11 366,35 390.4,171 414.8,174 439.2,172 463.6,173 488,179 488,180"
+        />
+        <polyline fill="none" stroke="var(--fg)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
+          points="0,158 24.4,153 48.8,178 73.2,179 97.6,175 122,179 146.4,167 170.8,176 195.2,179 219.6,177 244,155 268.4,138 292.8,148 317.2,175 341.6,11 366,35 390.4,171 414.8,174 439.2,172 463.6,173 488,179"
+        />
+        <circle cx="0" cy="158" r="2.5" fill="var(--fg)"/>
+        <circle cx="24.4" cy="153" r="2.5" fill="var(--fg)"/>
+        <circle cx="48.8" cy="178" r="2.5" fill="var(--fg)"/>
+        <circle cx="73.2" cy="179" r="2.5" fill="var(--fg)"/>
+        <circle cx="97.6" cy="175" r="2.5" fill="var(--fg)"/>
+        <circle cx="122" cy="179" r="2.5" fill="var(--fg)"/>
+        <circle cx="146.4" cy="167" r="2.5" fill="var(--fg)"/>
+        <circle cx="170.8" cy="176" r="2.5" fill="var(--fg)"/>
+        <circle cx="195.2" cy="179" r="2.5" fill="var(--fg)"/>
+        <circle cx="219.6" cy="177" r="2.5" fill="var(--fg)"/>
+        <circle cx="244" cy="155" r="2.5" fill="var(--fg)"/>
+        <circle cx="268.4" cy="138" r="2.5" fill="var(--fg)"/>
+        <circle cx="292.8" cy="148" r="2.5" fill="var(--fg)"/>
+        <circle cx="317.2" cy="175" r="2.5" fill="var(--fg)"/>
+        <circle cx="341.6" cy="11" r="3.5" fill="var(--fg)" stroke="var(--bg)" stroke-width="2"/>
+        <circle cx="366" cy="35" r="3.5" fill="var(--fg)" stroke="var(--bg)" stroke-width="2"/>
+        <circle cx="390.4" cy="171" r="2.5" fill="var(--fg)"/>
+        <circle cx="414.8" cy="174" r="2.5" fill="var(--fg)"/>
+        <circle cx="439.2" cy="172" r="2.5" fill="var(--fg)"/>
+        <circle cx="463.6" cy="173" r="2.5" fill="var(--fg)"/>
+        <circle cx="488" cy="179" r="2.5" fill="var(--fg)"/>
       </svg>
+      <div class="chart-footer">
+        <span>Jun 6</span>
+        <span>Jun 26</span>
+      </div>
     </div>
   </div>
 
   <div class="section">
     <div class="section-title">Most Expensive Sessions</div>
-    <table class="top-table">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date</th>
-          <th>Model</th>
-          <th class="num">Cost</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="badge">1</span></td>
-          <td class="date">06-21 01:34</td>
-          <td><span class="model-tag">deepseek-v4-flash</span></td>
-          <td class="num"><strong>&#165;22.84</strong></td>
-        </tr>
-        <tr>
-          <td><span class="badge">2</span></td>
-          <td class="date">06-07 22:18</td>
-          <td><span class="model-tag">deepseek-v4-flash</span></td>
-          <td class="num"><strong>&#165;18.14</strong></td>
-        </tr>
-        <tr>
-          <td><span class="badge">3</span></td>
-          <td class="date">06-22 23:19</td>
-          <td><span class="model-tag">deepseek-v4-flash</span></td>
-          <td class="num"><strong>&#165;9.38</strong></td>
-        </tr>
-        <tr>
-          <td><span class="badge">4</span></td>
-          <td class="date">06-18 15:06</td>
-          <td><span class="model-tag">glm-5.2</span></td>
-          <td class="num"><strong>&#165;6.61</strong></td>
-        </tr>
-        <tr>
-          <td><span class="badge">5</span></td>
-          <td class="date">06-06 18:03</td>
-          <td><span class="model-tag">deepseek-v4-flash</span></td>
-          <td class="num"><strong>&#165;3.94</strong></td>
-        </tr>
-      </tbody>
-    </table>
+    <div class="session-item">
+      <div class="session-left">
+        <div class="session-title">现在给我看一下，关于我的个人信息都有哪些？</div>
+        <div class="session-meta">Jun 21 01:34 &middot; deepseek-v4-flash &middot; 295,091 tok</div>
+      </div>
+      <div class="session-cost">22.84</div>
+    </div>
+    <div class="session-item">
+      <div class="session-left">
+        <div class="session-title">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</div>
+        <div class="session-meta">Jun 7 22:18 &middot; deepseek-v4-flash &middot; 396,878 tok</div>
+      </div>
+      <div class="session-cost">18.14</div>
+    </div>
+    <div class="session-item">
+      <div class="session-left">
+        <div class="session-title">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</div>
+        <div class="session-meta">Jun 22 23:19 &middot; deepseek-v4-flash &middot; 168,580 tok</div>
+      </div>
+      <div class="session-cost">9.38</div>
+    </div>
+    <div class="session-item">
+      <div class="session-left">
+        <div class="session-title">子女赡养费法律咨询.pdf</div>
+        <div class="session-meta">Jun 18 15:06 &middot; glm-5.2 &middot; 71,019 tok</div>
+      </div>
+      <div class="session-cost">6.61</div>
+    </div>
+    <div class="session-item">
+      <div class="session-left">
+        <div class="session-title">金融场景 · 月收入情况和财务规划</div>
+        <div class="session-meta">Jun 6 18:03 &middot; deepseek-v4-flash &middot; 223,798 tok</div>
+      </div>
+      <div class="session-cost">3.94</div>
+    </div>
   </div>
 
   <div class="footer">
-    Auto-updated every 12h &middot; WorkBuddy
+    Automatically updated every 12h &middot; Data from workbuddy.db<br>
+    <a href="https://alistairlendor.com/usage/usage_dashboard.html">alistairlendor.com/usage</a>
   </div>
 
 </div>
