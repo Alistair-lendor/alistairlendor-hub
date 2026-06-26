@@ -11400,5 +11400,15 @@
     "remark": "LianLian跨境电商入账",
     "account": "连连支付",
     "source": "连连支付"
+  },
+  {
+    "date": "2026-06-26",
+    "datetime": "2026-06-26 12:59:54",
+    "category": "跨境电商收入",
+    "type": "收入",
+    "amount": 85.14,
+    "remark": "PingPong TIKTOK金融账户成功入账",
+    "account": "PingPong",
+    "source": "PingPong"
   }
 ]
