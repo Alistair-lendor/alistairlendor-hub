@@ -2,232 +2,205 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>WorkBuddy 用量监控</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Usage · WorkBuddy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #ffffff;
-  --surface: #ffffff;
+  --bg-subtle: #f5f5f5;
   --border: #e5e5e5;
   --text-primary: #171717;
   --text-secondary: #4d4d4d;
   --text-tertiary: #666666;
   --text-muted: #808080;
-  --bar-bg: #f0f0f0;
+  --bar-bg: #e5e5e5;
   --bar-fill: #171717;
-  --chart-line: #171717;
-  --chart-area: rgba(23,23,23,0.06);
-  --chart-grid: #e5e5e5;
-  --hover-bg: #f5f5f5;
-  --tag-bg: #f5f5f5;
-  --tag-text: #4d4d4d;
-  --shadow: 0 1px 0 rgba(0,0,0,0.08);
+  --card-shadow: 0 1px 2px rgba(0,0,0,0.04);
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0a0a0a;
-    --surface: #141414;
+    --bg-subtle: #1a1a1a;
     --border: #262626;
     --text-primary: #ededed;
     --text-secondary: #a3a3a3;
     --text-tertiary: #808080;
-    --text-muted: #666666;
-    --bar-bg: #1f1f1f;
-    --bar-fill: #ededed;
-    --chart-line: #ededed;
-    --chart-area: rgba(237,237,237,0.06);
-    --chart-grid: #262626;
-    --hover-bg: #1a1a1a;
-    --tag-bg: #1f1f1f;
-    --tag-text: #a3a3a3;
-    --shadow: 0 1px 0 rgba(255,255,255,0.06);
+    --text-muted: #525252;
+    --bar-bg: #262626;
+    --bar-fill: #a3a3a3;
+    --card-shadow: none;
   }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { -webkit-text-size-adjust: 100%; }
 body {
-  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
   color: var(--text-primary);
-  padding: 20px 16px;
+  padding: 24px 16px;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+.num {
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', monospace;
+  font-variant-numeric: tabular-nums;
+}
 .container { max-width: 520px; margin: 0 auto; }
+
+/* header */
 .header { margin-bottom: 28px; }
 .header h1 {
   font-size: 20px;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   color: var(--text-primary);
   margin-bottom: 4px;
 }
-.header p {
+.header .sub {
   font-size: 13px;
   color: var(--text-muted);
   letter-spacing: -0.01em;
 }
-.stats-grid {
+
+/* 4-metric grid */
+.metrics {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 10px;
+  gap: 12px;
   margin-bottom: 28px;
 }
-.stat-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
+.metric-card {
+  background: var(--bg-subtle);
+  border-radius: 8px;
   padding: 16px;
-  box-shadow: var(--shadow);
 }
-.stat-card .label {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 6px;
-}
-.stat-card .value {
-  font-family: 'Geist Mono', 'Geist', monospace;
-  font-size: 22px;
-  font-weight: 600;
-  color: var(--text-primary);
-  letter-spacing: -0.03em;
-}
-.stat-card .sub {
+.metric-card .label {
   font-size: 11px;
   color: var(--text-tertiary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.metric-card .value {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+}
+.metric-card .sub {
+  font-size: 11px;
+  color: var(--text-muted);
   margin-top: 4px;
 }
-.section {
-  margin-bottom: 24px;
-}
-.section-title {
+
+/* section */
+.section { margin-bottom: 28px; }
+.section h2 {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-secondary);
+  letter-spacing: 0.02em;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   margin-bottom: 12px;
 }
-.model-list { display: flex; flex-direction: column; gap: 10px; }
+
+/* model ranking */
 .model-item {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  padding: 12px 14px;
-  box-shadow: var(--shadow);
-}
-.model-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border);
 }
-.model-name {
+.model-item:last-child { border-bottom: none; }
+.model-info { flex: 1; min-width: 0; }
+.model-info .name {
   font-size: 13px;
   font-weight: 500;
   color: var(--text-primary);
   letter-spacing: -0.01em;
 }
-.model-credits {
-  font-family: 'Geist Mono', monospace;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-primary);
+.model-info .detail {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
 }
 .model-bar-wrap {
   width: 100%;
-  height: 6px;
+  height: 4px;
   background: var(--bar-bg);
-  border-radius: 3px;
-  overflow: hidden;
+  border-radius: 2px;
+  margin-top: 6px;
 }
 .model-bar-fill {
   height: 100%;
   background: var(--bar-fill);
-  border-radius: 3px;
-  transition: width 0.4s ease;
+  border-radius: 2px;
+  transition: width 0.3s ease;
 }
-.model-meta {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 4px;
-}
-.model-meta span {
-  font-size: 11px;
-  color: var(--text-muted);
-  font-family: 'Geist Mono', monospace;
-}
-.chart-wrap {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px;
-  box-shadow: var(--shadow);
-  overflow: hidden;
-}
-.chart-wrap svg { display: block; width: 100%; height: auto; }
-.top5-list { display: flex; flex-direction: column; gap: 6px; }
-.top5-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 12px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  gap: 8px;
-}
-.top5-rank {
-  font-family: 'Geist Mono', monospace;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  width: 18px;
-  flex-shrink: 0;
-}
-.top5-info { flex: 1; min-width: 0; }
-.top5-model {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--text-secondary);
-  font-family: 'Geist Mono', monospace;
-}
-.top5-title {
-  font-size: 12px;
-  color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  margin-top: 1px;
-}
-.top5-cost {
-  font-family: 'Geist Mono', monospace;
+.model-stat {
   font-size: 13px;
   font-weight: 600;
   color: var(--text-primary);
-  flex-shrink: 0;
-  text-align: right;
+  margin-left: 12px;
+  white-space: nowrap;
 }
-.top5-cost small {
+
+/* daily trend chart */
+.chart-wrap {
+  background: var(--bg-subtle);
+  border-radius: 8px;
+  padding: 16px;
+  overflow: hidden;
+}
+.chart-wrap svg {
   display: block;
-  font-size: 10px;
-  font-weight: 400;
-  color: var(--text-muted);
+  width: 100%;
+  height: auto;
+}
+
+/* top 5 table */
+.table-wrap { overflow-x: auto; }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+thead th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-tertiary);
+  border-bottom: 1px solid var(--border);
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+tbody td {
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+  vertical-align: top;
+}
+tbody tr:last-child td { border-bottom: none; }
+.td-rank { width: 24px; color: var(--text-muted); font-weight: 500; }
+.td-model { white-space: nowrap; font-weight: 500; color: var(--text-primary); }
+.td-title {
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-tertiary);
 }
 .footer {
   text-align: center;
-  padding: 20px 0 10px;
+  padding: 20px 0;
   font-size: 11px;
   color: var(--text-muted);
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
 }
 </style>
 </head>
@@ -235,294 +208,191 @@ body {
 <div class="container">
 
   <div class="header">
-    <h1>Usage</h1>
-    <p>2026-06-06 &mdash; 2026-06-26 &middot; Updated 14:35</p>
+    <h1>Usage Dashboard</h1>
+    <div class="sub">2026-06-06 &mdash; 2026-06-27 &middot; Updated 02:32</div>
   </div>
 
-  <div class="stats-grid">
-    <div class="stat-card">
+  <div class="metrics">
+    <div class="metric-card">
       <div class="label">Sessions</div>
-      <div class="value">142</div>
-      <div class="sub">21 days</div>
+      <div class="value num">146</div>
+      <div class="sub">22 days</div>
     </div>
-    <div class="stat-card">
+    <div class="metric-card">
       <div class="label">Tokens</div>
-      <div class="value">11.1M</div>
-      <div class="sub">11,123,978 total</div>
+      <div class="value num">11.4M</div>
+      <div class="sub">11,434,925 total</div>
     </div>
-    <div class="stat-card">
+    <div class="metric-card">
       <div class="label">Credits</div>
-      <div class="value">2,578</div>
-      <div class="sub">&asymp;18.2 / session</div>
+      <div class="value num">2,592</div>
+      <div class="sub">17.8 avg per session</div>
     </div>
-    <div class="stat-card">
+    <div class="metric-card">
       <div class="label">Cost</div>
-      <div class="value">&yen;97.97</div>
-      <div class="sub">Jul+ &yen;128.90 (+32%)</div>
+      <div class="value num">&yen;98.49</div>
+      <div class="sub">Jul &yen;129.59 (+32%)</div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Models by Credit</div>
-    <div class="model-list">
-      <div class="model-item">
-        <div class="model-header">
-          <span class="model-name">deepseek-v4-flash</span>
-          <span class="model-credits">2,047.96</span>
-        </div>
-        <div class="model-bar-wrap">
-          <div class="model-bar-fill" style="width:79.4%"></div>
-        </div>
-        <div class="model-meta">
-          <span>59 sessions &middot; 6,059,419 tokens</span>
-          <span>&yen;77.82</span>
-        </div>
+    <h2>Model Ranking</h2>
+
+    <div class="model-item">
+      <div class="model-info">
+        <div class="name">deepseek-v4-flash</div>
+        <div class="detail">61 sessions &middot; 6,248,739 tokens</div>
+        <div class="model-bar-wrap"><div class="model-bar-fill" style="width:79.4%"></div></div>
       </div>
-      <div class="model-item">
-        <div class="model-header">
-          <span class="model-name">hy3-preview-agent</span>
-          <span class="model-credits">221.97</span>
-        </div>
-        <div class="model-bar-wrap">
-          <div class="model-bar-fill" style="width:8.6%"></div>
-        </div>
-        <div class="model-meta">
-          <span>78 sessions &middot; 4,783,882 tokens</span>
-          <span>&yen;8.43</span>
-        </div>
+      <div class="model-stat num">&yen;78.17</div>
+    </div>
+
+    <div class="model-item">
+      <div class="model-info">
+        <div class="name">hy3-preview-agent</div>
+        <div class="detail">80 sessions &middot; 4,905,509 tokens</div>
+        <div class="model-bar-wrap"><div class="model-bar-fill" style="width:8.7%"></div></div>
       </div>
-      <div class="model-item">
-        <div class="model-header">
-          <span class="model-name">glm-5.2</span>
-          <span class="model-credits">177.34</span>
-        </div>
-        <div class="model-bar-wrap">
-          <div class="model-bar-fill" style="width:6.9%"></div>
-        </div>
-        <div class="model-meta">
-          <span>2 sessions &middot; 120,757 tokens</span>
-          <span>&yen;6.74</span>
-        </div>
+      <div class="model-stat num">&yen;8.61</div>
+    </div>
+
+    <div class="model-item">
+      <div class="model-info">
+        <div class="name">glm-5.2</div>
+        <div class="detail">2 sessions &middot; 120,757 tokens</div>
+        <div class="model-bar-wrap"><div class="model-bar-fill" style="width:6.8%"></div></div>
       </div>
-      <div class="model-item">
-        <div class="model-header">
-          <span class="model-name">minimax-m3</span>
-          <span class="model-credits">71.23</span>
-        </div>
-        <div class="model-bar-wrap">
-          <div class="model-bar-fill" style="width:2.8%"></div>
-        </div>
-        <div class="model-meta">
-          <span>1 session &middot; 59,766 tokens</span>
-          <span>&yen;2.71</span>
-        </div>
+      <div class="model-stat num">&yen;6.74</div>
+    </div>
+
+    <div class="model-item">
+      <div class="model-info">
+        <div class="name">minimax-m3</div>
+        <div class="detail">1 session &middot; 59,766 tokens</div>
+        <div class="model-bar-wrap"><div class="model-bar-fill" style="width:2.7%"></div></div>
       </div>
-      <div class="model-item">
-        <div class="model-header">
-          <span class="model-name">kimi-k2.7</span>
-          <span class="model-credits">57.97</span>
-        </div>
-        <div class="model-bar-wrap">
-          <div class="model-bar-fill" style="width:2.2%"></div>
-        </div>
-        <div class="model-meta">
-          <span>1 session &middot; 60,173 tokens</span>
-          <span>&yen;2.20</span>
-        </div>
+      <div class="model-stat num">&yen;2.71</div>
+    </div>
+
+    <div class="model-item">
+      <div class="model-info">
+        <div class="name">kimi-k2.7</div>
+        <div class="detail">1 session &middot; 60,173 tokens</div>
+        <div class="model-bar-wrap"><div class="model-bar-fill" style="width:2.2%"></div></div>
       </div>
-      <div class="model-item">
-        <div class="model-header">
-          <span class="model-name">auto</span>
-          <span class="model-credits">1.59</span>
-        </div>
-        <div class="model-bar-wrap">
-          <div class="model-bar-fill" style="width:0.1%"></div>
-        </div>
-        <div class="model-meta">
-          <span>1 session &middot; 39,981 tokens</span>
-          <span>&yen;0.06</span>
-        </div>
+      <div class="model-stat num">&yen;2.20</div>
+    </div>
+
+    <div class="model-item">
+      <div class="model-info">
+        <div class="name">auto</div>
+        <div class="detail">1 session &middot; 39,981 tokens</div>
+        <div class="model-bar-wrap"><div class="model-bar-fill" style="width:0.1%"></div></div>
       </div>
+      <div class="model-stat num">&yen;0.06</div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Daily Credits Trend</div>
+    <h2>Daily Credits Trend</h2>
     <div class="chart-wrap">
-      <svg id="trendChart" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" style="font-family:'Geist Mono',monospace;">
+      <svg viewBox="0 0 488 180" xmlns="http://www.w3.org/2000/svg" style="font-family:'Geist Mono',monospace;font-size:9px;">
         <defs>
-          <clipPath id="chartClip">
-            <rect x="50" y="8" width="418" height="168"/>
-          </clipPath>
+          <clipPath id="chartClip"><rect x="52" y="8" width="420" height="140" /></clipPath>
         </defs>
+        <!-- grid lines -->
+        <line x1="52" y1="8" x2="52" y2="148" stroke="var(--border)" stroke-width="1"/>
+        <line x1="52" y1="148" x2="472" y2="148" stroke="var(--border)" stroke-width="1"/>
+        <line x1="52" y1="43" x2="472" y2="43" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="52" y1="78" x2="472" y2="78" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <line x1="52" y1="113" x2="472" y2="113" stroke="var(--border)" stroke-width="0.5" stroke-dasharray="3,3"/>
+        <!-- y axis labels -->
+        <text x="48" y="12" text-anchor="end" fill="var(--text-muted)">650</text>
+        <text x="48" y="47" text-anchor="end" fill="var(--text-muted)">488</text>
+        <text x="48" y="82" text-anchor="end" fill="var(--text-muted)">325</text>
+        <text x="48" y="117" text-anchor="end" fill="var(--text-muted)">163</text>
+        <text x="48" y="152" text-anchor="end" fill="var(--text-muted)">0</text>
+        <!-- x axis labels (every 4th day for readability) -->
+        <text x="52" y="162" text-anchor="middle" fill="var(--text-muted)">06-06</text>
+        <text x="124" y="162" text-anchor="middle" fill="var(--text-muted)">06-10</text>
+        <text x="196" y="162" text-anchor="middle" fill="var(--text-muted)">06-14</text>
+        <text x="268" y="162" text-anchor="middle" fill="var(--text-muted)">06-18</text>
+        <text x="340" y="162" text-anchor="middle" fill="var(--text-muted)">06-22</text>
+        <text x="412" y="162" text-anchor="middle" fill="var(--text-muted)">06-26</text>
+        <!-- area fill -->
+        <polygon clip-path="url(#chartClip)" fill="var(--bar-fill)" fill-opacity="0.08"
+          points="52,148 52,133.55 72,36.01 92,146.58 112,147.47 132,145.57 152,147.21 172,131.97 192,143.82 212,146.59 232,146.34 252,118.49 272,83.13 292,140.93 312,106.96 332,8 352,76.71 372,136.97 392,140.02 412,138.62 432,142.46 452,146.97 472,147.84 472,148"/>
+        <!-- line -->
+        <polyline clip-path="url(#chartClip)" fill="none" stroke="var(--bar-fill)" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"
+          points="52,133.55 72,36.01 92,146.58 112,147.47 132,145.57 152,147.21 172,131.97 192,143.82 212,146.59 232,146.34 252,118.49 272,83.13 292,140.93 312,106.96 332,8 352,76.71 372,136.97 392,140.02 412,138.62 432,142.46 452,146.97 472,147.84"/>
+        <!-- peak dot -->
+        <circle cx="332" cy="8" r="3" fill="var(--bar-fill)" stroke="var(--bg)" stroke-width="1.5"/>
       </svg>
-      <script>
-      (function(){
-        var dayLabels = ["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26"];
-        var dayCredits = [326.34,505.24,8.05,5.95,10.54,20.25,7.3,66.56,17.58,9.17,9.86,117.01,255.32,27.33,136.71,650.63,283.94,39.04,31.60,37.98,11.66];
-        var maxV = 700;
-        var svg = document.getElementById('trendChart');
-        var w = 480, h = 200;
-        var padL = 50, padR = 12, padT = 8, padB = 28;
-        var plotW = w - padL - padR;
-        var plotH = h - padT - padB;
-        var n = dayCredits.length;
-        var points = [];
-        for (var i = 0; i < n; i++) {
-          var x = padL + (i / (n-1)) * plotW;
-          var y = padT + plotH - (dayCredits[i] / maxV) * plotH;
-          points.push(x+','+y);
-        }
-        var pathD = 'M' + points.join(' L');
-        var areaD = pathD + ' L' + (padL + plotW) + ',' + (padT + plotH) + ' L' + padL + ',' + (padT + plotH) + ' Z';
-
-        var ns = 'http://www.w3.org/2000/svg';
-        var style = getComputedStyle(document.documentElement);
-        var lineColor = style.getPropertyValue('--chart-line').trim() || '#171717';
-        var areaColor = style.getPropertyValue('--chart-area').trim() || 'rgba(23,23,23,0.06)';
-        var gridColor = style.getPropertyValue('--chart-grid').trim() || '#e5e5e5';
-        var mutedColor = style.getPropertyValue('--text-muted').trim() || '#808080';
-
-        // grid lines + y labels
-        var yTicks = [0, 100, 200, 300, 400, 500, 600, 700];
-        for (var t = 0; t < yTicks.length; t++) {
-          var yVal = yTicks[t];
-          var yPos = padT + plotH - (yVal / maxV) * plotH;
-          if (yPos > padT + plotH - 2) continue;
-          var line = document.createElementNS(ns, 'line');
-          line.setAttribute('x1', padL);
-          line.setAttribute('y1', yPos);
-          line.setAttribute('x2', padL + plotW);
-          line.setAttribute('y2', yPos);
-          line.setAttribute('stroke', gridColor);
-          line.setAttribute('stroke-width', '0.5');
-          svg.appendChild(line);
-          var txt = document.createElementNS(ns, 'text');
-          txt.setAttribute('x', padL - 6);
-          txt.setAttribute('y', yPos + 3);
-          txt.setAttribute('text-anchor', 'end');
-          txt.setAttribute('fill', mutedColor);
-          txt.setAttribute('font-size', '9');
-          txt.textContent = yVal;
-          svg.appendChild(txt);
-        }
-
-        // area fill
-        var area = document.createElementNS(ns, 'path');
-        area.setAttribute('d', areaD);
-        area.setAttribute('fill', areaColor);
-        area.setAttribute('clip-path', 'url(#chartClip)');
-        svg.appendChild(area);
-
-        // line
-        var line = document.createElementNS(ns, 'path');
-        line.setAttribute('d', pathD);
-        line.setAttribute('stroke', lineColor);
-        line.setAttribute('stroke-width', '1.5');
-        line.setAttribute('fill', 'none');
-        line.setAttribute('stroke-linejoin', 'round');
-        line.setAttribute('stroke-linecap', 'round');
-        line.setAttribute('clip-path', 'url(#chartClip)');
-        svg.appendChild(line);
-
-        // dots
-        for (var i = 0; i < n; i++) {
-          var x = padL + (i / (n-1)) * plotW;
-          var y = padT + plotH - (dayCredits[i] / maxV) * plotH;
-          var dot = document.createElementNS(ns, 'circle');
-          dot.setAttribute('cx', x);
-          dot.setAttribute('cy', y);
-          dot.setAttribute('r', '2.5');
-          dot.setAttribute('fill', lineColor);
-          dot.setAttribute('clip-path', 'url(#chartClip)');
-          svg.appendChild(dot);
-        }
-
-        // x labels (every 4th)
-        for (var i = 0; i < n; i += 4) {
-          var x = padL + (i / (n-1)) * plotW;
-          var txt = document.createElementNS(ns, 'text');
-          txt.setAttribute('x', x);
-          txt.setAttribute('y', h - 6);
-          txt.setAttribute('text-anchor', 'middle');
-          txt.setAttribute('fill', mutedColor);
-          txt.setAttribute('font-size', '8');
-          txt.textContent = dayLabels[i];
-          svg.appendChild(txt);
-        }
-        // last label
-        var lastX = padL + plotW;
-        var lastTxt = document.createElementNS(ns, 'text');
-        lastTxt.setAttribute('x', lastX);
-        lastTxt.setAttribute('y', h - 6);
-        lastTxt.setAttribute('text-anchor', 'end');
-        lastTxt.setAttribute('fill', mutedColor);
-        lastTxt.setAttribute('font-size', '8');
-        lastTxt.textContent = dayLabels[n-1];
-        svg.appendChild(lastTxt);
-
-        // Y axis label
-        var yLabel = document.createElementNS(ns, 'text');
-        yLabel.setAttribute('x', 8);
-        yLabel.setAttribute('y', 14);
-        yLabel.setAttribute('fill', mutedColor);
-        yLabel.setAttribute('font-size', '8');
-        yLabel.setAttribute('font-family', 'Geist, sans-serif');
-        yLabel.textContent = 'credits';
-        svg.appendChild(yLabel);
-      })();
-      </script>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Most Expensive Sessions</div>
-    <div class="top5-list">
-      <div class="top5-item">
-        <span class="top5-rank">#1</span>
-        <div class="top5-info">
-          <div class="top5-model">deepseek-v4-flash &middot; 06-21 01:34</div>
-          <div class="top5-title">现在给我看一下，关于我的个人信息都有哪些？</div>
-        </div>
-        <div class="top5-cost">&yen;22.84<small>601.11 cr</small></div>
-      </div>
-      <div class="top5-item">
-        <span class="top5-rank">#2</span>
-        <div class="top5-info">
-          <div class="top5-model">deepseek-v4-flash &middot; 06-07 22:18</div>
-          <div class="top5-title">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</div>
-        </div>
-        <div class="top5-cost">&yen;18.14<small>477.39 cr</small></div>
-      </div>
-      <div class="top5-item">
-        <span class="top5-rank">#3</span>
-        <div class="top5-info">
-          <div class="top5-model">deepseek-v4-flash &middot; 06-22 23:19</div>
-          <div class="top5-title">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</div>
-        </div>
-        <div class="top5-cost">&yen;9.38<small>246.93 cr</small></div>
-      </div>
-      <div class="top5-item">
-        <span class="top5-rank">#4</span>
-        <div class="top5-info">
-          <div class="top5-model">glm-5.2 &middot; 06-18 15:06</div>
-          <div class="top5-title">@"C:/Users/ADMIN/Desktop/子女赡养费法律咨询.pdf"</div>
-        </div>
-        <div class="top5-cost">&yen;6.61<small>174.05 cr</small></div>
-      </div>
-      <div class="top5-item">
-        <span class="top5-rank">#5</span>
-        <div class="top5-info">
-          <div class="top5-model">deepseek-v4-flash &middot; 06-06 18:03</div>
-          <div class="top5-title">@scene#28:"金融服务" 我需要你根据我的月收入情况和财务情况，给我一个</div>
-        </div>
-        <div class="top5-cost">&yen;3.94<small>103.69 cr</small></div>
-      </div>
+    <h2>Most Expensive Sessions</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th class="td-rank">#</th>
+            <th>Time</th>
+            <th>Model</th>
+            <th class="num">Credits</th>
+            <th class="num">Cost</th>
+            <th>Session</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-rank">1</td>
+            <td class="num">06-21 01:34</td>
+            <td class="td-model">deepseek-v4-flash</td>
+            <td class="num">601.11</td>
+            <td class="num">&yen;22.84</td>
+            <td class="td-title">现在给我看一下，关于我的个人信息都有哪些？</td>
+          </tr>
+          <tr>
+            <td class="td-rank">2</td>
+            <td class="num">06-07 22:18</td>
+            <td class="td-model">deepseek-v4-flash</td>
+            <td class="num">477.39</td>
+            <td class="num">&yen;18.14</td>
+            <td class="td-title">我的workbuddy账号和微信账号不是同一个...</td>
+          </tr>
+          <tr>
+            <td class="td-rank">3</td>
+            <td class="num">06-22 23:19</td>
+            <td class="td-model">deepseek-v4-flash</td>
+            <td class="num">246.93</td>
+            <td class="num">&yen;9.38</td>
+            <td class="td-title">现在我开启一个新的对话来打磨我的控制台和对应的模块...</td>
+          </tr>
+          <tr>
+            <td class="td-rank">4</td>
+            <td class="num">06-18 15:06</td>
+            <td class="td-model">glm-5.2</td>
+            <td class="num">174.05</td>
+            <td class="num">&yen;6.61</td>
+            <td class="td-title">子女赡养费法律咨询.pdf</td>
+          </tr>
+          <tr>
+            <td class="td-rank">5</td>
+            <td class="num">06-06 18:03</td>
+            <td class="td-model">deepseek-v4-flash</td>
+            <td class="num">103.69</td>
+            <td class="num">&yen;3.94</td>
+            <td class="td-title">@scene#28 金融服务 财务情况分析</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
   <div class="footer">
-    Auto-updated every 12h &middot; source: workbuddy.db
+    Auto-updated every 12 hours &middot; Source: workbuddy.db
   </div>
 
 </div>
