@@ -2,406 +2,527 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0">
-<title>Usage · WorkBuddy</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>WorkBuddy 用量监控</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
   --bg: #ffffff;
-  --fg: #171717;
-  --fg-secondary: #4d4d4d;
-  --fg-tertiary: #666666;
-  --fg-muted: #808080;
+  --surface: #ffffff;
   --border: #e5e5e5;
-  --card-bg: #fafafa;
-  --card-hover: #f5f5f5;
-  --bar-bg: #e5e5e5;
+  --text-primary: #171717;
+  --text-secondary: #4d4d4d;
+  --text-tertiary: #666666;
+  --text-muted: #808080;
+  --bar-bg: #f0f0f0;
   --bar-fill: #171717;
-  --red: #171717;
-  --green: #4d4d4d;
+  --chart-line: #171717;
+  --chart-area: rgba(23,23,23,0.06);
+  --chart-grid: #e5e5e5;
+  --hover-bg: #f5f5f5;
+  --tag-bg: #f5f5f5;
+  --tag-text: #4d4d4d;
+  --shadow: 0 1px 0 rgba(0,0,0,0.08);
 }
-@media (prefers-color-scheme:dark) {
+@media (prefers-color-scheme: dark) {
   :root {
     --bg: #0a0a0a;
-    --fg: #ededed;
-    --fg-secondary: #a3a3a3;
-    --fg-tertiary: #808080;
-    --fg-muted: #666666;
+    --surface: #141414;
     --border: #262626;
-    --card-bg: #141414;
-    --card-hover: #1a1a1a;
-    --bar-bg: #262626;
+    --text-primary: #ededed;
+    --text-secondary: #a3a3a3;
+    --text-tertiary: #808080;
+    --text-muted: #666666;
+    --bar-bg: #1f1f1f;
     --bar-fill: #ededed;
+    --chart-line: #ededed;
+    --chart-area: rgba(237,237,237,0.06);
+    --chart-grid: #262626;
+    --hover-bg: #1a1a1a;
+    --tag-bg: #1f1f1f;
+    --tag-text: #a3a3a3;
+    --shadow: 0 1px 0 rgba(255,255,255,0.06);
   }
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-size:16px;-webkit-text-size-adjust:100%;-webkit-font-smoothing:antialiased}
-body{
-  font-family:'Geist',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-  background:var(--bg);
-  color:var(--fg);
-  line-height:1.5;
-  padding:0;
-  min-height:100vh;
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: var(--bg);
+  color: var(--text-primary);
+  padding: 20px 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.container{max-width:520px;margin:0 auto;padding:24px 16px 48px}
-
-/* Header */
-.header{margin-bottom:24px}
-.header h1{
-  font-size:20px;
-  font-weight:600;
-  letter-spacing:-0.02em;
-  margin-bottom:4px;
-  color:var(--fg);
+.container { max-width: 520px; margin: 0 auto; }
+.header { margin-bottom: 28px; }
+.header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
 }
-.header p{
-  font-size:13px;
-  color:var(--fg-muted);
-  letter-spacing:-0.01em;
+.header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
 }
-.header .time{
-  color:var(--fg-secondary);
-  font-family:'Geist Mono',monospace;
-  font-size:12px;
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 28px;
 }
-
-/* Stats grid */
-.stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:24px}
-.stat-card{
-  background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:14px 12px;
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: var(--shadow);
 }
-.stat-card .label{
-  font-size:11px;
-  font-weight:500;
-  color:var(--fg-muted);
-  text-transform:uppercase;
-  letter-spacing:0.04em;
-  margin-bottom:4px;
+.stat-card .label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 6px;
 }
-.stat-card .value{
-  font-size:22px;
-  font-weight:600;
-  letter-spacing:-0.03em;
-  font-family:'Geist Mono',monospace;
-  color:var(--fg);
+.stat-card .value {
+  font-family: 'Geist Mono', 'Geist', monospace;
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
 }
-.stat-card .sub{
-  font-size:11px;
-  color:var(--fg-tertiary);
-  margin-top:2px;
+.stat-card .sub {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
 }
-
-/* Section */
-.section{margin-bottom:24px}
-.section-title{
-  font-size:13px;
-  font-weight:600;
-  letter-spacing:-0.01em;
-  color:var(--fg-secondary);
-  margin-bottom:10px;
-  text-transform:uppercase;
+.section {
+  margin-bottom: 24px;
 }
-
-/* Model list */
-.model-list{display:flex;flex-direction:column;gap:0}
-.model-row{
-  display:flex;
-  align-items:center;
-  padding:10px 0;
-  border-bottom:1px solid var(--border);
-  gap:10px;
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 12px;
 }
-.model-row:last-child{border-bottom:none}
-.model-info{flex:1;min-width:0}
-.model-name{
-  font-size:13px;
-  font-weight:600;
-  letter-spacing:-0.01em;
-  color:var(--fg);
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
+.model-list { display: flex; flex-direction: column; gap: 10px; }
+.model-item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 12px 14px;
+  box-shadow: var(--shadow);
 }
-.model-stats{
-  font-size:11px;
-  color:var(--fg-tertiary);
-  font-family:'Geist Mono',monospace;
-  margin-top:2px;
+.model-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
 }
-.model-cost{
-  font-size:13px;
-  font-weight:600;
-  font-family:'Geist Mono',monospace;
-  letter-spacing:-0.02em;
-  color:var(--fg);
-  white-space:nowrap;
-  text-align:right;
+.model-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
-.bar-wrap{
-  height:4px;
-  background:var(--bar-bg);
-  border-radius:2px;
-  margin-top:6px;
-  overflow:hidden;
+.model-credits {
+  font-family: 'Geist Mono', monospace;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
 }
-.bar-fill{
-  height:100%;
-  background:var(--bar-fill);
-  border-radius:2px;
-  transition:width 0.3s ease;
+.model-bar-wrap {
+  width: 100%;
+  height: 6px;
+  background: var(--bar-bg);
+  border-radius: 3px;
+  overflow: hidden;
 }
-
-/* Daily trend chart */
-.chart-wrap{
-  background:var(--card-bg);
-  border:1px solid var(--border);
-  border-radius:8px;
-  padding:16px 12px 12px;
+.model-bar-fill {
+  height: 100%;
+  background: var(--bar-fill);
+  border-radius: 3px;
+  transition: width 0.4s ease;
 }
-.chart-title{
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:-0.01em;
-  color:var(--fg-secondary);
-  margin-bottom:12px;
+.model-meta {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 4px;
 }
-.chart-svg{width:100%;height:auto;display:block}
-.chart-footer{
-  display:flex;
-  justify-content:space-between;
-  font-size:10px;
-  color:var(--fg-muted);
-  font-family:'Geist Mono',monospace;
-  margin-top:6px;
+.model-meta span {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Geist Mono', monospace;
 }
-
-/* Top sessions */
-.session-item{
-  display:flex;
-  justify-content:space-between;
-  align-items:flex-start;
-  padding:10px 0;
-  border-bottom:1px solid var(--border);
-  gap:8px;
+.chart-wrap {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px;
+  box-shadow: var(--shadow);
+  overflow: hidden;
 }
-.session-item:last-child{border-bottom:none}
-.session-left{flex:1;min-width:0}
-.session-title{
-  font-size:12px;
-  color:var(--fg);
-  line-height:1.4;
-  display:-webkit-box;
-  -webkit-line-clamp:1;
-  -webkit-box-orient:vertical;
-  overflow:hidden;
+.chart-wrap svg { display: block; width: 100%; height: auto; }
+.top5-list { display: flex; flex-direction: column; gap: 6px; }
+.top5-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  gap: 8px;
 }
-.session-meta{
-  font-size:11px;
-  color:var(--fg-tertiary);
-  font-family:'Geist Mono',monospace;
-  margin-top:2px;
+.top5-rank {
+  font-family: 'Geist Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  width: 18px;
+  flex-shrink: 0;
 }
-.session-cost{
-  font-size:13px;
-  font-weight:600;
-  font-family:'Geist Mono',monospace;
-  letter-spacing:-0.02em;
-  color:var(--fg);
-  white-space:nowrap;
+.top5-info { flex: 1; min-width: 0; }
+.top5-model {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  font-family: 'Geist Mono', monospace;
 }
-
-/* Footer */
-.footer{
-  text-align:center;
-  padding:24px 0 0;
-  font-size:11px;
-  color:var(--fg-muted);
-  border-top:1px solid var(--border);
+.top5-title {
+  font-size: 12px;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
 }
-.footer a{color:var(--fg-secondary);text-decoration:none}
-.footer a:hover{text-decoration:underline}
+.top5-cost {
+  font-family: 'Geist Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  flex-shrink: 0;
+  text-align: right;
+}
+.top5-cost small {
+  display: block;
+  font-size: 10px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.footer {
+  text-align: center;
+  padding: 20px 0 10px;
+  font-size: 11px;
+  color: var(--text-muted);
+  letter-spacing: 0.02em;
+}
 </style>
 </head>
 <body>
 <div class="container">
 
   <div class="header">
-    <h1>Usage Dashboard</h1>
-    <p>2026-06-06 &mdash; 2026-06-26<br>
-    <span class="time">Updated 2026-06-26 02:36</span></p>
+    <h1>Usage</h1>
+    <p>2026-06-06 &mdash; 2026-06-26 &middot; Updated 14:35</p>
   </div>
 
-  <div class="stats">
+  <div class="stats-grid">
     <div class="stat-card">
       <div class="label">Sessions</div>
-      <div class="value">139</div>
+      <div class="value">142</div>
       <div class="sub">21 days</div>
     </div>
     <div class="stat-card">
-      <div class="label">Total Tokens</div>
-      <div class="value">10.9M</div>
-      <div class="sub">10,884,476</div>
+      <div class="label">Tokens</div>
+      <div class="value">11.1M</div>
+      <div class="sub">11,123,978 total</div>
     </div>
     <div class="stat-card">
       <div class="label">Credits</div>
-      <div class="value">2,567</div>
-      <div class="sub">18.5 / session</div>
+      <div class="value">2,578</div>
+      <div class="sub">&asymp;18.2 / session</div>
     </div>
     <div class="stat-card">
       <div class="label">Cost</div>
-      <div class="value">97.54</div>
-      <div class="sub">Post-Jul 128.34</div>
+      <div class="value">&yen;97.97</div>
+      <div class="sub">Jul+ &yen;128.90 (+32%)</div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Model Ranking</div>
+    <div class="section-title">Models by Credit</div>
     <div class="model-list">
-      <div class="model-row">
-        <div class="model-info">
-          <div class="model-name">deepseek-v4-flash</div>
-          <div class="model-stats">58 sessions &middot; 5,964,986 tokens &middot; 2,043 cr</div>
-          <div class="bar-wrap"><div class="bar-fill" style="width:79.6%"></div></div>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">deepseek-v4-flash</span>
+          <span class="model-credits">2,047.96</span>
         </div>
-        <div class="model-cost">77.65</div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-fill" style="width:79.4%"></div>
+        </div>
+        <div class="model-meta">
+          <span>59 sessions &middot; 6,059,419 tokens</span>
+          <span>&yen;77.82</span>
+        </div>
       </div>
-      <div class="model-row">
-        <div class="model-info">
-          <div class="model-name">hy3-preview-agent</div>
-          <div class="model-stats">76 sessions &middot; 4,638,813 tokens &middot; 215 cr</div>
-          <div class="bar-wrap"><div class="bar-fill" style="width:8.4%"></div></div>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">hy3-preview-agent</span>
+          <span class="model-credits">221.97</span>
         </div>
-        <div class="model-cost">8.18</div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-fill" style="width:8.6%"></div>
+        </div>
+        <div class="model-meta">
+          <span>78 sessions &middot; 4,783,882 tokens</span>
+          <span>&yen;8.43</span>
+        </div>
       </div>
-      <div class="model-row">
-        <div class="model-info">
-          <div class="model-name">glm-5.2</div>
-          <div class="model-stats">2 sessions &middot; 120,757 tokens &middot; 177 cr</div>
-          <div class="bar-wrap"><div class="bar-fill" style="width:6.9%"></div></div>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">glm-5.2</span>
+          <span class="model-credits">177.34</span>
         </div>
-        <div class="model-cost">6.74</div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-fill" style="width:6.9%"></div>
+        </div>
+        <div class="model-meta">
+          <span>2 sessions &middot; 120,757 tokens</span>
+          <span>&yen;6.74</span>
+        </div>
       </div>
-      <div class="model-row">
-        <div class="model-info">
-          <div class="model-name">minimax-m3</div>
-          <div class="model-stats">1 session &middot; 59,766 tokens &middot; 71 cr</div>
-          <div class="bar-wrap"><div class="bar-fill" style="width:2.8%"></div></div>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">minimax-m3</span>
+          <span class="model-credits">71.23</span>
         </div>
-        <div class="model-cost">2.71</div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-fill" style="width:2.8%"></div>
+        </div>
+        <div class="model-meta">
+          <span>1 session &middot; 59,766 tokens</span>
+          <span>&yen;2.71</span>
+        </div>
       </div>
-      <div class="model-row">
-        <div class="model-info">
-          <div class="model-name">kimi-k2.7</div>
-          <div class="model-stats">1 session &middot; 60,173 tokens &middot; 58 cr</div>
-          <div class="bar-wrap"><div class="bar-fill" style="width:2.3%"></div></div>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">kimi-k2.7</span>
+          <span class="model-credits">57.97</span>
         </div>
-        <div class="model-cost">2.20</div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-fill" style="width:2.2%"></div>
+        </div>
+        <div class="model-meta">
+          <span>1 session &middot; 60,173 tokens</span>
+          <span>&yen;2.20</span>
+        </div>
       </div>
-      <div class="model-row">
-        <div class="model-info">
-          <div class="model-name">auto</div>
-          <div class="model-stats">1 session &middot; 39,981 tokens &middot; 2 cr</div>
-          <div class="bar-wrap"><div class="bar-fill" style="width:0.1%"></div></div>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">auto</span>
+          <span class="model-credits">1.59</span>
         </div>
-        <div class="model-cost">0.06</div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-fill" style="width:0.1%"></div>
+        </div>
+        <div class="model-meta">
+          <span>1 session &middot; 39,981 tokens</span>
+          <span>&yen;0.06</span>
+        </div>
       </div>
     </div>
   </div>
 
   <div class="section">
-    <div class="section-title">Daily Credit Trend</div>
+    <div class="section-title">Daily Credits Trend</div>
     <div class="chart-wrap">
-      <div class="chart-title">Credits per Day</div>
-      <svg class="chart-svg" viewBox="0 0 488 180" preserveAspectRatio="xMidYMid meet">
+      <svg id="trendChart" viewBox="0 0 480 200" xmlns="http://www.w3.org/2000/svg" style="font-family:'Geist Mono',monospace;">
         <defs>
-          <linearGradient id="area" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="var(--fg)"/>
-            <stop offset="100%" stop-color="var(--bg)" stop-opacity="0.3"/>
-          </linearGradient>
+          <clipPath id="chartClip">
+            <rect x="50" y="8" width="418" height="168"/>
+          </clipPath>
         </defs>
-        <polyline fill="url(#area)" stroke="none"
-          points="0,180 0,158 24.4,153 48.8,178 73.2,179 97.6,175 122,179 146.4,167 170.8,176 195.2,179 219.6,177 244,155 268.4,138 292.8,148 317.2,175 341.6,11 366,35 390.4,171 414.8,174 439.2,172 463.6,173 488,179 488,180"
-        />
-        <polyline fill="none" stroke="var(--fg)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"
-          points="0,158 24.4,153 48.8,178 73.2,179 97.6,175 122,179 146.4,167 170.8,176 195.2,179 219.6,177 244,155 268.4,138 292.8,148 317.2,175 341.6,11 366,35 390.4,171 414.8,174 439.2,172 463.6,173 488,179"
-        />
-        <circle cx="0" cy="158" r="2.5" fill="var(--fg)"/>
-        <circle cx="24.4" cy="153" r="2.5" fill="var(--fg)"/>
-        <circle cx="48.8" cy="178" r="2.5" fill="var(--fg)"/>
-        <circle cx="73.2" cy="179" r="2.5" fill="var(--fg)"/>
-        <circle cx="97.6" cy="175" r="2.5" fill="var(--fg)"/>
-        <circle cx="122" cy="179" r="2.5" fill="var(--fg)"/>
-        <circle cx="146.4" cy="167" r="2.5" fill="var(--fg)"/>
-        <circle cx="170.8" cy="176" r="2.5" fill="var(--fg)"/>
-        <circle cx="195.2" cy="179" r="2.5" fill="var(--fg)"/>
-        <circle cx="219.6" cy="177" r="2.5" fill="var(--fg)"/>
-        <circle cx="244" cy="155" r="2.5" fill="var(--fg)"/>
-        <circle cx="268.4" cy="138" r="2.5" fill="var(--fg)"/>
-        <circle cx="292.8" cy="148" r="2.5" fill="var(--fg)"/>
-        <circle cx="317.2" cy="175" r="2.5" fill="var(--fg)"/>
-        <circle cx="341.6" cy="11" r="3.5" fill="var(--fg)" stroke="var(--bg)" stroke-width="2"/>
-        <circle cx="366" cy="35" r="3.5" fill="var(--fg)" stroke="var(--bg)" stroke-width="2"/>
-        <circle cx="390.4" cy="171" r="2.5" fill="var(--fg)"/>
-        <circle cx="414.8" cy="174" r="2.5" fill="var(--fg)"/>
-        <circle cx="439.2" cy="172" r="2.5" fill="var(--fg)"/>
-        <circle cx="463.6" cy="173" r="2.5" fill="var(--fg)"/>
-        <circle cx="488" cy="179" r="2.5" fill="var(--fg)"/>
       </svg>
-      <div class="chart-footer">
-        <span>Jun 6</span>
-        <span>Jun 26</span>
-      </div>
+      <script>
+      (function(){
+        var dayLabels = ["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26"];
+        var dayCredits = [326.34,505.24,8.05,5.95,10.54,20.25,7.3,66.56,17.58,9.17,9.86,117.01,255.32,27.33,136.71,650.63,283.94,39.04,31.60,37.98,11.66];
+        var maxV = 700;
+        var svg = document.getElementById('trendChart');
+        var w = 480, h = 200;
+        var padL = 50, padR = 12, padT = 8, padB = 28;
+        var plotW = w - padL - padR;
+        var plotH = h - padT - padB;
+        var n = dayCredits.length;
+        var points = [];
+        for (var i = 0; i < n; i++) {
+          var x = padL + (i / (n-1)) * plotW;
+          var y = padT + plotH - (dayCredits[i] / maxV) * plotH;
+          points.push(x+','+y);
+        }
+        var pathD = 'M' + points.join(' L');
+        var areaD = pathD + ' L' + (padL + plotW) + ',' + (padT + plotH) + ' L' + padL + ',' + (padT + plotH) + ' Z';
+
+        var ns = 'http://www.w3.org/2000/svg';
+        var style = getComputedStyle(document.documentElement);
+        var lineColor = style.getPropertyValue('--chart-line').trim() || '#171717';
+        var areaColor = style.getPropertyValue('--chart-area').trim() || 'rgba(23,23,23,0.06)';
+        var gridColor = style.getPropertyValue('--chart-grid').trim() || '#e5e5e5';
+        var mutedColor = style.getPropertyValue('--text-muted').trim() || '#808080';
+
+        // grid lines + y labels
+        var yTicks = [0, 100, 200, 300, 400, 500, 600, 700];
+        for (var t = 0; t < yTicks.length; t++) {
+          var yVal = yTicks[t];
+          var yPos = padT + plotH - (yVal / maxV) * plotH;
+          if (yPos > padT + plotH - 2) continue;
+          var line = document.createElementNS(ns, 'line');
+          line.setAttribute('x1', padL);
+          line.setAttribute('y1', yPos);
+          line.setAttribute('x2', padL + plotW);
+          line.setAttribute('y2', yPos);
+          line.setAttribute('stroke', gridColor);
+          line.setAttribute('stroke-width', '0.5');
+          svg.appendChild(line);
+          var txt = document.createElementNS(ns, 'text');
+          txt.setAttribute('x', padL - 6);
+          txt.setAttribute('y', yPos + 3);
+          txt.setAttribute('text-anchor', 'end');
+          txt.setAttribute('fill', mutedColor);
+          txt.setAttribute('font-size', '9');
+          txt.textContent = yVal;
+          svg.appendChild(txt);
+        }
+
+        // area fill
+        var area = document.createElementNS(ns, 'path');
+        area.setAttribute('d', areaD);
+        area.setAttribute('fill', areaColor);
+        area.setAttribute('clip-path', 'url(#chartClip)');
+        svg.appendChild(area);
+
+        // line
+        var line = document.createElementNS(ns, 'path');
+        line.setAttribute('d', pathD);
+        line.setAttribute('stroke', lineColor);
+        line.setAttribute('stroke-width', '1.5');
+        line.setAttribute('fill', 'none');
+        line.setAttribute('stroke-linejoin', 'round');
+        line.setAttribute('stroke-linecap', 'round');
+        line.setAttribute('clip-path', 'url(#chartClip)');
+        svg.appendChild(line);
+
+        // dots
+        for (var i = 0; i < n; i++) {
+          var x = padL + (i / (n-1)) * plotW;
+          var y = padT + plotH - (dayCredits[i] / maxV) * plotH;
+          var dot = document.createElementNS(ns, 'circle');
+          dot.setAttribute('cx', x);
+          dot.setAttribute('cy', y);
+          dot.setAttribute('r', '2.5');
+          dot.setAttribute('fill', lineColor);
+          dot.setAttribute('clip-path', 'url(#chartClip)');
+          svg.appendChild(dot);
+        }
+
+        // x labels (every 4th)
+        for (var i = 0; i < n; i += 4) {
+          var x = padL + (i / (n-1)) * plotW;
+          var txt = document.createElementNS(ns, 'text');
+          txt.setAttribute('x', x);
+          txt.setAttribute('y', h - 6);
+          txt.setAttribute('text-anchor', 'middle');
+          txt.setAttribute('fill', mutedColor);
+          txt.setAttribute('font-size', '8');
+          txt.textContent = dayLabels[i];
+          svg.appendChild(txt);
+        }
+        // last label
+        var lastX = padL + plotW;
+        var lastTxt = document.createElementNS(ns, 'text');
+        lastTxt.setAttribute('x', lastX);
+        lastTxt.setAttribute('y', h - 6);
+        lastTxt.setAttribute('text-anchor', 'end');
+        lastTxt.setAttribute('fill', mutedColor);
+        lastTxt.setAttribute('font-size', '8');
+        lastTxt.textContent = dayLabels[n-1];
+        svg.appendChild(lastTxt);
+
+        // Y axis label
+        var yLabel = document.createElementNS(ns, 'text');
+        yLabel.setAttribute('x', 8);
+        yLabel.setAttribute('y', 14);
+        yLabel.setAttribute('fill', mutedColor);
+        yLabel.setAttribute('font-size', '8');
+        yLabel.setAttribute('font-family', 'Geist, sans-serif');
+        yLabel.textContent = 'credits';
+        svg.appendChild(yLabel);
+      })();
+      </script>
     </div>
   </div>
 
   <div class="section">
     <div class="section-title">Most Expensive Sessions</div>
-    <div class="session-item">
-      <div class="session-left">
-        <div class="session-title">现在给我看一下，关于我的个人信息都有哪些？</div>
-        <div class="session-meta">Jun 21 01:34 &middot; deepseek-v4-flash &middot; 295,091 tok</div>
+    <div class="top5-list">
+      <div class="top5-item">
+        <span class="top5-rank">#1</span>
+        <div class="top5-info">
+          <div class="top5-model">deepseek-v4-flash &middot; 06-21 01:34</div>
+          <div class="top5-title">现在给我看一下，关于我的个人信息都有哪些？</div>
+        </div>
+        <div class="top5-cost">&yen;22.84<small>601.11 cr</small></div>
       </div>
-      <div class="session-cost">22.84</div>
-    </div>
-    <div class="session-item">
-      <div class="session-left">
-        <div class="session-title">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</div>
-        <div class="session-meta">Jun 7 22:18 &middot; deepseek-v4-flash &middot; 396,878 tok</div>
+      <div class="top5-item">
+        <span class="top5-rank">#2</span>
+        <div class="top5-info">
+          <div class="top5-model">deepseek-v4-flash &middot; 06-07 22:18</div>
+          <div class="top5-title">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</div>
+        </div>
+        <div class="top5-cost">&yen;18.14<small>477.39 cr</small></div>
       </div>
-      <div class="session-cost">18.14</div>
-    </div>
-    <div class="session-item">
-      <div class="session-left">
-        <div class="session-title">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</div>
-        <div class="session-meta">Jun 22 23:19 &middot; deepseek-v4-flash &middot; 168,580 tok</div>
+      <div class="top5-item">
+        <span class="top5-rank">#3</span>
+        <div class="top5-info">
+          <div class="top5-model">deepseek-v4-flash &middot; 06-22 23:19</div>
+          <div class="top5-title">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</div>
+        </div>
+        <div class="top5-cost">&yen;9.38<small>246.93 cr</small></div>
       </div>
-      <div class="session-cost">9.38</div>
-    </div>
-    <div class="session-item">
-      <div class="session-left">
-        <div class="session-title">子女赡养费法律咨询.pdf</div>
-        <div class="session-meta">Jun 18 15:06 &middot; glm-5.2 &middot; 71,019 tok</div>
+      <div class="top5-item">
+        <span class="top5-rank">#4</span>
+        <div class="top5-info">
+          <div class="top5-model">glm-5.2 &middot; 06-18 15:06</div>
+          <div class="top5-title">@"C:/Users/ADMIN/Desktop/子女赡养费法律咨询.pdf"</div>
+        </div>
+        <div class="top5-cost">&yen;6.61<small>174.05 cr</small></div>
       </div>
-      <div class="session-cost">6.61</div>
-    </div>
-    <div class="session-item">
-      <div class="session-left">
-        <div class="session-title">金融场景 · 月收入情况和财务规划</div>
-        <div class="session-meta">Jun 6 18:03 &middot; deepseek-v4-flash &middot; 223,798 tok</div>
+      <div class="top5-item">
+        <span class="top5-rank">#5</span>
+        <div class="top5-info">
+          <div class="top5-model">deepseek-v4-flash &middot; 06-06 18:03</div>
+          <div class="top5-title">@scene#28:"金融服务" 我需要你根据我的月收入情况和财务情况，给我一个</div>
+        </div>
+        <div class="top5-cost">&yen;3.94<small>103.69 cr</small></div>
       </div>
-      <div class="session-cost">3.94</div>
     </div>
   </div>
 
   <div class="footer">
-    Automatically updated every 12h &middot; Data from workbuddy.db<br>
-    <a href="https://alistairlendor.com/usage/usage_dashboard.html">alistairlendor.com/usage</a>
+    Auto-updated every 12h &middot; source: workbuddy.db
   </div>
 
 </div>
