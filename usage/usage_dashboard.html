@@ -3,337 +3,491 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Usage Dashboard</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Usage - WorkBuddy</title>
+<link rel="preconnect" href="https://fonts.cdnfonts.com">
+<link rel="stylesheet" href="https://fonts.cdnfonts.com/css/geist">
 <style>
 :root {
   --bg: #ffffff;
-  --fg: #171717;
-  --secondary: #4d4d4d;
-  --tertiary: #666666;
-  --muted: #808080;
+  --bg-card: #f5f5f5;
+  --bg-hover: #ededed;
+  --text-primary: #171717;
+  --text-secondary: #4d4d4d;
+  --text-tertiary: #666666;
+  --text-muted: #808080;
   --border: #e5e5e5;
-  --bar-bg: #f5f5f5;
-  --card-bg: #ffffff;
-  --hover: #fafafa;
+  --bar-deepseek: #171717;
+  --bar-other: #a0a0a0;
+  --focus-ring: #000000;
+  --line: #e5e5e5;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0a0a0a;
-    --fg: #ededed;
-    --secondary: #a1a1aa;
-    --tertiary: #71717a;
-    --muted: #52525b;
-    --border: #27272a;
-    --bar-bg: #18181b;
-    --card-bg: #09090b;
-    --hover: #18181b;
+    --bg-card: #171717;
+    --bg-hover: #1f1f1f;
+    --text-primary: #fafafa;
+    --text-secondary: #a3a3a3;
+    --text-tertiary: #808080;
+    --text-muted: #666666;
+    --border: #262626;
+    --bar-deepseek: #fafafa;
+    --bar-other: #525252;
+    --focus-ring: #fafafa;
+    --line: #262626;
   }
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
+
 body {
-  font-family: 'Geist', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
   background: var(--bg);
-  color: var(--fg);
-  padding: 16px;
+  color: var(--text-primary);
+  padding: 24px 16px;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
-.container { max-width: 520px; margin: 0 auto; }
-.num { font-family: 'Geist Mono', monospace; font-variant-numeric: tabular-nums; }
+
+.mono {
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.container {
+  max-width: 520px;
+  margin: 0 auto;
+}
 
 /* Header */
-.header { padding: 24px 0 16px; border-bottom: 1px solid var(--border); margin-bottom: 20px; }
-.header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 4px; }
-.header p { font-size: 13px; color: var(--muted); }
+.header { margin-bottom: 32px; }
+.header h1 {
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: -0.04em;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+.header p {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.header p strong { color: var(--text-secondary); font-weight: 500; }
 
 /* Stats grid */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 24px; }
+.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 28px; }
 .stat-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border);
+  background: var(--bg-card);
   border-radius: 8px;
   padding: 14px;
 }
-.stat-card .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
-.stat-card .value { font-size: 22px; font-weight: 700; letter-spacing: -0.03em; font-family: 'Geist Mono', monospace; }
-.stat-card .sub { font-size: 11px; color: var(--tertiary); margin-top: 2px; }
+.stat-card .label {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.stat-card .value {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.stat-card .sub {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.stat-card.full { grid-column: 1 / -1; }
 
 /* Section */
 .section { margin-bottom: 24px; }
-.section-header {
-  font-size: 13px; font-weight: 600; color: var(--secondary);
-  padding-bottom: 10px; border-bottom: 1px solid var(--border);
-  margin-bottom: 12px; letter-spacing: -0.01em;
+.section-title {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: var(--text-secondary);
+  margin-bottom: 10px;
+  text-transform: uppercase;
 }
 
-/* Model list */
-.model-item { padding: 10px 0; border-bottom: 1px solid var(--border); }
-.model-item:last-child { border-bottom: none; }
-.model-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.model-name { font-size: 14px; font-weight: 500; }
-.model-cost { font-size: 13px; color: var(--secondary); font-family: 'Geist Mono', monospace; }
-.model-meta { font-size: 12px; color: var(--tertiary); display: flex; gap: 12px; }
-.model-meta span { font-family: 'Geist Mono', monospace; }
-.bar-track { height: 4px; background: var(--bar-bg); border-radius: 2px; overflow: hidden; }
-.bar-fill { height: 100%; background: var(--fg); border-radius: 2px; transition: width 0.6s ease; }
+/* Model ranking */
+.model-list { display: flex; flex-direction: column; gap: 6px; }
+.model-item {
+  background: var(--bg-card);
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+.model-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 6px;
+}
+.model-name {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+.model-stats {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.model-bar-wrap {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.model-bar {
+  height: 100%;
+  border-radius: 2px;
+  background: var(--bar-deepseek);
+  transition: width 0.3s ease;
+}
+.model-bar.other { background: var(--bar-other); }
+.model-cost-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+.model-cost {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.model-cost strong { color: var(--text-primary); }
 
-/* Daily trend chart */
-.trend-chart { width: 100%; height: auto; }
-.trend-chart svg { width: 100%; height: auto; display: block; }
+/* Daily trend section - simple table */
+.daily-table { width: 100%; border-collapse: collapse; }
+.daily-table th {
+  text-align: left;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+}
+.daily-table th.num { text-align: right; }
+.daily-table td {
+  font-size: 12px;
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text-secondary);
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.daily-table td:first-child { color: var(--text-tertiary); }
+.daily-table td.num { text-align: right; }
+.daily-table tr:last-child td { border-bottom: none; }
+
+/* Trend chart placeholder - mini sparkline using bars */
+.trend-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 40px;
+  padding: 8px 0;
+}
+.trend-bar {
+  flex: 1;
+  min-width: 8px;
+  border-radius: 1px 1px 0 0;
+  background: var(--bar-deepseek);
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+.trend-bar:hover { opacity: 1; }
+.trend-bar.peak { opacity: 1; }
+
+.mini-label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+}
 
 /* Top sessions */
-.top-item {
-  display: flex; justify-content: space-between; align-items: flex-start;
-  padding: 10px 0; border-bottom: 1px solid var(--border);
+.session-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--line);
+  gap: 12px;
 }
-.top-item:last-child { border-bottom: none; }
-.top-info { flex: 1; min-width: 0; }
-.top-rank { font-size: 12px; color: var(--muted); font-family: 'Geist Mono', monospace; margin-bottom: 2px; }
-.top-model { font-size: 13px; font-weight: 500; }
-.top-title { font-size: 11px; color: var(--tertiary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.top-cost { font-size: 14px; font-weight: 600; font-family: 'Geist Mono', monospace; text-align: right; white-space: nowrap; }
-.top-time { font-size: 11px; color: var(--muted); text-align: right; font-family: 'Geist Mono', monospace; }
+.session-item:last-child { border-bottom: none; }
+.session-info { flex: 1; min-width: 0; }
+.session-title {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.session-model {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.session-cost {
+  text-align: right;
+  flex-shrink: 0;
+  font-family: 'Geist Mono', 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-variant-numeric: tabular-nums;
+}
+.session-cost .val { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-primary); }
+.session-cost .date { font-size: 11px; color: var(--text-muted); }
+
+/* Toast / message */
+.warning {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: var(--text-tertiary);
+  line-height: 1.5;
+}
+.warning strong { color: var(--text-primary); }
 
 /* Footer */
-.footer { text-align: center; padding: 20px 0 10px; font-size: 11px; color: var(--muted); border-top: 1px solid var(--border); }
+.footer {
+  text-align: center;
+  padding: 24px 0 8px;
+  font-size: 11px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+}
 </style>
 </head>
 <body>
 <div class="container">
 
+  <!-- Header -->
   <div class="header">
-    <h1>Usage Dashboard</h1>
-    <p>2026-06-06 &mdash; 2026-06-27 &middot; updated 14:30</p>
+    <h1>Usage</h1>
+    <p>
+      <strong>2026-06-06</strong> &mdash; <strong>2026-06-28</strong>
+      <br>Updated <strong>2026-06-28 02:27</strong> &middot; 23 days
+    </p>
   </div>
 
+  <!-- Stats -->
   <div class="stats-grid">
     <div class="stat-card">
       <div class="label">Sessions</div>
-      <div class="value">149</div>
-      <div class="sub">22 days</div>
+      <div class="value">154</div>
     </div>
     <div class="stat-card">
       <div class="label">Tokens</div>
-      <div class="value">11.6M</div>
-      <div class="sub">11,643,015 total</div>
+      <div class="value">12.1M</div>
+      <div class="sub">12,121,003</div>
     </div>
     <div class="stat-card">
       <div class="label">Credits</div>
-      <div class="value">2,602</div>
-      <div class="sub">17.5 avg/session</div>
+      <div class="value">2,674</div>
+      <div class="sub">avg 17.4 / session</div>
     </div>
     <div class="stat-card">
       <div class="label">Cost</div>
-      <div class="value">$98.86</div>
-      <div class="sub">raises to $130.08 (Jul)</div>
+      <div class="value">¥101.63</div>
+      <div class="sub">Jul &rarr; ¥133.72</div>
     </div>
   </div>
 
+  <!-- Model Ranking -->
   <div class="section">
-    <div class="section-header">Model Ranking</div>
-    <div class="model-item">
-      <div class="model-row">
-        <span class="model-name">deepseek-v4-flash</span>
-        <span class="model-cost">$78.27</span>
+    <div class="section-title">Model Breakdown</div>
+    <div class="model-list">
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">deepseek-v4-flash</span>
+          <span class="model-stats">65 sessions &middot; 6,673,185 tokens</span>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar" style="width:79.5%"></div>
+        </div>
+        <div class="model-cost-row">
+          <span class="model-cost">2,127.40 credits</span>
+          <span class="model-cost"><strong>¥80.84</strong> &middot; Jul ¥106.37</span>
+        </div>
       </div>
-      <div class="model-meta">
-        <span>62 sessions</span>
-        <span>6,318,043 tokens</span>
-        <span>2,059.72 credits</span>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">hy3-preview-agent</span>
+          <span class="model-stats">84 sessions &middot; 5,167,141 tokens</span>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar other" style="width:8.9%"></div>
+        </div>
+        <div class="model-cost-row">
+          <span class="model-cost">238.86 credits</span>
+          <span class="model-cost"><strong>¥9.08</strong> &middot; Jul ¥11.94</span>
+        </div>
       </div>
-      <div class="bar-track" style="margin-top:8px"><div class="bar-fill" style="width:79.2%"></div></div>
-    </div>
-    <div class="model-item">
-      <div class="model-row">
-        <span class="model-name">hy3-preview-agent</span>
-        <span class="model-cost">$8.88</span>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">glm-5.2</span>
+          <span class="model-stats">2 sessions &middot; 120,757 tokens</span>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar other" style="width:6.6%"></div>
+        </div>
+        <div class="model-cost-row">
+          <span class="model-cost">177.34 credits</span>
+          <span class="model-cost"><strong>¥6.74</strong> &middot; Jul ¥8.87</span>
+        </div>
       </div>
-      <div class="model-meta">
-        <span>82 sessions</span>
-        <span>5,044,295 tokens</span>
-        <span>233.66 credits</span>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">minimax-m3</span>
+          <span class="model-stats">1 session &middot; 59,766 tokens</span>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar other" style="width:2.7%"></div>
+        </div>
+        <div class="model-cost-row">
+          <span class="model-cost">71.23 credits</span>
+          <span class="model-cost"><strong>¥2.71</strong> &middot; Jul ¥3.56</span>
+        </div>
       </div>
-      <div class="bar-track" style="margin-top:8px"><div class="bar-fill" style="width:9.0%"></div></div>
-    </div>
-    <div class="model-item">
-      <div class="model-row">
-        <span class="model-name">glm-5.2</span>
-        <span class="model-cost">$6.74</span>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">kimi-k2.7</span>
+          <span class="model-stats">1 session &middot; 60,173 tokens</span>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar other" style="width:2.2%"></div>
+        </div>
+        <div class="model-cost-row">
+          <span class="model-cost">57.97 credits</span>
+          <span class="model-cost"><strong>¥2.20</strong> &middot; Jul ¥2.90</span>
+        </div>
       </div>
-      <div class="model-meta">
-        <span>2 sessions</span>
-        <span>120,757 tokens</span>
-        <span>177.34 credits</span>
+      <div class="model-item">
+        <div class="model-header">
+          <span class="model-name">auto</span>
+          <span class="model-stats">1 session &middot; 39,981 tokens</span>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar other" style="width:0.1%"></div>
+        </div>
+        <div class="model-cost-row">
+          <span class="model-cost">1.59 credits</span>
+          <span class="model-cost"><strong>¥0.06</strong></span>
+        </div>
       </div>
-      <div class="bar-track" style="margin-top:8px"><div class="bar-fill" style="width:6.8%"></div></div>
-    </div>
-    <div class="model-item">
-      <div class="model-row">
-        <span class="model-name">minimax-m3</span>
-        <span class="model-cost">$2.71</span>
-      </div>
-      <div class="model-meta">
-        <span>1 session</span>
-        <span>59,766 tokens</span>
-        <span>71.23 credits</span>
-      </div>
-      <div class="bar-track" style="margin-top:8px"><div class="bar-fill" style="width:2.7%"></div></div>
-    </div>
-    <div class="model-item">
-      <div class="model-row">
-        <span class="model-name">kimi-k2.7</span>
-        <span class="model-cost">$2.20</span>
-      </div>
-      <div class="model-meta">
-        <span>1 session</span>
-        <span>60,173 tokens</span>
-        <span>57.97 credits</span>
-      </div>
-      <div class="bar-track" style="margin-top:8px"><div class="bar-fill" style="width:2.2%"></div></div>
-    </div>
-    <div class="model-item">
-      <div class="model-row">
-        <span class="model-name">auto</span>
-        <span class="model-cost">$0.06</span>
-      </div>
-      <div class="model-meta">
-        <span>1 session</span>
-        <span>39,981 tokens</span>
-        <span>1.59 credits</span>
-      </div>
-      <div class="bar-track" style="margin-top:8px"><div class="bar-fill" style="width:0.1%"></div></div>
     </div>
   </div>
 
+  <!-- Daily Trend -->
   <div class="section">
-    <div class="section-header">Daily Credits Trend</div>
-    <!-- SVG line chart: 22 data points, monochrome -->
-    <svg class="trend-chart" viewBox="0 0 520 200" xmlns="http://www.w3.org/2000/svg">
-      <style>
-        .grid-line { stroke: var(--border); stroke-width: 0.5; }
-        .data-line { fill: none; stroke: var(--fg); stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
-        .fill-under { fill: var(--fg); opacity: 0.06; }
-        .dot { fill: var(--fg); r: 2.5; }
-        .axis-label { font-family: 'Geist Mono', monospace; font-size: 8px; fill: var(--muted); }
-      </style>
-      <!-- Y axis grid lines -->
-      <line x1="40" y1="20" x2="510" y2="20" class="grid-line"/>
-      <line x1="40" y1="65" x2="510" y2="65" class="grid-line"/>
-      <line x1="40" y1="110" x2="510" y2="110" class="grid-line"/>
-      <line x1="40" y1="155" x2="510" y2="155" class="grid-line"/>
-      <line x1="40" y1="180" x2="510" y2="180" class="grid-line"/>
-      <!-- Y axis labels -->
-      <text x="36" y="23" class="axis-label" text-anchor="end">650</text>
-      <text x="36" y="68" class="axis-label" text-anchor="end">488</text>
-      <text x="36" y="113" class="axis-label" text-anchor="end">325</text>
-      <text x="36" y="158" class="axis-label" text-anchor="end">163</text>
-      <text x="36" y="183" class="axis-label" text-anchor="end">0</text>
-      <!-- Data: map credits 0-650 to y=180-20 (inverted) -->
-      <!-- 22 points: x spacing = (510-40)/(22-1) = 470/21 = 22.38 -->
-      <!-- Points: -->
-      <!-- 06-06: 326.34 -> y=180-(326.34/650*160)=180-80.3=99.7 -->
-      <!-- 06-07: 505.24 -> y=180-(505.24/650*160)=180-124.3=55.7 -->
-      <!-- 06-08: 8.05 -> y=180-(8.05/650*160)=180-2.0=178.0 -->
-      <!-- 06-09: 5.95 -> y=180-(5.95/650*160)=180-1.5=178.5 -->
-      <!-- 06-10: 10.54 -> y=180-(10.54/650*160)=180-2.6=177.4 -->
-      <!-- 06-11: 20.25 -> y=180-(20.25/650*160)=180-5.0=175.0 -->
-      <!-- 06-12: 7.30 -> y=180-(7.30/650*160)=180-1.8=178.2 -->
-      <!-- 06-13: 66.56 -> y=180-(66.56/650*160)=180-16.4=163.6 -->
-      <!-- 06-14: 17.58 -> y=180-(17.58/650*160)=180-4.3=175.7 -->
-      <!-- 06-15: 9.17 -> y=180-(9.17/650*160)=180-2.3=177.7 -->
-      <!-- 06-16: 9.86 -> y=180-(9.86/650*160)=180-2.4=177.6 -->
-      <!-- 06-17: 117.01 -> y=180-(117.01/650*160)=180-28.8=151.2 -->
-      <!-- 06-18: 255.32 -> y=180-(255.32/650*160)=180-62.8=117.2 -->
-      <!-- 06-19: 27.33 -> y=180-(27.33/650*160)=180-6.7=173.3 -->
-      <!-- 06-20: 136.71 -> y=180-(136.71/650*160)=180-33.6=146.4 -->
-      <!-- 06-21: 650.63 -> clipped to 650 -> y=20 -->
-      <!-- 06-22: 283.94 -> y=180-(283.94/650*160)=180-69.9=110.1 -->
-      <!-- 06-23: 39.04 -> y=180-(39.04/650*160)=180-9.6=170.4 -->
-      <!-- 06-24: 31.60 -> y=180-(31.60/650*160)=180-7.8=172.2 -->
-      <!-- 06-25: 37.98 -> y=180-(37.98/650*160)=180-9.3=170.7 -->
-      <!-- 06-26: 24.68 -> y=180-(24.68/650*160)=180-6.1=173.9 -->
-      <!-- 06-27: 10.43 -> y=180-(10.43/650*160)=180-2.6=177.4 -->
-      <polygon class="fill-under" points="40,180 62.4,99.7 84.8,55.7 107.1,178.0 129.5,178.5 151.9,177.4 174.3,175.0 196.7,178.2 219.0,163.6 241.4,175.7 263.8,177.7 286.2,177.6 308.6,151.2 330.9,117.2 353.3,173.3 375.7,146.4 398.1,20.0 420.5,110.1 442.8,170.4 465.2,172.2 487.6,170.7 510.0,173.9 510.0,180 40,180"/>
-      <polyline class="data-line" points="40,99.7 62.4,55.7 107.1,178.0 129.5,178.5 151.9,177.4 174.3,175.0 196.7,178.2 219.0,163.6 241.4,175.7 263.8,177.7 286.2,177.6 308.6,151.2 330.9,117.2 353.3,173.3 375.7,146.4 398.1,20.0 420.5,110.1 442.8,170.4 465.2,172.2 487.6,170.7 510.0,173.9"/>
-      <!-- X axis labels - show every other day approx -->
-      <text x="40" y="194" class="axis-label" text-anchor="middle">06-06</text>
-      <text x="107.1" y="194" class="axis-label" text-anchor="middle">06-08</text>
-      <text x="174.3" y="194" class="axis-label" text-anchor="middle">06-10</text>
-      <text x="241.4" y="194" class="axis-label" text-anchor="middle">06-12</text>
-      <text x="308.6" y="194" class="axis-label" text-anchor="middle">06-14</text>
-      <text x="375.7" y="194" class="axis-label" text-anchor="middle">06-16</text>
-      <text x="442.8" y="194" class="axis-label" text-anchor="middle">06-18</text>
-      <text x="510" y="194" class="axis-label" text-anchor="middle">06-20</text>
-    </svg>
+    <div class="section-title">Daily Trend (credits)</div>
+    <div class="trend-bars" id="trendBars"></div>
+    <div class="mini-label">
+      <span>Jun 6</span>
+      <span>Jun 28</span>
+    </div>
   </div>
 
+  <!-- Top Sessions -->
   <div class="section">
-    <div class="section-header">Most Expensive Sessions</div>
-    <div class="top-item">
-      <div class="top-info">
-        <div class="top-rank">1</div>
-        <div class="top-model">deepseek-v4-flash</div>
-        <div class="top-title">现在给我看一下，关于我的个人信息都有哪些？</div>
+    <div class="section-title">Top Sessions</div>
+    <div class="session-item">
+      <div class="session-info">
+        <div class="session-title">现在给我看一下，关于我的个人信息都有哪些？</div>
+        <div class="session-model">deepseek-v4-flash &middot; 295,091 tokens</div>
       </div>
-      <div style="text-align:right">
-        <div class="top-cost">$22.84</div>
-        <div class="top-time">06-21 01:34</div>
-      </div>
-    </div>
-    <div class="top-item">
-      <div class="top-info">
-        <div class="top-rank">2</div>
-        <div class="top-model">deepseek-v4-flash</div>
-        <div class="top-title">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</div>
-      </div>
-      <div style="text-align:right">
-        <div class="top-cost">$18.14</div>
-        <div class="top-time">06-07 22:18</div>
+      <div class="session-cost">
+        <div class="val">¥22.84</div>
+        <div class="date">Jun 21</div>
       </div>
     </div>
-    <div class="top-item">
-      <div class="top-info">
-        <div class="top-rank">3</div>
-        <div class="top-model">deepseek-v4-flash</div>
-        <div class="top-title">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</div>
+    <div class="session-item">
+      <div class="session-info">
+        <div class="session-title">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</div>
+        <div class="session-model">deepseek-v4-flash &middot; 396,878 tokens</div>
       </div>
-      <div style="text-align:right">
-        <div class="top-cost">$9.38</div>
-        <div class="top-time">06-22 23:19</div>
-      </div>
-    </div>
-    <div class="top-item">
-      <div class="top-info">
-        <div class="top-rank">4</div>
-        <div class="top-model">glm-5.2</div>
-        <div class="top-title">子女赡养费法律咨询</div>
-      </div>
-      <div style="text-align:right">
-        <div class="top-cost">$6.61</div>
-        <div class="top-time">06-18 15:06</div>
+      <div class="session-cost">
+        <div class="val">¥18.14</div>
+        <div class="date">Jun 7</div>
       </div>
     </div>
-    <div class="top-item">
-      <div class="top-info">
-        <div class="top-rank">5</div>
-        <div class="top-model">deepseek-v4-flash</div>
-        <div class="top-title">金融服务 · 月收入情况及财务建议</div>
+    <div class="session-item">
+      <div class="session-info">
+        <div class="session-title">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？加载好了的</div>
+        <div class="session-model">deepseek-v4-flash &middot; 168,580 tokens</div>
       </div>
-      <div style="text-align:right">
-        <div class="top-cost">$3.94</div>
-        <div class="top-time">06-06 18:03</div>
+      <div class="session-cost">
+        <div class="val">¥9.38</div>
+        <div class="date">Jun 22</div>
+      </div>
+    </div>
+    <div class="session-item">
+      <div class="session-info">
+        <div class="session-title">@"C:/Users/ADMIN/Desktop/子女赡养费法律咨询.pdf"</div>
+        <div class="session-model">glm-5.2 &middot; 71,019 tokens</div>
+      </div>
+      <div class="session-cost">
+        <div class="val">¥6.61</div>
+        <div class="date">Jun 18</div>
+      </div>
+    </div>
+    <div class="session-item">
+      <div class="session-info">
+        <div class="session-title">@scene#28:"金融服务" 我需要你根据我的月收入情况和财务情况，给我一个</div>
+        <div class="session-model">deepseek-v4-flash &middot; 223,798 tokens</div>
+      </div>
+      <div class="session-cost">
+        <div class="val">¥3.94</div>
+        <div class="date">Jun 6</div>
       </div>
     </div>
   </div>
 
+  <!-- Price change warning -->
+  <div class="warning">
+    Price increase on July 1. Current cost: <strong>¥101.63</strong> &rarr; estimated <strong>¥133.72</strong> (+32%).
+  </div>
+
+  <!-- Footer -->
   <div class="footer">
-    auto-updated every 12h &middot; data from workbuddy.db
+    Auto-updated every 12h &middot; data from local workbuddy.db
   </div>
 
 </div>
+
+<script>
+(function() {
+  var credits = [326.34, 505.24, 8.05, 5.95, 10.54, 20.25, 7.3, 66.56, 17.58, 9.17, 9.86, 117.01, 255.32, 27.33, 136.71, 650.63, 283.94, 39.04, 31.60, 37.98, 24.68, 26.67, 56.64];
+  var max = Math.max.apply(null, credits);
+  var container = document.getElementById('trendBars');
+  for (var i = 0; i < credits.length; i++) {
+    var bar = document.createElement('div');
+    bar.className = 'trend-bar' + (credits[i] === max ? ' peak' : '');
+    bar.style.height = Math.max(credits[i] / max * 100, 4) + '%';
+    bar.title = credits[i].toFixed(1) + ' credits';
+    container.appendChild(bar);
+  }
+})();
+</script>
+
 </body>
 </html>
