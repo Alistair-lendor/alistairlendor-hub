@@ -1,0 +1,8 @@
+{
+  "deepseek-v4-flash": {"model": "DeepSeek V4 Flash", "inputCache": "¥0.60/M", "inputMiss": "¥3.00/M", "output": "¥15.00/M", "inputCacheJul": "¥0.80/M", "inputMissJul": "¥4.00/M", "outputJul": "¥20.00/M"},
+  "hy3-preview-agent": {"model": "HY3 Preview Agent", "inputCache": "¥0.15/M", "inputMiss": "¥0.80/M", "output": "¥4.00/M", "inputCacheJul": "¥0.20/M", "inputMissJul": "¥1.00/M", "outputJul": "¥5.00/M"},
+  "glm-5.2": {"model": "GLM 5.2", "inputCache": "¥5.00/M", "inputMiss": "¥25.00/M", "output": "¥100.00/M", "inputCacheJul": "¥6.50/M", "inputMissJul": "¥33.00/M", "outputJul": "¥130.00/M"},
+  "minimax-m3": {"model": "MiniMax M3", "inputCache": "¥3.00/M", "inputMiss": "¥15.00/M", "output": "¥60.00/M", "inputCacheJul": "¥4.00/M", "inputMissJul": "¥20.00/M", "outputJul": "¥80.00/M"},
+  "kimi-k2.7": {"model": "Kimi K2.7", "inputCache": "¥1.50/M", "inputMiss": "¥8.00/M", "output": "¥30.00/M", "inputCacheJul": "¥2.00/M", "inputMissJul": "¥10.00/M", "outputJul": "¥40.00/M"},
+  "auto": {"model": "Auto Switch", "inputCache": "—", "inputMiss": "—", "output": "—", "inputCacheJul": "—", "inputMissJul": "—", "outputJul": "—"}
+}

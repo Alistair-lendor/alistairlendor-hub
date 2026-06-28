@@ -155,6 +155,17 @@ img{max-width:100%;height:auto}
 .tla{font-size:0.72rem;font-weight:400;color:var(--fg2);font-family:var(--fm);width:56px;text-align:right;flex-shrink:0}
 .tlp{font-size:0.65rem;font-weight:400;color:var(--fg4);font-family:var(--fm);width:24px;text-align:right;flex-shrink:0}
 
+/* ═══ Token Pricing Row ═══ */
+.tpr{
+  display:none;align-items:center;gap:4px 10px;
+  padding:0 0 4px 56px;margin-top:-2px;
+  font-size:0.65rem;font-family:var(--fm);color:var(--fg4);
+  letter-spacing:-0.01em;flex-wrap:wrap;
+}
+.tpr-l{color:var(--fg3);white-space:nowrap}
+.tpr-v{color:var(--fg2);white-space:nowrap}
+.tpr-j{color:var(--red);white-space:nowrap;font-weight:500}
+
 /* ═══ Quick Actions & Schedule ═══ */
 .qali{
   display:flex;align-items:center;gap:12px;padding:12px 16px;
@@ -247,11 +258,17 @@ img{max-width:100%;height:auto}
   <div class="th"><span class="tt">7,470,795</span><span class="tc">¥58.44</span></div>
   <div class="tw">当前费率 · 7月后 <span style="color:var(--red)">¥76.90</span> (+32%)</div>
   <div class="tli"><span class="tln">deepseek-v4-flash</span><div class="tlb"><div class="tlbf" style="width:51.9%;background:var(--fg)"></div></div><span class="tla">3,876k</span><span class="tlp">52%</span></div>
+  <div class="tpr" id="tp-deepseek-v4-flash"><span class="tpr-l">缓存</span><span class="tpr-v" data-k="ic">-</span><span class="tpr-l">输入</span><span class="tpr-v" data-k="im">-</span><span class="tpr-l">输出</span><span class="tpr-v" data-k="o">-</span><span class="tpr-j" data-k="jul" style="display:none">→ 7月</span></div>
   <div class="tli"><span class="tln">hy3-preview-agent</span><div class="tlb"><div class="tlbf" style="width:44.4%;background:var(--fg2)"></div></div><span class="tla">3,313k</span><span class="tlp">44%</span></div>
+  <div class="tpr" id="tp-hy3-preview-agent"><span class="tpr-l">缓存</span><span class="tpr-v" data-k="ic">-</span><span class="tpr-l">输入</span><span class="tpr-v" data-k="im">-</span><span class="tpr-l">输出</span><span class="tpr-v" data-k="o">-</span><span class="tpr-j" data-k="jul" style="display:none">→ 7月</span></div>
   <div class="tli"><span class="tln">glm-5.2</span><div class="tlb"><div class="tlbf" style="width:1.6%;background:var(--fg3)"></div></div><span class="tla">120k</span><span class="tlp">2%</span></div>
+  <div class="tpr" id="tp-glm-5.2"><span class="tpr-l">缓存</span><span class="tpr-v" data-k="ic">-</span><span class="tpr-l">输入</span><span class="tpr-v" data-k="im">-</span><span class="tpr-l">输出</span><span class="tpr-v" data-k="o">-</span><span class="tpr-j" data-k="jul" style="display:none">→ 7月</span></div>
   <div class="tli"><span class="tln">kimi-k2.7</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">60k</span><span class="tlp">1%</span></div>
+  <div class="tpr" id="tp-kimi-k2.7"><span class="tpr-l">缓存</span><span class="tpr-v" data-k="ic">-</span><span class="tpr-l">输入</span><span class="tpr-v" data-k="im">-</span><span class="tpr-l">输出</span><span class="tpr-v" data-k="o">-</span><span class="tpr-j" data-k="jul" style="display:none">→ 7月</span></div>
   <div class="tli"><span class="tln">minimax-m3</span><div class="tlb"><div class="tlbf" style="width:0.8%;background:var(--fg3)"></div></div><span class="tla">59k</span><span class="tlp">1%</span></div>
+  <div class="tpr" id="tp-minimax-m3"><span class="tpr-l">缓存</span><span class="tpr-v" data-k="ic">-</span><span class="tpr-l">输入</span><span class="tpr-v" data-k="im">-</span><span class="tpr-l">输出</span><span class="tpr-v" data-k="o">-</span><span class="tpr-j" data-k="jul" style="display:none">→ 7月</span></div>
   <div class="tli"><span class="tln">auto</span><div class="tlb"><div class="tlbf" style="width:0.5%;background:var(--fg3)"></div></div><span class="tla">39k</span><span class="tlp">1%</span></div>
+  <div class="tpr" id="tp-auto"><span class="tpr-l">缓存</span><span class="tpr-v" data-k="ic">-</span><span class="tpr-l">输入</span><span class="tpr-v" data-k="im">-</span><span class="tpr-l">输出</span><span class="tpr-v" data-k="o">-</span></div>
 </a>
 
 <!-- Quick Actions -->
@@ -318,7 +335,6 @@ fetch('/briefing-summary.json?v=' + BUILD_VERSION).then(function(r){
   el = document.getElementById('brief-m');
   if (el && d.dateZh) el.textContent = d.dateZh + ' · 新闻简报';
 }).catch(function(){
-  // Fallback: re-show static content if fetch fails
   var el = document.getElementById('brief-t');
   if (el && el.textContent === '加载中...') {
     el.textContent = '今日头条 · AI日报专题';
@@ -326,6 +342,32 @@ fetch('/briefing-summary.json?v=' + BUILD_VERSION).then(function(r){
     document.getElementById('brief-m').textContent = '09:00 · 新闻简报';
   }
 });
+
+// Fetch token pricing table and fill dimensions
+fetch('/pricing-table.json?v=' + BUILD_VERSION).then(function(r){
+  if (!r.ok) throw new Error();
+  return r.json();
+}).then(function(p){
+  Object.keys(p).forEach(function(m){
+    var el = document.getElementById('tp-' + m);
+    if (!el) return;
+    var d = p[m];
+    var k = ['ic','im','o'];
+    k.forEach(function(key){
+      var cel = el.querySelector('[data-k="' + key + '"]');
+      var v = key === 'ic' ? d.inputCache : key === 'im' ? d.inputMiss : d.output;
+      if (cel && v && v !== '—') cel.textContent = v;
+    });
+    if (d.inputCacheJul && d.inputCacheJul !== '—') {
+      var jul = el.querySelector('[data-k="jul"]');
+      if (jul) {
+        jul.textContent = '→ 7月 ' + d.inputCacheJul + ' / ' + d.inputMissJul + ' / ' + d.outputJul;
+        jul.style.display = 'inline';
+      }
+    }
+    el.style.display = 'flex';
+  });
+}).catch(function(){});
 })();
 </script>
 </body>
