@@ -1,59 +1,59 @@
 {
-  "2026-06-13": {
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-13.html"
-  },
-  "2026-06-14": {
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-14.html"
-  },
-  "2026-06-15": {
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-15.html"
-  },
-  "2026-06-16": {
-    "invest": "https://invest.alistairlendor.com/archive/daily_email_0616.html",
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-16.html"
-  },
-  "2026-06-17": {
-    "invest": "https://invest.alistairlendor.com/archive/daily_email_0617.html",
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-17.html"
-  },
-  "2026-06-18": {
-    "invest": "https://invest.alistairlendor.com/archive/daily_email_0618.html",
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-18.html"
-  },
-  "2026-06-19": {
-    "invest": "https://invest.alistairlendor.com/archive/daily_email_0619.html",
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-19.html"
-  },
-  "2026-06-20": {
-    "finance": "https://finance.alistairlendor.com/archive/finance-2026-06-20.html",
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-20.html",
-    "usage": "https://alistairlendor.com/usage/usage_dashboard.html"
-  },
-  "2026-06-21": {
-    "finance": "https://finance.alistairlendor.com/archive/finance-2026-06-21.html",
-    "news": "https://news.alistairlendor.com/archive/news-briefing-2026-06-21.html",
-    "updated": "2026-06-21T23:55:00+08:00",
-    "usage": "https://alistairlendor.com/usage/usage_dashboard.html"
-  },
-  "2026-06-22": {
-    "finance": "https://finance.alistairlendor.com"
-  },
-  "2026-06-23": {
-    "news": "https://news.alistairlendor.com",
-    "usage": "https://alistairlendor.com/usage/usage_dashboard.html"
-  },
-  "2026-06-25": {
-    "finance": "https://finance.alistairlendor.com"
-  },
-  "2026-06-26": {
-    "finance": "https://finance.alistairlendor.com"
-  },
-  "2026-06-27": {
-    "finance": "https://finance.alistairlendor.com",
-    "invest": "https://invest.alistairlendor.com",
-    "news": "https://news.alistairlendor.com"
-  },
-  "2026-06-28": {
-    "news": "https://news.alistairlendor.com"
-  }
+    "2026-06-28":  {
+                       "news":  "https://news.alistairlendor.com"
+                   },
+    "2026-06-27":  {
+                       "finance":  "https://finance.alistairlendor.com",
+                       "invest":  "https://invest.alistairlendor.com",
+                       "news":  "https://news.alistairlendor.com"
+                   },
+    "2026-06-26":  {
+                       "finance":  "https://finance.alistairlendor.com"
+                   },
+    "2026-06-25":  {
+                       "finance":  "https://finance.alistairlendor.com"
+                   },
+    "2026-06-23":  {
+                       "news":  "https://news.alistairlendor.com",
+                       "usage":  "https://alistairlendor.com/usage/usage_dashboard.html"
+                   },
+    "2026-06-22":  {
+                       "finance":  "https://finance.alistairlendor.com"
+                   },
+    "2026-06-21":  {
+                       "finance":  "https://finance.alistairlendor.com/archive/finance-2026-06-21.html",
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-21.html",
+                       "updated":  "2026-06-21T23:55:00+08:00",
+                       "usage":  "https://alistairlendor.com/usage/usage_dashboard.html"
+                   },
+    "2026-06-20":  {
+                       "finance":  "https://finance.alistairlendor.com/archive/finance-2026-06-20.html",
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-20.html",
+                       "usage":  "https://alistairlendor.com/usage/usage_dashboard.html"
+                   },
+    "2026-06-19":  {
+                       "invest":  "https://invest.alistairlendor.com/archive/daily_email_0619.html",
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-19.html"
+                   },
+    "2026-06-18":  {
+                       "invest":  "https://invest.alistairlendor.com/archive/daily_email_0618.html",
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-18.html"
+                   },
+    "2026-06-17":  {
+                       "invest":  "https://invest.alistairlendor.com/archive/daily_email_0617.html",
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-17.html"
+                   },
+    "2026-06-16":  {
+                       "invest":  "https://invest.alistairlendor.com/archive/daily_email_0616.html",
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-16.html"
+                   },
+    "2026-06-15":  {
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-15.html"
+                   },
+    "2026-06-14":  {
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-14.html"
+                   },
+    "2026-06-13":  {
+                       "news":  "https://news.alistairlendor.com/archive/news-briefing-2026-06-13.html"
+                   }
 }
