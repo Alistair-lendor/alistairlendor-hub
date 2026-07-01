@@ -2,96 +2,99 @@
 <html lang="zh-CN">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Usage &middot; WorkBuddy</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Usage &middot; Alistair</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
 <style>
 :root {
   --bg: #ffffff;
   --card: #f5f5f5;
   --text: #171717;
-  --text-secondary: #4d4d4d;
-  --text-tertiary: #666666;
-  --text-muted: #808080;
+  --text2: #4d4d4d;
+  --text3: #666666;
+  --text4: #808080;
   --border: #e5e5e5;
-  --bar-primary: #171717;
-  --bar-secondary: #a0a0a0;
-  --chart-line: #171717;
-  --chart-fill: rgba(23,23,23,0.08);
-  --chart-point: #171717;
-  --red: #dc2626;
+  --bar-fill: #171717;
+  --bar-bg: #e5e5e5;
+  --line: #d4d4d4;
+  --fill: rgba(23,23,23,0.06);
 }
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0a0a0a;
     --card: #171717;
     --text: #fafafa;
-    --text-secondary: #a3a3a3;
-    --text-tertiary: #808080;
-    --text-muted: #666666;
+    --text2: #a3a3a3;
+    --text3: #808080;
+    --text4: #666666;
     --border: #262626;
-    --bar-primary: #fafafa;
-    --bar-secondary: #525252;
-    --chart-line: #fafafa;
-    --chart-fill: rgba(250,250,250,0.08);
-    --chart-point: #fafafa;
-    --red: #ef4444;
+    --bar-fill: #fafafa;
+    --bar-bg: #262626;
+    --line: #333333;
+    --fill: rgba(250,250,250,0.06);
   }
 }
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Geist', -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 32px 16px; -webkit-font-smoothing: antialiased; }
-.mono { font-family: 'Geist Mono', 'SF Mono', monospace; font-variant-numeric: tabular-nums; }
+body {
+  font-family: 'Geist', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 32px 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+.mono { font-family: 'Geist Mono', 'SF Mono', 'SFMono-Regular', 'Consolas', monospace; font-variant-numeric: tabular-nums; }
 .container { max-width: 520px; margin: 0 auto; }
 
 /* Header */
 .header { margin-bottom: 32px; }
-.header h1 { font-size: 20px; font-weight: 600; letter-spacing: -0.04em; margin-bottom: 2px; }
-.header .subtitle { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
-.header .subtitle strong { color: var(--text-secondary); font-weight: 500; }
+.header h1 { font-size: 22px; font-weight: 600; letter-spacing: -0.04em; margin-bottom: 6px; }
+.header p { font-size: 13px; color: var(--text4); line-height: 1.5; }
+.header p span { color: var(--text2); font-weight: 500; }
 
-/* Stats Grid */
-.stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 28px; }
-.stat-card { background: var(--card); border-radius: 8px; padding: 14px; }
-.stat-card .label { font-size: 11px; color: var(--text-muted); margin-bottom: 4px; font-weight: 500; text-transform: uppercase; letter-spacing: 0.04em; }
-.stat-card .value { font-size: 22px; font-weight: 600; letter-spacing: -0.03em; font-family: 'Geist Mono', monospace; font-variant-numeric: tabular-nums; color: var(--text); }
-.stat-card .sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+/* Stats grid */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 32px; }
+.stat { background: var(--card); border-radius: 10px; padding: 16px; }
+.stat .lbl { font-size: 11px; color: var(--text4); margin-bottom: 4px; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; }
+.stat .val { font-size: 24px; font-weight: 600; letter-spacing: -0.03em; }
+.stat .sub { font-size: 11px; color: var(--text4); margin-top: 2px; }
 
 /* Section */
-.section { margin-bottom: 24px; }
-.section-title { font-size: 13px; font-weight: 600; letter-spacing: -0.02em; color: var(--text-secondary); margin-bottom: 12px; text-transform: uppercase; }
+.sec { margin-bottom: 28px; }
+.sec-title { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; color: var(--text3); margin-bottom: 12px; text-transform: uppercase; }
 
-/* Model table */
-.model-table { width: 100%; }
-.model-row { display: block; background: var(--card); border-radius: 8px; padding: 12px 14px; margin-bottom: 8px; }
-.model-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-.model-name { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; color: var(--text); }
-.model-cost { font-size: 13px; font-weight: 600; font-family: 'Geist Mono', monospace; letter-spacing: -0.02em; color: var(--text); }
-.model-bar-wrap { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 6px; overflow: hidden; }
-.model-bar { height: 100%; background: var(--bar-primary); border-radius: 2px; transition: width 0.3s; }
-.model-meta { font-size: 11px; color: var(--text-tertiary); display: flex; justify-content: space-between; flex-wrap: wrap; gap: 4px; }
-.model-meta span { font-family: 'Geist Mono', monospace; font-variant-numeric: tabular-nums; }
-.model-pricing { font-size: 10px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
-.model-pricing .jul { color: var(--red); }
+/* Model list */
+.model-card { background: var(--card); border-radius: 10px; padding: 16px; margin-bottom: 8px; }
+.model-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+.model-name { font-size: 13px; font-weight: 600; color: var(--text); letter-spacing: -0.01em; }
+.model-cost { font-size: 13px; font-weight: 600; color: var(--text); }
+.model-sessions { font-size: 11px; color: var(--text4); }
+.model-bar { height: 4px; border-radius: 2px; background: var(--bar-bg); margin-bottom: 6px; overflow: hidden; }
+.model-bar-inner { height: 100%; border-radius: 2px; background: var(--bar-fill); transition: width 0.4s ease; }
+.model-meta { display: flex; justify-content: space-between; font-size: 11px; color: var(--text4); }
+.model-meta .mono { color: var(--text3); }
+.model-jul { font-size: 11px; color: var(--text4); margin-top: 2px; }
 
-/* Top Sessions */
-.session-table { width: 100%; border-collapse: collapse; }
-.session-table thead th { padding: 8px 10px; text-align: left; font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid var(--border); }
-.session-table tbody td { padding: 8px 10px; text-align: left; font-size: 12px; color: var(--text-secondary); border-bottom: 1px solid var(--border); font-family: 'Geist Mono', monospace; font-variant-numeric: tabular-nums; }
-.session-table tbody td.num { text-align: right; }
-.session-table tbody td.title-cell { max-width: 160px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: 'Geist', sans-serif; color: var(--text-tertiary); font-size: 11px; }
-.session-table tbody tr:last-child td { border-bottom: none; }
+/* Info card */
+.info { background: var(--card); border-radius: 10px; padding: 16px; margin-bottom: 28px; }
+.info p { font-size: 12px; color: var(--text3); line-height: 1.7; }
 
-/* Chart */
-.chart-wrap { background: var(--card); border-radius: 8px; padding: 14px; }
+/* Chart wrapper */
+.chart-wrap { background: var(--card); border-radius: 10px; padding: 16px; margin-bottom: 28px; }
+.chart-wrap canvas { display: block; width: 100% !important; height: 200px !important; }
+
+/* Top sessions table */
+.tbl-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+th, td { padding: 8px 10px; text-align: left; font-size: 12px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+th { color: var(--text4); font-weight: 500; font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+td { color: var(--text2); }
+td.num { text-align: right; font-variant-numeric: tabular-nums; }
+td.title { max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--text3); font-size: 11px; }
 
 /* Footer */
-.footer { text-align: center; padding: 24px 0 8px; font-size: 11px; color: var(--text-muted); border-top: 1px solid var(--border); margin-top: 4px; }
-
-/* Scroll */
-.scroll-x { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.footer { text-align: center; padding: 24px 0 8px; font-size: 11px; color: var(--text4); border-top: 1px solid var(--border); margin-top: 8px; }
 </style>
 </head>
 <body>
@@ -99,132 +102,131 @@ body { font-family: 'Geist', -apple-system, sans-serif; background: var(--bg); c
 
   <div class="header">
     <h1>Usage</h1>
-    <p class="subtitle"><strong>2026-06-06</strong> &mdash; <strong>2026-07-01</strong> &middot; Updated <strong>2026-07-01 02:26</strong></p>
+    <p><span>2026-06-06</span> &mdash; <span>2026-07-01</span> &middot; Updated <span>2026-07-01 14:24</span></p>
   </div>
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="label">Sessions</div>
-      <div class="value">176</div>
-      <div class="sub">total conversations</div>
+  <div class="stats">
+    <div class="stat">
+      <div class="lbl">Sessions</div>
+      <div class="val mono">179</div>
     </div>
-    <div class="stat-card">
-      <div class="label">Tokens</div>
-      <div class="value">14.0M</div>
-      <div class="sub mono">14,086,363</div>
+    <div class="stat">
+      <div class="lbl">Tokens</div>
+      <div class="val mono">14.3M</div>
+      <div class="sub mono">14,305,142</div>
     </div>
-    <div class="stat-card">
-      <div class="label">Credits</div>
-      <div class="value">2,878</div>
-      <div class="sub mono">16.4 avg / session</div>
+    <div class="stat">
+      <div class="lbl">Credits</div>
+      <div class="val mono">2,889</div>
+      <div class="sub mono">16.1 / session</div>
     </div>
-    <div class="stat-card">
-      <div class="label">Cost</div>
-      <div class="value">¥109.36</div>
-      <div class="sub mono">Jul &rarr; ¥143.89</div>
+    <div class="stat">
+      <div class="lbl">Cost</div>
+      <div class="val mono">¥109.77</div>
+      <div class="sub mono">Jul &rarr; ¥144.43</div>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Model Breakdown</div>
+  <div class="sec">
+    <div class="sec-title">Model Breakdown</div>
 
-    <div class="model-row">
-      <div class="model-header">
-        <span class="model-name">deepseek-v4-flash</span>
-        <span class="model-cost">¥87.29</span>
+    <div class="model-card">
+      <div class="model-top">
+        <div><span class="model-name">deepseek-v4-flash</span> <span class="model-sessions">76 sessions</span></div>
+        <div class="model-cost mono">¥87.47</div>
       </div>
-      <div class="model-bar-wrap"><div class="model-bar" style="width:79.5%;"></div></div>
+      <div class="model-bar"><div class="model-bar-inner" style="width:79.7%"></div></div>
       <div class="model-meta">
-        <span>75 sessions</span>
-        <span>7,876,790 tokens</span>
-        <span>2297 credits</span>
+        <span>Tokens <span class="mono">7,958,215</span></span>
+        <span>Credits <span class="mono">2,302</span></span>
       </div>
-      <div class="model-pricing">Cache ¥0.60 &middot; Input ¥3.00 &middot; Output ¥15.00 / 1M tokens &nbsp;<span class="jul">&rarr; Jul ¥0.80 / ¥4.00 / ¥20.00 (+32%)</span></div>
+      <div class="model-jul mono">Jul &rarr; ¥115.09 &middot; &yen;0.60/&yen;3.00/&yen;15.00 per MTok</div>
     </div>
 
-    <div class="model-row">
-      <div class="model-header">
-        <span class="model-name">hy3-preview-agent</span>
-        <span class="model-cost">¥10.36</span>
+    <div class="model-card">
+      <div class="model-top">
+        <div><span class="model-name">hy3-preview-agent</span> <span class="model-sessions">98 sessions</span></div>
+        <div class="model-cost mono">¥10.59</div>
       </div>
-      <div class="model-bar-wrap"><div class="model-bar" style="width:59.9%;"></div></div>
+      <div class="model-bar"><div class="model-bar-inner" style="width:9.7%"></div></div>
       <div class="model-meta">
-        <span>96 sessions</span>
-        <span>5,928,896 tokens</span>
-        <span>273 credits</span>
+        <span>Tokens <span class="mono">6,066,250</span></span>
+        <span>Credits <span class="mono">279</span></span>
       </div>
-      <div class="model-pricing">Cache ¥0.15 &middot; Input ¥0.80 &middot; Output ¥4.00 / 1M tokens &nbsp;<span class="jul">&rarr; Jul ¥0.20 / ¥1.00 / ¥5.00 (+32%)</span></div>
+      <div class="model-jul mono">Jul &rarr; ¥13.93 &middot; &yen;0.20/&yen;1.00/&yen;5.00 per MTok</div>
     </div>
 
-    <div class="model-row">
-      <div class="model-header">
-        <span class="model-name">glm-5.2</span>
-        <span class="model-cost">¥6.74</span>
+    <div class="model-card">
+      <div class="model-top">
+        <div><span class="model-name">glm-5.2</span> <span class="model-sessions">2 sessions</span></div>
+        <div class="model-cost mono">¥6.74</div>
       </div>
-      <div class="model-bar-wrap"><div class="model-bar" style="width:1.2%;"></div></div>
+      <div class="model-bar"><div class="model-bar-inner" style="width:6.1%"></div></div>
       <div class="model-meta">
-        <span>2 sessions</span>
-        <span>120,757 tokens</span>
-        <span>177 credits</span>
+        <span>Tokens <span class="mono">120,757</span></span>
+        <span>Credits <span class="mono">177</span></span>
       </div>
-      <div class="model-pricing">Cache ¥5.00 &middot; Input ¥25.00 &middot; Output ¥100.00 / 1M tokens &nbsp;<span class="jul">&rarr; Jul ¥6.50 / ¥33.00 / ¥130.00 (+32%)</span></div>
+      <div class="model-jul mono">Jul &rarr; ¥8.87 &middot; &yen;6.50/&yen;33.00/&yen;130.00 per MTok</div>
     </div>
 
-    <div class="model-row">
-      <div class="model-header">
-        <span class="model-name">minimax-m3</span>
-        <span class="model-cost">¥2.71</span>
+    <div class="model-card">
+      <div class="model-top">
+        <div><span class="model-name">minimax-m3</span> <span class="model-sessions">1 session</span></div>
+        <div class="model-cost mono">¥2.71</div>
       </div>
-      <div class="model-bar-wrap"><div class="model-bar" style="width:0.6%;"></div></div>
+      <div class="model-bar"><div class="model-bar-inner" style="width:2.5%"></div></div>
       <div class="model-meta">
-        <span>1 session</span>
-        <span>59,766 tokens</span>
-        <span>71 credits</span>
+        <span>Tokens <span class="mono">59,766</span></span>
+        <span>Credits <span class="mono">71</span></span>
       </div>
-      <div class="model-pricing">Cache ¥3.00 &middot; Input ¥15.00 &middot; Output ¥60.00 / 1M tokens &nbsp;<span class="jul">&rarr; Jul ¥4.00 / ¥20.00 / ¥80.00 (+32%)</span></div>
+      <div class="model-jul mono">Jul &rarr; ¥3.56 &middot; &yen;4.00/&yen;20.00/&yen;80.00 per MTok</div>
     </div>
 
-    <div class="model-row">
-      <div class="model-header">
-        <span class="model-name">kimi-k2.7</span>
-        <span class="model-cost">¥2.20</span>
+    <div class="model-card">
+      <div class="model-top">
+        <div><span class="model-name">kimi-k2.7</span> <span class="model-sessions">1 session</span></div>
+        <div class="model-cost mono">¥2.20</div>
       </div>
-      <div class="model-bar-wrap"><div class="model-bar" style="width:0.6%;"></div></div>
+      <div class="model-bar"><div class="model-bar-inner" style="width:2.0%"></div></div>
       <div class="model-meta">
-        <span>1 session</span>
-        <span>60,173 tokens</span>
-        <span>58 credits</span>
+        <span>Tokens <span class="mono">60,173</span></span>
+        <span>Credits <span class="mono">58</span></span>
       </div>
-      <div class="model-pricing">Cache ¥1.50 &middot; Input ¥8.00 &middot; Output ¥30.00 / 1M tokens &nbsp;<span class="jul">&rarr; Jul ¥2.00 / ¥10.00 / ¥40.00 (+32%)</span></div>
+      <div class="model-jul mono">Jul &rarr; ¥2.90 &middot; &yen;2.00/&yen;10.00/&yen;40.00 per MTok</div>
     </div>
 
-    <div class="model-row">
-      <div class="model-header">
-        <span class="model-name">auto</span>
-        <span class="model-cost">¥0.06</span>
+    <div class="model-card">
+      <div class="model-top">
+        <div><span class="model-name">auto</span> <span class="model-sessions">1 session</span></div>
+        <div class="model-cost mono">¥0.06</div>
       </div>
-      <div class="model-bar-wrap"><div class="model-bar" style="width:0.4%;"></div></div>
+      <div class="model-bar"><div class="model-bar-inner" style="width:0.1%"></div></div>
       <div class="model-meta">
-        <span>1 session</span>
-        <span>39,981 tokens</span>
-        <span>2 credits</span>
+        <span>Tokens <span class="mono">39,981</span></span>
+        <span>Credits <span class="mono">2</span></span>
       </div>
-      <div class="model-pricing">&mdash;</div>
     </div>
-
   </div>
 
-  <div class="section">
-    <div class="section-title">Daily Trend (credits)</div>
+  <div class="info">
+    <p>
+      定价按 <strong>缓存 / 输入(未缓存) / 输出</strong> 三个维度标注（每百万tokens）。<br>
+      当前 &yen;0.038 / credit &rarr; 7月 &yen;0.050 / credit (+32%)。<br>
+      实际费用 = 积分消耗 &times; 单价。
+    </p>
+  </div>
+
+  <div class="sec">
+    <div class="sec-title">Daily Trend (credits)</div>
     <div class="chart-wrap">
-      <canvas id="dailyChart" style="height:200px;width:100%;"></canvas>
+      <canvas id="dailyChart"></canvas>
     </div>
   </div>
 
-  <div class="section">
-    <div class="section-title">Top Sessions</div>
-    <div class="scroll-x">
-      <table class="session-table">
+  <div class="sec">
+    <div class="sec-title">Top Sessions</div>
+    <div class="tbl-wrap">
+      <table>
         <thead>
           <tr>
             <th class="num">#</th>
@@ -237,126 +239,68 @@ body { font-family: 'Geist', -apple-system, sans-serif; background: var(--bg); c
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td class="num">1</td>
-            <td>06-21 01:34</td>
-            <td>deepseek-v4-flash</td>
-            <td class="num">295,091</td>
-            <td class="num">601.11</td>
-            <td class="num">¥22.84</td>
-            <td class="title-cell">现在给我看一下，关于我的个人信息都有哪些？</td>
-          </tr>
-          <tr>
-            <td class="num">2</td>
-            <td>06-07 22:18</td>
-            <td>deepseek-v4-flash</td>
-            <td class="num">396,878</td>
-            <td class="num">477.39</td>
-            <td class="num">¥18.14</td>
-            <td class="title-cell">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td>
-          </tr>
-          <tr>
-            <td class="num">3</td>
-            <td>06-22 23:19</td>
-            <td>deepseek-v4-flash</td>
-            <td class="num">224,229</td>
-            <td class="num">265.58</td>
-            <td class="num">¥10.09</td>
-            <td class="title-cell">现在我开启一个新的对话来打磨我的控制台和对应的模块，你加载好内容了吗？</td>
-          </tr>
-          <tr>
-            <td class="num">4</td>
-            <td>06-18 15:06</td>
-            <td>glm-5.2</td>
-            <td class="num">71,019</td>
-            <td class="num">174.05</td>
-            <td class="num">¥6.61</td>
-            <td class="title-cell">@"C:/Users/ADMIN/Desktop/子女赡养费法律咨询.pdf"</td>
-          </tr>
-          <tr>
-            <td class="num">5</td>
-            <td>06-06 18:03</td>
-            <td>deepseek-v4-flash</td>
-            <td class="num">223,798</td>
-            <td class="num">103.69</td>
-            <td class="num">¥3.94</td>
-            <td class="title-cell">我需要你根据我的月收入情况和财务情况，给我一个</td>
-          </tr>
+          <tr><td class="num">1</td><td>06-21 01:34</td><td>deepseek-v4-flash</td><td class="num mono">295,091</td><td class="num mono">601</td><td class="num mono">¥22.84</td><td class="title">现在给我看一下，关于我的个人信息都有哪些？</td></tr>
+          <tr><td class="num">2</td><td>06-07 22:18</td><td>deepseek-v4-flash</td><td class="num mono">396,878</td><td class="num mono">477</td><td class="num mono">¥18.14</td><td class="title">我的workbuddy账号和微信账号不是同一个，怎么才能让微信绑定workbud</td></tr>
+          <tr><td class="num">3</td><td>06-22 23:19</td><td>deepseek-v4-flash</td><td class="num mono">224,229</td><td class="num mono">266</td><td class="num mono">¥10.09</td><td class="title">现在我开启一个新的对话来打磨我的控制台和对应的模块</td></tr>
+          <tr><td class="num">4</td><td>06-18 15:06</td><td>glm-5.2</td><td class="num mono">71,019</td><td class="num mono">174</td><td class="num mono">¥6.61</td><td class="title">子女赡养费法律咨询</td></tr>
+          <tr><td class="num">5</td><td>06-06 18:03</td><td>deepseek-v4-flash</td><td class="num mono">223,798</td><td class="num mono">104</td><td class="num mono">¥3.94</td><td class="title">金融服务 根据月收入情况和财务情况给出建议</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-  <div class="footer">Auto-updated every 12h &middot; data from workbuddy.db</div>
+  <div class="footer">Auto-updated every 12h &middot; data from local workbuddy.db</div>
 
 </div>
 
 <script>
-const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-const lineColor = isDark ? '#fafafa' : '#171717';
-const fillColor = isDark ? 'rgba(250,250,250,0.08)' : 'rgba(23,23,23,0.08)';
-const pointColor = isDark ? '#fafafa' : '#171717';
-const gridColor = isDark ? '#262626' : '#e5e5e5';
+(function() {
+  const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const gridColor = isDark ? '#333333' : '#d4d4d4';
+  const tickColor = isDark ? '#808080' : '#808080';
+  const lineColor = isDark ? '#fafafa' : '#171717';
+  const fillColor = isDark ? 'rgba(250,250,250,0.06)' : 'rgba(23,23,23,0.06)';
+  const pointColor = isDark ? '#fafafa' : '#171717';
 
-const dayLabels = ["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30","07-01"];
+  const labels = ["06-06","06-07","06-08","06-09","06-10","06-11","06-12","06-13","06-14","06-15","06-16","06-17","06-18","06-19","06-20","06-21","06-22","06-23","06-24","06-25","06-26","06-27","06-28","06-29","06-30","07-01"];
+  const data = [326.34,505.24,8.05,5.95,10.54,20.25,7.3,66.56,17.58,9.17,9.86,117.01,255.32,27.33,148.14,650.63,302.59,39.04,31.60,37.98,24.68,26.67,163.05,36.18,30.25,11.33];
 
-const dayCredits = [326.34, 505.24, 8.05, 5.95, 10.54, 20.25, 7.3, 66.56, 17.58, 9.17, 9.86, 117.01, 255.32, 27.33, 148.14, 650.63, 302.59, 39.04, 31.60, 37.98, 24.68, 26.67, 163.05, 36.18, 30.25, 0.54];
-
-new Chart(document.getElementById('dailyChart'), {
-  type: 'line',
-  data: {
-    labels: dayLabels,
-    datasets: [{
-      label: 'Credits',
-      data: dayCredits,
-      borderColor: lineColor,
-      backgroundColor: fillColor,
-      fill: true,
-      tension: 0.3,
-      pointRadius: 3,
-      pointHoverRadius: 5,
-      pointBackgroundColor: pointColor,
-      borderWidth: 1.5
-    }]
-  },
-  options: {
-    responsive: true,
-    maintainAspectRatio: true,
-    plugins: {
-      legend: { display: false },
-      tooltip: {
-        backgroundColor: isDark ? '#171717' : '#ffffff',
-        titleColor: isDark ? '#fafafa' : '#171717',
-        bodyColor: isDark ? '#a3a3a3' : '#4d4d4d',
-        borderColor: isDark ? '#262626' : '#e5e5e5',
-        borderWidth: 1,
-        cornerRadius: 6,
-        padding: 10,
-        bodyFont: { family: "'Geist Mono', monospace" }
-      }
+  new Chart(document.getElementById('dailyChart'), {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'credits',
+        data: data,
+        borderColor: lineColor,
+        backgroundColor: fillColor,
+        fill: true,
+        tension: 0.3,
+        pointRadius: 3,
+        pointHoverRadius: 5,
+        pointBackgroundColor: pointColor,
+        borderWidth: 1.5
+      }]
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-        grid: { color: gridColor, drawBorder: false },
-        ticks: {
-          color: isDark ? '#808080' : '#808080',
-          font: { size: 10, family: "'Geist Mono', monospace" },
-          maxTicksLimit: 5
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: {
+          grid: { color: gridColor },
+          ticks: { color: tickColor, maxRotation: 45, font: { size: 10, family: 'Geist Mono, SF Mono, monospace' }, maxTicksLimit: 10 }
+        },
+        y: {
+          beginAtZero: true,
+          grid: { color: gridColor },
+          ticks: { color: tickColor, font: { size: 10, family: 'Geist Mono, SF Mono, monospace' } }
         }
       },
-      x: {
-        grid: { display: false },
-        ticks: {
-          color: isDark ? '#808080' : '#808080',
-          font: { size: 9 },
-          maxTicksLimit: 12,
-          maxRotation: 45
-        }
-      }
+      interaction: { mode: 'index', intersect: false }
     }
-  }
-});
+  });
+})();
 </script>
 </body>
 </html>
